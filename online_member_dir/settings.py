@@ -80,7 +80,14 @@ WSGI_APPLICATION = 'online_member_dir.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': config('DATABASE_URL')
+    'default': {
+        'ENGINE': config("DJANGO_DB_ENGINE"),
+        'NAME': config("DJANGO_DB_NAME"),
+        'USER': config("DJANGO_DB_USER"),
+        'PASSWORD': config("DJANGO_DB_PASSWORD"),
+        'HOST': config("DJANGO_DB_HOST"),
+        'PORT': config("DJANGO_DB_PORT"),
+    }
 }
 
 
