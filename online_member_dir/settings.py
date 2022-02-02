@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'online_member_dir.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+local = config("local", False)
 if local:
     DATABASES = {
         'default': {
