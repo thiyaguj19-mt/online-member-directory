@@ -23,9 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+local = config("local", False)
+if local:
+    ALLOWED_HOSTS = []
+
+else:
+    ALLOWED_HOSTS = ['online-member-directory.herokuapp.com']
+
 DEBUG = config("DJANGO_DEBUG", False)
 
-ALLOWED_HOSTS = ['online-member-directory.herokuapp.com']
+
+
 
 
 # Application definition
