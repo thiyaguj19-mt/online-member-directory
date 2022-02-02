@@ -1,0 +1,23 @@
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-fixed-top">
+  <a class="navbar-brand s-brand mr-auto" href="{% url 'home' %}">
+    <!-- <img src="/static/images/logo-en.png" alt="My image"/> -->
+    <img src="{% static 'images/logo-en.png' %}" style="width: 90px" />
+
+    <div class="s-brand-name">
+      <h3>Sri Sathya Sai International Organization</h3>
+      <div>National Member-Portal</div>
+    </div>
+  </a>
+  <ul class="ms-auto navbar-nav s-nav-menu">
+    <li class="nav-item">
+      <a class="nav-link" href="#">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Contact Us</a>
+    </li>
+  </ul>
+</nav>
