@@ -3,11 +3,11 @@ from django.db import models
 class Region(models.Model):
 
     # Fields
-    name = models.CharField(max_length=20, help_text='Region Name', null=True)
+    name = models.CharField(max_length=20, help_text='Region Name')
 
     # Metadata
     #this metadata is to control the default ordering of records returned when you query the model type
-    ordering = ['name']
+    #ordering = ['name']
 
     # Methods
 
@@ -18,10 +18,10 @@ class Center(models.Model):
 
     #Fields
     name = models.CharField(max_length=100, help_text='Center Name')
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
 
     #metadata
-    ordering = ['name']
+    #ordering = ['name']
 
     # Methods
     def __str__(self):
