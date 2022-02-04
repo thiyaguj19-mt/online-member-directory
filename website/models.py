@@ -3,7 +3,7 @@ from django.db import models
 class Region(models.Model):
 
     # Fields
-    name = models.CharField(max_length=20, help_text='Region Name')
+    name = models.CharField(max_length=20, help_text='Region Name', null=True)
 
     # Metadata
     #this metadata is to control the default ordering of records returned when you query the model type
@@ -18,7 +18,7 @@ class Center(models.Model):
 
     #Fields
     name = models.CharField(max_length=100, help_text='Center Name')
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True)
 
     #metadata
     ordering = ['name']
@@ -59,17 +59,24 @@ class Member(models.Model):
     #Fields
     first_name = models.CharField(max_length=100, help_text='Member First Name')
     last_name = models.CharField(max_length=100, help_text='Member Last Name')
-    gender = models.CharField(max_length=10, help_text='Member Gender')
+    GENGERCHOICES = [
+        ('m', 'Male'),
+        ('f', 'Female'),
+        ('', 'Not Specified'),
+    ]
+    gender = models.CharField(max_length=1, choices=GENGERCHOICES, default='', help_text='Choose Member Gender')
     email = models.EmailField(max_length=30, help_text='Member Email', primary_key=True, null=False)
     phone = models.BigIntegerField(help_text='Member Phone')
     address = models.CharField(max_length=300, help_text='Member Address', null=True)
     age = models.IntegerField(help_text='Member Age')
-    class MemberStatus(models.TextChoices):
-        NO = (0, 'No')
-        YES = (1, 'Yes')
-    verified = models.IntegerField(choices=MemberStatus.choices, default=MemberStatus.NO)
+    MEMBERCHOICES = [
+        (0, 'No'),
+        (1, 'Yes'),
+    ]
+    verified = models.IntegerField(choices=MEMBERCHOICES, default=0, help_text='member status')
     orgrole = models.ForeignKey(OrgRole, on_delete=models.CASCADE)
     approle = models.ForeignKey(AppRole, on_delete=models.CASCADE)
     start_date = models.DateField(help_text="Member's OrgRole Start Date")
     end_date = models.DateField(help_text="Member's OrgRole End Date")
-    center = models.CharField(max_length=100, help_text="Member's Center")
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, blank=True, null=True)
+    center = models.ForeignKey(Center, on_delete=models.SET_NULL, blank=True, null=True)
