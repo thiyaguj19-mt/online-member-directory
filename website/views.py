@@ -7,4 +7,13 @@ from django.http import HttpResponse
 #This is the front home page screen view
 
 def home(request):
-    return render(request,'home.html',{})    
+    return render(request,'home.html',{}) 
+
+
+#To import file - Admin Use   
+def importFile(request):
+    return render(request, 'import-page.html',{})   
+
+#To export file - Admin Use  
+def exortFile(request):
+    return render(request, 'export-page.html',{})      
