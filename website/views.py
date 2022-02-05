@@ -15,5 +15,5 @@ def importFile(request):
     return render(request, 'import-page.html',{})   
 
 #To export file - Admin Use  
-def exortFile(request):
+def exportFile(request):
     return render(request, 'export-page.html',{})      

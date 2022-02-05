@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('import-page/', views.importFile, name='import-page'),
-    path('export-page/', views.exportFile, name='export-page')
+    path('import', views.importFile, name = 'import-page'),
+    path('export', views.exportFile, name = 'export-page'),
 ]

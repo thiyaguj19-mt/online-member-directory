@@ -14,13 +14,15 @@
       <a class="nav-link" href="#">Home</a>
     </li>
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Admin
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        
-        <a class="dropdown-item" href="{% url 'import-page' %}">Import...</a>
-        <a class="dropdown-item" href="{% url 'export-page' %}">Export...</a>
+      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</a>
+      <div class="dropdown-menu">
+          <a href="{% url 'import-page' %}" class="dropdown-item">Import</a>
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'export-page' %}"class="dropdown-item">Export</a>
+      </div>
+      </li>
+      <!-- <a class="dropdown-item" href="{% url 'import-page' %}">Import...</a>
+        <a class="dropdown-item" href="{% url 'export-page' %}">Export...</a> -->
     </li>
 
     <li class="nav-item">
