@@ -5,4 +5,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('import', views.importFile, name = 'import-page'),
     path('export', views.exportFile, name = 'export-page'),
+    path('search_members', views.search_members, name = 'search-members'),
+     
 ]

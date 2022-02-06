@@ -16,35 +16,38 @@
         <div class="jumbotron text-center" style="height: 90%">
           <h1 class="display-5">Welcome to SSSIO Online-Member-Portal</h1>
           <!--Search Bar with dropdown for Category-->
-          <div class="input-group w-50 mx-auto mt-4 pt-5 pb-6">
-            <input
-              type="search"
-              class="form-control rounded"
-              placeholder="Search By Role or Person Name"
-              aria-label="Search"
-              aria-describedby="search-addon"
-            />
-            <!-- Default dropdown button -->
-            <div class="dropdown">
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Category
+
+          <form
+            class="d-flex"
+            method="POST"
+            action="{% url 'search-members' %}"
+          >
+            {% csrf_token %}
+            <!--Search Bar with dropdown for Category-->
+
+            <div class="input-group w-50 mx-auto mt-4 pt-5 pb-6">
+              <input
+                type="search"
+                class="form-control rounded"
+                placeholder="Search By Role or Person Name"
+                aria-label="Search"
+                aria-describedby="search-addon"
+                name="searched"
+              />
+              <!-- Default style button -->
+              <button class="btn btn-outline-secondary" type="submit">
+                Search
               </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Role</a></li>
-                <li><a class="dropdown-item" href="#">Name</a></li>
-              </ul>
-            </div>
-          </div>
+
+              
+          </form>
         </div>
       </div>
+      
     </div>
+    
   </div>
 </div>
 
 {% endblock %}
+
