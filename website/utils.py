@@ -41,8 +41,8 @@ def uploadCSVFile(csv_file, type):
     context = []
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
         if type == "Region":
-            created_data = createRegionData(column)
-            print("value of created_data---" , created_data)
-            if created_data != None:
-                context.append(created_data)
+            region_data = createRegionData(column)
+            print("value of region_data---" , region_data)
+            if region_data != None:
+                context.append(region_data)
     return context

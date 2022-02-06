@@ -37,14 +37,22 @@ def search_members(request):
 
 def uploadRegion(request):
 
+    csv_file = None
     regiondata = {}
+    message = "Nothing new to update"
     if request.method == "POST":
         print("request.FILES ", request.FILES)
-        csv_file = request.FILES['file']
-        print(csv_file)
+        try:
+            csv_file = request.FILES['file']
+        except Exception as ex:
+            message = str(ex)
+            return render(request, 'import-page.html', {"message" : "upload failed. check your input file."})
         # let's check if it is a csv file
         if not csv_file.name.endswith('.csv'):
-            message = 'THIS IS NOT A CSV FILE'
+            message = 'Please upload a CSV file'
         else:
             regiondata = uploadCSVFile(csv_file, "Region")
-    return render(request, 'import-page.html', {"regiondata": regiondata})
+    if len(regiondata) == 0:
+        return render(request, 'import-page.html', {"message" : message})
+    else:
+        return render(request, 'import-page.html', {"regiondata": regiondata})
