@@ -11,8 +11,20 @@
   </a>
   <ul class="ms-auto navbar-nav s-nav-menu">
     <li class="nav-item">
-      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="{% url 'home' %}">Home</a>
     </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</a>
+      <div class="dropdown-menu">
+          <a href="{% url 'import-page' %}" class="dropdown-item">Import</a>
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'export-page' %}"class="dropdown-item">Export</a>
+      </div>
+      </li>
+      <!-- <a class="dropdown-item" href="{% url 'import-page' %}">Import...</a>
+        <a class="dropdown-item" href="{% url 'export-page' %}">Export...</a> -->
+    </li>
+
     <li class="nav-item">
       <a class="nav-link" href="#">About</a>
     </li>

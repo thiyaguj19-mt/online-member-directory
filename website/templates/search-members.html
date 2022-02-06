@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block content %}
+<center>
+  {% if searched %}
+  <h1>You searched for {{ searched }}</h1>
+  <br />
+  <br />
+
+  <table class="table">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Email-ID</th>
+      <th scope="col">Phone-Num</th>
+      <th scope="col">Org-Role</th>
+      <th scope="col">App-Role</th>
+      <th scope="col">Region</th>
+      <th scope="col">Center</th>
+    </tr>
+    {% for member in members %}
+    <tr>
+      <th scope="row">1</th>
+      <td>{{ member.first_name }}</td>
+      <td>{{ member.last_name }}</td>
+      <td>{{ member.email }}</td>
+      <td>{{ member.phone }}</td>
+      <td>{{ member.orgrole }}</td>
+      <td>{{ member.approle }}</td>
+      <td><a href="#">{{ member.region}}</a></td>
+      <td>{{ member.center }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <h1>You forgot to search for a member</h1>
+
+  {% endif %}
+</center>
+{% endblock %}
