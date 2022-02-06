@@ -6,5 +6,5 @@ urlpatterns = [
     path('import', views.importFile, name = 'import-page'),
     path('export', views.exportFile, name = 'export-page'),
     path('search_members', views.search_members, name = 'search-members'),
-     
+    path('uploadRegion', views.uploadRegion, name = 'uploadRegion'),
 ]

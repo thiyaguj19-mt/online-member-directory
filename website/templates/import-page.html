@@ -1,3 +1,27 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <center><h1>Import Your File</h1></center>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-primary">Import Region</h5>
+        <form action="{% url 'uploadRegion' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <p class="card-text">Click below link to import your Region/Center data</p>
+          <input type="file" id="file" name="file">
+          <button type="submit" class="btn btn-primary">Upload Region File</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    {% if regiondata %}
+        <h3>Successfully imported following data</h3>
+        {% for data in regiondata %}
+          <p>{{data.region}} {{data.center}}</p>
+        {% endfor %}
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

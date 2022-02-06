@@ -31,7 +31,7 @@ class OrgRole(models.Model):
 
     #Fields
     name = models.CharField(max_length=100, help_text='Organization Role Name')
-    description = models.CharField(max_length=200, help_text='Organization Role Description')
+    description = models.CharField(max_length=200, help_text='Organization Role Description', blank=True)
 
     #metadata
     ordering = ['name']
@@ -44,7 +44,7 @@ class AppRole(models.Model):
 
     #Fields
     name = models.CharField(max_length=100, help_text='Application Role Name')
-    description = models.CharField(max_length=200, help_text='Application Role Description')
+    description = models.CharField(max_length=200, help_text='Application Role Description', blank=True)
 
     #metadata
     ordering = ['name']
