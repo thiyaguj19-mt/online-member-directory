@@ -15,12 +15,24 @@
       </div>
     </div>
   </div>
-  <div class="col-md-5">
-    {% if regiondata %}
-        <h3>Successfully imported following data</h3>
-        {% for data in regiondata %}
-          <p>{{data.region}} {{data.center}}</p>
-        {% endfor %}
+  <div class="col-md-6">
+    {% if message %}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ message }}</h5>
+        </div>
+      </div>
+    {% else %}
+      {% if regiondata %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-primary">Successfully imported Region/Center data</h5>
+            <p class="card-text">
+            {% for data in regiondata %}
+              <p>{{data.region}} | {{data.center}}</p>
+            {% endfor %}
+            </p>
+      {% endif %}
     {% endif %}
   </div>
 </div>
