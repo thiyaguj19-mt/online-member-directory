@@ -38,8 +38,9 @@ def createMemberData(column):
             center = Center.objects.filter(name = column[13]).first()
             member = Member.objects.filter(email = column[3]).first()
             created = False
+            memobj = None
             if member == None:
-                _, created = Member.objects.update_or_create(
+                memobj, created = Member.objects.update_or_create(
                     first_name=column[0],
                     last_name=column[1],
                     gender=column[2],
@@ -54,7 +55,8 @@ def createMemberData(column):
                     region=region,
                     center=center,
                 )
-            print('created----', created)
+                if created:
+                    memobj.orgrole.add(orole)
         except Exception as ex:
             print("error in createMemberData: " , ex)
 
