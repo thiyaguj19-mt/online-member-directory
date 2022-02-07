@@ -25,12 +25,13 @@ def createRegionData(column):
             )
             if created:
                 newCenter = column[1]
-                return {"center" : newCenter, "region": newRegion}
+                return {"column2" : newCenter, "column1": newRegion}
             else:
                 return None
 
 def createMemberData(column):
     if len(column) > 0:
+        print ("column--", column)
         try:
             orole = OrgRole.objects.filter(name = column[8]).first()
             arole = AppRole.objects.filter(name = column[9]).first()
@@ -57,19 +58,32 @@ def createMemberData(column):
                 )
                 if created:
                     memobj.orgrole.add(orole)
+                    return {"column1" : column}
+            else:
+                member.orgrole.add(orole)
         except Exception as ex:
             print("error in createMemberData: " , ex)
+            return {"column1" : "something went wrong- " + str(ex)}
+        return None
 
 def uploadCSVFile(csv_file, type):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
     next(io_string)
     context = []
+    loopindex = 0
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        if loopindex == 0:
+            loopindex += 1
+            continue
         if type == "region":
             region_data = createRegionData(column)
             if region_data != None:
                 context.append(region_data)
         elif type == "member":
             member_data = createMemberData(column)
+            if member_data != None:
+                #print (member_data)
+                if member_data not in context:
+                    context.append(member_data)
     return context

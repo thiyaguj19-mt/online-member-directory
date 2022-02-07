@@ -44,6 +44,7 @@ def uploadFile(request):
     if request.method == "POST":
         importType = request.POST.get('importType')
         print("importType-", importType)
+        error = False
         try:
             csv_file = request.FILES['file']
         except Exception as ex:
@@ -52,12 +53,14 @@ def uploadFile(request):
         # let's check if it is a csv file
         if not csv_file.name.endswith('.csv'):
             message = 'Please upload a CSV file'
+            return render(request, 'import-page.html', {"message" : message})
         else:
-            importdata = ""
-            importdata = uploadCSVFile(csv_file, importType)
-            if len(importdata) == 0:
+            loadeddata = ""
+            loadeddata = uploadCSVFile(csv_file, importType)
+            print(loadeddata, "loadeddata")
+            if len(loadeddata) == 0:
                 return render(request, 'import-page.html', {"message" : message})
             else:
-                return render(request, 'import-page.html', {"regiondata": importdata})
+                return render(request, 'import-page.html', {"loadeddata": loadeddata})
     else:
         return render(request, 'import-page.html',{})

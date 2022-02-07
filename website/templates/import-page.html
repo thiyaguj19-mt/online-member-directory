@@ -47,13 +47,13 @@
         </div>
       </div>
     {% else %}
-      {% if regiondata %}
+      {% if loadeddata %}
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title text-primary">Successfully imported Region/Center data</h5>
+            <h5 class="card-title text-primary">File Import Result</h5>
             <p class="card-text">
-            {% for data in regiondata %}
-              <p>{{data.region}} | {{data.center}}</p>
+            {% for data in loadeddata %}
+              <p>{{data.column1}} {% if data.column2 %} | {{data.column2}} {% endif %}</p>
             {% endfor %}
             </p>
       {% endif %}
