@@ -1,6 +1,6 @@
 import io
 import csv
-from .models import Center, Region
+from .models import Center, Region, Member, OrgRole, AppRole
 
 def createRegionData(column):
     if len(column) > 0:
@@ -9,30 +9,54 @@ def createRegionData(column):
         try:
             newCenter = None
             newRegion = None
-            print("regionval---" , regionval)
             region = Region.objects.filter(name = regionval).first()
-            print("region---" , region)
             if region == None:
                 region = Region(name=column[0])
                 region.save()
                 newRegion = column[0]
             else:
                 newRegion = region.name
-            print("newRegion---" , newRegion)
         except Exception as ex:
             print("error in createRegionData: " , ex)
-        print("value of region---" , region)
         if region != None:
             _, created = Center.objects.update_or_create(
                 region=region,
                 name=column[1]
             )
-            print("value of created---" , created)
             if created:
                 newCenter = column[1]
                 return {"center" : newCenter, "region": newRegion}
             else:
                 return None
+
+def createMemberData(column):
+    if len(column) > 0:
+        try:
+            orole = OrgRole.objects.filter(name = column[8]).first()
+            arole = AppRole.objects.filter(name = column[9]).first()
+            region = Region.objects.filter(name = column[12]).first()
+            center = Center.objects.filter(name = column[13]).first()
+            member = Member.objects.filter(email = column[3]).first()
+            created = False
+            if member == None:
+                _, created = Member.objects.update_or_create(
+                    first_name=column[0],
+                    last_name=column[1],
+                    gender=column[2],
+                    email=column[3],
+                    phone=column[4],
+                    address=column[5],
+                    age=column[6],
+                    verified=column[7],
+                    approle=arole,
+                    start_date=None,
+                    end_date=None,
+                    region=region,
+                    center=center,
+                )
+            print('created----', created)
+        except Exception as ex:
+            print("error in createMemberData: " , ex)
 
 def uploadCSVFile(csv_file, type):
     data_set = csv_file.read().decode('UTF-8')
@@ -40,9 +64,10 @@ def uploadCSVFile(csv_file, type):
     next(io_string)
     context = []
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        if type == "Region":
+        if type == "region":
             region_data = createRegionData(column)
-            print("value of region_data---" , region_data)
             if region_data != None:
                 context.append(region_data)
+        elif type == "member":
+            member_data = createMemberData(column)
     return context

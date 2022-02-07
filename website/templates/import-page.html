@@ -5,12 +5,36 @@
   <div class="col-md-5">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title text-primary">Import Region</h5>
-        <form action="{% url 'uploadRegion' %}" method="POST" enctype="multipart/form-data">
+        <h5 class="card-title text-primary">Import Data</h5>
+
+        <p class="card-text">Import Region/Organization Roles/Members data</p>
+
+        <form action="{% url 'uploadFile' %}" method="POST" enctype="multipart/form-data">
+
           {% csrf_token %}
-          <p class="card-text">Click below link to import your Region/Center data</p>
-          <input type="file" id="file" name="file">
-          <button type="submit" class="btn btn-primary">Upload Region File</button>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="importType" id="regionImport" value="region">
+            <label class="form-check-label" for="regionImport">
+              Region/Center Data
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="importType" id="memberImport" value="member" checked>
+            <label class="form-check-label" for="memberImport">
+              Members Data
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="importType" id="orgRoleImport" value="orgRole">
+            <label class="form-check-label" for="orgRoleImport">
+              Organization Roles
+            </label>
+          </div>
+
+          <input class="py-3" type="file" id="file" name="file">
+          <button type="submit" class="btn btn-primary">Upload File</button>
+
         </form>
       </div>
     </div>
