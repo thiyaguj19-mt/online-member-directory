@@ -22,6 +22,10 @@ def importFile(request):
 def exportFile(request):
     return render(request, 'export-page.html',{})
 
+#Show Region Officers with Center Info
+def show_regions(request):
+    return render(request, 'show-region.html',{})     
+
 # Search By Member-Names
 def search_members(request):
     if request.method == "POST":
