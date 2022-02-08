@@ -24,7 +24,15 @@
       <td>{{ member.last_name }}</td>
       <td>{{ member.email }}</td>
       <td>{{ member.phone }}</td>
-      <td>{{ member.orgrole }}</td>
+      <td>
+        {% for mem in member.orgrole.all %}
+          {% if forloop.counter == 1 %}
+            {{ mem }}
+          {% else %}
+            | {{ mem }}
+          {% endif %}
+        {% endfor %}
+      </td>
       <td>{{ member.approle }}</td>
 
       <td><a href="{% url 'region-page' member.region_id %}">{{ member.region}}</a></td>
