@@ -26,8 +26,8 @@ def exportFile(request):
     return render(request, 'export-page.html',{})
 
 #Show Region Officers with Center Info
-def show_regions(request):
-    return render(request, 'show-region.html',{})
+# def show_regions(request):
+#     return render(request, 'show-region.html',{})
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
@@ -48,7 +48,8 @@ def getAllCenterOfficers(request):
 def getRegionOfficers(request, regionName):
     regionOfficers = Member.objects.filter(approle__name='Regional Officer', region__name=regionName)
     logging.debug('regionOfficers: ' + regionOfficers)
-
+    return render(request, 'show-region.html',{regionOfficers})
+    
 #Get centre officers for specific center
 def getCenterOfficers(request, centerName):
     centerOfficers = Member.objects.filter(approle__name='Center Officer', center__name=centerName)
