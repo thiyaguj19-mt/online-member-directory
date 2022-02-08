@@ -32,28 +32,29 @@ def exportFile(request):
 #Get all regional officers
 def getAllRegionalOfficers(request):
     allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-    logging.debug('allRegionalOfficers: ' + allRegionalOfficers)
+    logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
 
 #Get all national officers
 def getAllNationalOfficers(request):
     allNationalOfficers = Member.objects.filter(approle__name='National Officer')
-    logging.debug('allNationalOfficers: ' + allNationalOfficers)
+    logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
 
 #Get all center officers
 def getAllCenterOfficers(request):
     allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
-    logging.debug('allCenterOfficers: ' + allCenterOfficers)
+    logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
 
 #Get regional officers for specific region
-def getRegionOfficers(request, regionName):
-    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region__name=regionName)
-    logging.debug('regionOfficers: ' + regionOfficers)
-    return render(request, 'show-region.html',{regionOfficers})
-    
+def getRegionOfficers(request, regionId):
+    logging.debug('regionId: ' + str(regionId))
+    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
+    logging.debug('regionOfficers: ' + str(regionOfficers))
+    return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
+
 #Get centre officers for specific center
 def getCenterOfficers(request, centerName):
     centerOfficers = Member.objects.filter(approle__name='Center Officer', center__name=centerName)
-    logging.debug('centerOfficers: ' + centerOfficers)
+    logging.debug('centerOfficers: ' + str(centerOfficers))
 
 # Search By Member-Names
 def search_members(request):

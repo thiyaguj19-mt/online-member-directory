@@ -27,7 +27,7 @@
       <td>{{ member.orgrole }}</td>
       <td>{{ member.approle }}</td>
 
-      <td><a href="{% url 'region-page' %}">{{ member.region}}</a></td>
+      <td><a href="{% url 'region-page' member.region_id %}">{{ member.region}}</a></td>
       <td>{{ member.center }}</td>
     </tr>
     {% endfor %}
