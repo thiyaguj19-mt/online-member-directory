@@ -1,95 +1,387 @@
-{% load static %}
+{% extends 'base.html' %} {% block content %}
+<center>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="home-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#home"
+        type="button"
+        role="tab"
+        aria-controls="home"
+        aria-selected="true"
+      >
+        Officer
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#profile"
+        type="button"
+        role="tab"
+        aria-controls="profile"
+        aria-selected="false"
+      >
+        Centers
+      </button>
+    </li>
+  </ul>
 
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade show active"
+      id="home"
+      role="tabpanel"
+      aria-labelledby="home-tab"
+    >
+      <h3>Regional Officers Profile</h3>
 
-    <title>Region/Center Officers</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
-  </head>
-
-  <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed-top">
-      <a class="navbar-brand s-brand mr-auto" href="{% url 'home' %}">
-        <!-- <img src="/static/images/logo-en.png" alt="My image"/> -->
-        <img src="{% static 'images/logo-en.png' %}" style="width: 90px" />
-
-        <div class="brand-name">
-          <h4>Sri Sathya Sai International Organization</h4>
-        </div>
-      </a>
-
-      <div class="container mt-5">
-        <div class="row">
-          <ul class="navbar-nav mr-2 nav nav-tabs">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link active dropdown-toggle"
-                data-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                >Region-Roles</a
-              >
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Regional Office</a>
-                <a class="dropdown-item" href="#">Member</a>
-                <a class="dropdown-item" href="#">National Officer</a>
-                <a class="dropdown-item" href="#">Center Officer</a>
+      <!--Start Card-Profile-->
+      <div class="container">
+        <div class="row mt-5 justify-content-center">
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
               </div>
-            </li>
-            <li class="nav-item dropdown mx-4">
-              <a
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                >Centers</a
-              >
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Center Member</a>
-                <a class="dropdown-item" href="#">Center Officers</a>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
               </div>
-            </li>
-          </ul>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Regional- #</div>
+            <div class="card-body">
+              <h5 class="title">Coordinator</h5>
+              <div class="row">
+                <div class="col">Full Name:</div>
+                <div class="col-6">Sai Ram</div>
+              </div>
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </nav>
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb justify-content-end">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">About</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Contact</li>
-      </ol>
-    </nav>
-    <center><h1>Welcome to Region Officers Page</h1></center>
+    </div>
+    <div
+      class="tab-pane fade show active"
+      id="profile"
+      role="tabpanel"
+      aria-labelledby="profile-tab"
+    >
+      <h3 class="mt-3">Centers in Your Region</h3>
+      <!--Start Card-Profile-->
+      <div class="container">
+        <div class="row mt-5 justify-content-center">
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+          <div
+            class="card mx-2 mb-3 text-dark bg-light border-secondary"
+            style="max-width: 25rem; margin: 10px"
+          >
+            <div class="header">Center-Name</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">Email:</div>
+                <div class="col-6">@gmail.com</div>
+              </div>
+              <div class="row">
+                <div class="col-6">Phone:</div>
+                <div class="col-md-auto">123-234-3450</div>
+              </div>
+              <div class="row">
+                <div class="col">Address:</div>
+                <div class="col-md-auto">23 East Drive, NJ-89076</div>
+              </div>
+              <a href="#" class="btn btn-secondary mt-3">Center-Officers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</center>
 
-    {% include 'footer.html' %}
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+{% endblock %}
