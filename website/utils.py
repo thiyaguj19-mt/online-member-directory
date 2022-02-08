@@ -1,6 +1,10 @@
 import io
 import csv
 from .models import Center, Region, Member, OrgRole, AppRole
+from django.core.cache import cache
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def createRegionData(column):
     if len(column) > 0:
@@ -9,7 +13,7 @@ def createRegionData(column):
         try:
             newCenter = None
             newRegion = None
-            region = Region.objects.filter(name = regionval).first()
+            region = retrieveFromCache(Region, regionval, "name")
             if region == None:
                 region = Region(name=column[0])
                 region.save()
@@ -31,13 +35,15 @@ def createRegionData(column):
 
 def createMemberData(column):
     if len(column) > 0:
-        print ("column--", column)
+        #print ("column--", column)
         try:
-            orole = OrgRole.objects.filter(name = column[8]).first()
-            arole = AppRole.objects.filter(name = column[9]).first()
-            region = Region.objects.filter(name = column[12]).first()
-            center = Center.objects.filter(name = column[13]).first()
-            member = Member.objects.filter(email = column[3]).first()
+
+            orole = retrieveFromCache(OrgRole, column[8], "name")
+            arole = retrieveFromCache(AppRole, column[9], "name")
+            region = retrieveFromCache(Region, column[12], "name")
+            center = retrieveFromCache(Center, column[13], "name")
+            member = retrieveFromCache(Member, column[3], "email")
+
             created = False
             memobj = None
             if member == None:
@@ -87,3 +93,25 @@ def uploadCSVFile(csv_file, type):
                 if member_data not in context:
                     context.append(member_data)
     return context
+
+def retrieveFromCache(obj, columnval, field):
+
+    result = None
+    try:
+        logging.debug('columnval: ' + columnval)
+        if cache.get(columnval):
+            result = cache.get(columnval)
+            logging.debug('result from cache: ' + str(columnval))
+        else:
+            logging.debug('field: ' + field)
+            if field == "name":
+                result = obj.objects.filter(name = columnval).first()
+            else:
+                result = obj.objects.filter(email = columnval).first()
+                logging.debug('result from database: ' + str(result))
+            #print("region---from..db....." , region)
+            cache.set(columnval, result)
+    except Exception as ex:
+        print("error from retrieveFromCache - " + str(ex))
+    #print("retrieveFromCache-result, " , result)
+    return result

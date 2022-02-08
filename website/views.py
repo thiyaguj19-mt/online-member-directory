@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Member,AppRole,OrgRole,Center,Region
 from .utils import *
 from django.db.models import Q
-
+from django.core.cache import cache
 
 # def index(request):
 #     return HttpResponse("Hello World")
@@ -38,13 +38,10 @@ def search_members(request):
 def uploadFile(request):
 
     csv_file = None
-    regiondata = {}
     message = "All are up to date"
     importType = None
     if request.method == "POST":
         importType = request.POST.get('importType')
-        print("importType-", importType)
-        error = False
         try:
             csv_file = request.FILES['file']
         except Exception as ex:
@@ -57,7 +54,7 @@ def uploadFile(request):
         else:
             loadeddata = ""
             loadeddata = uploadCSVFile(csv_file, importType)
-            print(loadeddata, "loadeddata")
+            #print(loadeddata, "loadeddata")
             if len(loadeddata) == 0:
                 return render(request, 'import-page.html', {"message" : message})
             else:
