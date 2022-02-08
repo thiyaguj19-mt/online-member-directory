@@ -4,6 +4,9 @@ from .models import Member,AppRole,OrgRole,Center,Region
 from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 # def index(request):
 #     return HttpResponse("Hello World")
@@ -24,7 +27,32 @@ def exportFile(request):
 
 #Show Region Officers with Center Info
 def show_regions(request):
-    return render(request, 'show-region.html',{})     
+    return render(request, 'show-region.html',{})
+
+#Get all regional officers
+def getAllRegionalOfficers(request):
+    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+    logging.debug('allRegionalOfficers: ' + allRegionalOfficers)
+
+#Get all national officers
+def getAllNationalOfficers(request):
+    allNationalOfficers = Member.objects.filter(approle__name='National Officer')
+    logging.debug('allNationalOfficers: ' + allNationalOfficers)
+
+#Get all center officers
+def getAllCenterOfficers(request):
+    allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+    logging.debug('allCenterOfficers: ' + allCenterOfficers)
+
+#Get regional officers for specific region
+def getRegionOfficers(request, regionName):
+    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region__name=regionName)
+    logging.debug('regionOfficers: ' + regionOfficers)
+
+#Get centre officers for specific center
+def getCenterOfficers(request, centerName):
+    centerOfficers = Member.objects.filter(approle__name='Center Officer', center__name=centerName)
+    logging.debug('centerOfficers: ' + centerOfficers)
 
 # Search By Member-Names
 def search_members(request):

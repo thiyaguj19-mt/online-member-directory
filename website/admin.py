@@ -25,6 +25,6 @@ class CenterAdmin(admin.ModelAdmin):
 admin.site.register(Center, CenterAdmin)
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email', 'phone', 'region', 'center', 'get_orgrole')
+    list_display = ('first_name', 'last_name', 'email', 'phone', 'region', 'center', 'get_orgrole', 'approle')
 
 admin.site.register(Member, MemberAdmin)
