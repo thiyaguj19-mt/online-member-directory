@@ -2,6 +2,7 @@ asgiref==3.4.1
 Deprecated==1.2.13
 Django==3.2.12
 django-redis==5.2.0
+gunicorn==20.1.0
 importlib-metadata==4.8.3
 packaging==21.3
 psycopg2==2.9.3
