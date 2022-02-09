@@ -89,6 +89,7 @@ def getRegionOfficers(request, regionId):
     logging.debug('regionOfficers: ' + str(regionOfficers))
     return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
 
+<<<<<<< HEAD
 #Get center officers for specific center
 def getCenterOfficers(request, centerId):
     if cache.get('centerOfficers'):
@@ -107,6 +108,14 @@ def getRegionalCenters(request, regionId):
         centersByRegionId = Center.objects.filter(region_id=regionId)
         cache.set('centersByRegionId', centersByRegionId)
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
+=======
+#Get centre officers for specific center
+#Changing parameter 2 to id centerName center__name=centerName
+def getCenterOfficers(request, centerId):
+    centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
+    logging.debug('centerOfficers: ' + str(centerOfficers))
+    return render(request, 'show-center.html', {'centerOfficers': centerOfficers})
+>>>>>>> 83364e6 (Changed card-stytle to show in table format and implemented get center officers)
 
 # Search By Member-Names
 def search_members(request):
