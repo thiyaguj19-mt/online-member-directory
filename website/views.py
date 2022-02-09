@@ -35,32 +35,60 @@ def exportFile(request):
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
-    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+    if cache.get('allRegionalOfficers'):
+        allRegionalOfficers = cache.get('allRegionalOfficers')
+    else:
+        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+        cache.set('allRegionalOfficers', allRegionalOfficers)
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
 
 #Get all national officers
 def getAllNationalOfficers(request):
-    allNationalOfficers = Member.objects.filter(approle__name='National Officer')
+    if cache.get('allNationalOfficers'):
+        allNationalOfficers = cache.get('allNationalOfficers')
+    else:
+        allNationalOfficers = Member.objects.filter(approle__name='National Officer')
+        cache.set('allNationalOfficers', allNationalOfficers)
     logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
 
 #Get all center officers
 def getAllCenterOfficers(request):
-    allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+    if cache.get('allCenterOfficers'):
+        allCenterOfficers = cache.get('allCenterOfficers')
+    else:
+        allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+        cache.set('allCenterOfficers', allCenterOfficers)
     logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
     logging.debug('regionId: ' + str(regionId))
-    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
+    if cache.get('regionOfficers'):
+        regionOfficers = cache.get('regionOfficers')
+    else:
+        regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
+        cache.set('regionOfficers', regionOfficers)
     logging.debug('regionOfficers: ' + str(regionOfficers))
     return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
 
-#Get centre officers for specific center
-#Changing parameter 2 to id centerName center__name=centerName
+#Get center officers for specific center
 def getCenterOfficers(request, centerId):
-    centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
+    if cache.get('centerOfficers'):
+        centerOfficers = cache.get('centerOfficers')
+    else:
+        centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
+        cache.set('centerOfficers', centerOfficers)
     logging.debug('centerOfficers: ' + str(centerOfficers))
     return render(request, 'show-center.html', {'centerOfficers': centerOfficers})
+
+#Get all centers of a region
+def getRegionalCenters(request, regionId):
+    if cache.get('centersByRegionId'):
+        centersByRegionId = cache.get('centers')
+    else:
+        centersByRegionId = Center.objects.filter(region_id=regionId)
+        cache.set('centersByRegionId', centersByRegionId)
+    logging.debug('centersByRegionId: ' + str(centersByRegionId))
 
 # Search By Member-Names
 def search_members(request):
