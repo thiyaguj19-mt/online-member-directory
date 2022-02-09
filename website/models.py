@@ -54,6 +54,12 @@ class AppRole(models.Model):
     def __str__(self):
         return self.name
 
+class Metadata(models.Model):
+    key = models.CharField(max_length=100, primary_key=True)
+    value = models.CharField(max_length=600)
+
+    def __str__(self):
+        return f'{self. key} | {self.value}'
 
 class Member(models.Model):
 

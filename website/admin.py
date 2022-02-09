@@ -28,3 +28,8 @@ class MemberAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'region', 'center', 'get_orgrole', 'approle')
 
 admin.site.register(Member, MemberAdmin)
+
+class MetadataAdmin(admin.ModelAdmin):
+    list_display = ('key', 'value')
+
+admin.site.register(Metadata, MetadataAdmin)
