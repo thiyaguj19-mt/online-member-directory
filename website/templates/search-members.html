@@ -25,8 +25,13 @@
       <td>{{ member.email }}</td>
       <td>{{ member.phone }}</td>
       <td>
-        {% for mem in member.orgrole.all %} {% if forloop.counter == 1 %} {{ mem
-        }} {% else %} {{ mem }} {% endif %} {% endfor %}
+        {% for mem in member.orgrole.all %}
+          {% if forloop.counter == 1 %}
+            {{ mem }}
+          {% else %}
+            | {{ mem }}
+          {% endif %}
+       {% endfor %}
       </td>
       <td>{{ member.approle }}</td>
 
