@@ -39,47 +39,49 @@
       aria-labelledby="home-tab"
     >
       <h3>Regional Officers Profile</h3>
-
-      <!--Start Card-Profile-->
-      <div class="container">
-        <div class="row mt-5 justify-content-center">
-          {% for member in regionOfficers %}
-          <div
-            class="card mx-2 mb-3 text-dark bg-light"
-            style="max-width: 25rem; margin: 10px"
-          >
-            <div class="header">Region - {{ member.region_id }}</div>
-            <div class="card-body py-1">
-              <h5 class="title">{{ member.approle }}</h5>
-
-              <div class="row no-gutters">
-                <div class="col-md-6">First Name:</div>
-                <div class="col-md-6">{{ member.first_name }}</div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-6">Last Name:</div>
-                <div class="col-md-6">{{ member.last_name }}</div>
-              </div>
-
-              <div class="row no-gutters py-1">
-                <div class="col">Email:</div>
-                <div class="col-md-auto">{{ member.email }}</div>
-              </div>
-              <div class="row no-gutters py-1">
-                <div class="col">Phone:</div>
-                <div class="col-md-6">{{ member.phone }}</div>
-              </div>
-              <div class="row no-gutters py-1"">
-                <div class="col">Address:</div>
-                <div class="col-md-6">{{ member.address }}</div>
-              </div>
+      <br />
+      <!-- Start Card-Profile-->
+      <!--Start Center Members Card-Profile-->
+      <!-- Display As Table -->
+      {% for member in regionOfficers%}
+        <div class="card" style="width: 21rem;">
+            <div class="card-body">
+              <div class="header">Region - {{ member.region_id }}</div>
+              <br>
+                <h5 class="card-title">{{ member.approle }}</h5>
+                <p class="card-text">
+                    
+                    <table class="card-table table">
+                    <tbody>
+                        <tr>
+                        <th>First Name</th>
+                        <td>{{ member.first_name }}</td>
+                        </tr>
+                        <tr>
+                        <th>Last Name</th>
+                        <td>{{ member.last_name }}</td>
+                        </tr>
+                        <tr>
+                        <th>Phone</th>
+                        <td>{{ member.phone }}</td>
+                        </tr>
+                        <tr>
+                        <th>Email</th>
+                        <td>{{ member.email }}</td>
+                        </tr>
+                        <th>Center</th>
+                        <td>{{ member.center }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </p>
             </div>
-          </div>
         </div>
-      </div>
+      
 
       <br />
-      {% endfor %} {% endblock content %}
+      
     </div>
   </div>
+  {% endfor %} {% endblock content %}
 </center>
