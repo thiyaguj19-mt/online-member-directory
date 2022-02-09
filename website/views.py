@@ -8,6 +8,9 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
+# Create a list for cards
+
+
 # def index(request):
 #     return HttpResponse("Hello World")
 
@@ -25,9 +28,10 @@ def importFile(request):
 def exportFile(request):
     return render(request, 'export-page.html',{})
 
-#Show Region Officers with Center Info
+# #Show All Cards of Region Officers
 # def show_regions(request):
 #     return render(request, 'show-region.html',{})
+
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
@@ -75,6 +79,7 @@ def getCenterOfficers(request, centerId):
         centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
         cache.set('centerOfficers', centerOfficers)
     logging.debug('centerOfficers: ' + str(centerOfficers))
+    return render(request, 'show-center.html', {'centerOfficers': centerOfficers})
 
 #Get all centers of a region
 def getRegionalCenters(request, regionId):
