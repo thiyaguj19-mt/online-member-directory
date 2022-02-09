@@ -89,6 +89,7 @@ def getRegionOfficers(request, regionId):
     logging.debug('regionOfficers: ' + str(regionOfficers))
     return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
 
+
 #Get center officers for specific center
 def getCenterOfficers(request, centerId):
     if cache.get('centerOfficers'):
