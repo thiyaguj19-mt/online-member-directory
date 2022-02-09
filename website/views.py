@@ -61,10 +61,15 @@ def search_members(request):
     if request.method == "POST":
         searched =  request.POST['searched']
 
-        members = Member.objects.filter(Q(first_name__contains=searched) | Q(last_name__contains=searched) | Q(orgrole__name__contains=searched) | Q(approle__name__contains=searched))
+        members = Member.objects.filter(
+            Q(first_name__contains=searched)
+            | Q(last_name__contains=searched)
+            | Q(orgrole__name__contains=searched)
+            | Q(approle__name__contains=searched)).distinct()
         # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
         # Asset.objects.filter( project__name__contains="Foo" )
         # members = MemberInfo.objects.filter(firstName__contains=searched)
+        logging.debug('members: ' + str(members))
         return render(request, 'search-members.html', {'searched':searched, 'members': members})
     else:
         return render(request, 'search-members.html', {})
