@@ -17,7 +17,21 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 #This is the front home page screen view
 
 def home(request):
-    return render(request,'home.html',{})
+    message = None
+    if request.method == 'POST':
+        if request.POST.keys() >= {'emailaddress'}:
+            emailaddress = request.POST['emailaddress']
+            if len(emailaddress) > 0:
+                logging.debug('your email addresss--- ' + emailaddress)
+                member = Member.objects.filter(email=emailaddress).first()
+                logging.debug('member--- ' + str(member))
+                if member == None:
+                    message = "Your email is not in our database. Please request for access via Contact Us link"
+                else:
+                    return render(request,'home.html',{})
+        return render(request,'auth.html',{'message': message})
+    #return render(request,'home.html',{})
+    return render(request,'auth.html',{})
 
 
 #To import file - Admin Use
