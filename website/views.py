@@ -5,6 +5,7 @@ from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
 import logging
+from .email import sendemail
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -28,6 +29,9 @@ def home(request):
                 if member == None:
                     message = "Your email is not in our database. Please request for access via Contact Us link"
                 else:
+                    sendemail(to=emailaddress,
+                                subject='Your Auth Code',
+                                body="Your Auth Code")
                     return render(request,'home.html',{})
         return render(request,'auth.html',{'message': message})
     #return render(request,'home.html',{})
