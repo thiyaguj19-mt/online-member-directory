@@ -5,7 +5,8 @@ from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
 import logging
-from .email import sendemail
+from .auth import *
+from datetime import datetime
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -19,6 +20,11 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def home(request):
     message = None
+    host_name = request.META.get('HOSTNAME')
+    today = datetime.now().strftime("%d%m%y")
+    loggedin = host_name + "_" + today
+    if cache.get(loggedin):
+        return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
             emailaddress = request.POST['emailaddress']
@@ -29,11 +35,26 @@ def home(request):
                 if member == None:
                     message = "Your email is not in our database. Please request for access via Contact Us link"
                 else:
-                    sendemail(to=emailaddress,
-                                subject='Your Auth Code',
-                                body="Your Auth Code")
-                    return render(request,'home.html',{})
-        return render(request,'auth.html',{'message': message})
+                    mailAuthCodetoUser(request, emailaddress)
+                    return render(request,'auth.html',
+                    {
+                        "issued" : True,
+                        "email" : emailaddress,
+                        "message" : "Please enter the auth code sent to your email (make sure to check your spam folder)"
+                    })
+        elif request.POST.keys() >= { 'authcode', 'email' }:
+            email = request.POST['email']
+            authcode = request.POST['authcode']
+            user_key = email + "_" + host_name + "_" + today
+            auth_code = cache.get(user_key)
+            if auth_code == authcode:
+                cache.set(loggedin, True, 7200)
+                return render(request,'home.html',{'message': message})
+            else:
+                return render(request,'auth.html', {
+                    "issued" : True,
+                    "email" : email,
+                    'message': "Something went wrong. Code didn't match. Please try again."})
     #return render(request,'home.html',{})
     return render(request,'auth.html',{})
 
