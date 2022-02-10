@@ -21,7 +21,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 def home(request):
     message = None
     host_name = request.META.get('HOSTNAME')
-    logging.debug('host_name--- ' + host_name)
+    logging.debug('host_name--- ' + str(host_name))
     today = datetime.now().strftime("%d%m%y")
     if host_name is not None:
         loggedin = host_name + "_" + today
