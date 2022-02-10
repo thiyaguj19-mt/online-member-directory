@@ -16,6 +16,9 @@ def mailAuthCodetoUser(request, emailaddress):
     logging.debug('today: ' + str(today))
     user_key = emailaddress + "_" + host_name + "_" + today
     logging.debug('user_key: ' + str(user_key))
+    for meta in request.META:
+        logging.debug('meta: ' + str(meta))
+        logging.debug('value: ' + request.META.get('meta'))
     if cache.get(user_key):
         auth_code = cache.get(user_key)
         logging.debug('auth_code from cache: ' + str(auth_code))
