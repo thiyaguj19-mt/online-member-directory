@@ -21,10 +21,12 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 def home(request):
     message = None
     host_name = request.META.get('HOSTNAME')
+    logging.debug('host_name--- ' + host_name)
     today = datetime.now().strftime("%d%m%y")
-    loggedin = host_name + "_" + today
-    if cache.get(loggedin):
-        return render(request,'home.html', {})
+    if host_name is not None:
+        loggedin = host_name + "_" + today
+        if cache.get(loggedin):
+            return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
             emailaddress = request.POST['emailaddress']
