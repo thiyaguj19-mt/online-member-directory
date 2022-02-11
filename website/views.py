@@ -22,10 +22,11 @@ def home(request):
     message = None
     today = datetime.now().strftime("%d%m%y")
     emailaddress = request.POST['emailaddress']
-    user_key = emailaddress + "_" + today
-    if user_key is not None:
-        if cache.get(user_key):
-            return render(request,'home.html', {})
+    if emailaddress is not None:
+        user_key = emailaddress + "_" + today
+        if user_key is not None:
+            if cache.get(user_key):
+                return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
             #emailaddress = request.POST['emailaddress']
