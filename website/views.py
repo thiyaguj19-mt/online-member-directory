@@ -22,8 +22,8 @@ def home(request):
     message = None
     today = datetime.now().strftime("%d%m%y")
     login_access = request.session.get("login_access", None)
-    logging.debug('login_access--- ' + login_access)
     if login_access is not None:
+        logging.debug('login_access--- ' + str(login_access))
         cache_auth_code = cache.get(login_access)
         if cache_auth_code is not None:
             logging.debug('cache_auth_code--- ' + cache_auth_code)
