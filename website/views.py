@@ -20,12 +20,10 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def home(request):
     message = None
-    host_name = request.META.get('HOSTNAME')
-    logging.debug('host_name--- ' + str(host_name))
     today = datetime.now().strftime("%d%m%y")
-    if host_name is not None:
-        loggedin = host_name + "_" + today
-        if cache.get(loggedin):
+    user_key = email + "_" + today
+    if user_key is not None:
+        if cache.get(user_key):
             return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
@@ -47,7 +45,7 @@ def home(request):
         elif request.POST.keys() >= { 'authcode', 'email' }:
             email = request.POST['email']
             authcode = request.POST['authcode']
-            user_key = email + "_" + host_name + "_" + today
+            user_key = email + "_" + today
             auth_code = cache.get(user_key)
             if auth_code == authcode:
                 cache.set(loggedin, True, 7200)

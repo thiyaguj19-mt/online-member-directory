@@ -9,15 +9,10 @@ from .models import Metadata
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def mailAuthCodetoUser(request, emailaddress):
-    for meta in request.META:
-        logging.debug('meta: ' + str(meta))
-        logging.debug('value: ' + request.META.get('meta'))
     auth_code = None
-    host_name = request.META.get('HOSTNAME')
-    logging.debug('host_name: ' + str(host_name))
     today = datetime.now().strftime("%d%m%y")
     logging.debug('today: ' + str(today))
-    user_key = emailaddress + "_" + host_name + "_" + today
+    user_key = emailaddress + "_" + today
     logging.debug('user_key: ' + str(user_key))
     if cache.get(user_key):
         auth_code = cache.get(user_key)
