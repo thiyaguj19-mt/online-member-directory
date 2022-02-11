@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('home', views.navlinkHome, name='navlinkHome'),
     path('import', views.importFile, name = 'import-page'),
     path('export', views.exportFile, name = 'export-page'),
     path('search_members', views.search_members, name = 'search-members'),

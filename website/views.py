@@ -17,6 +17,8 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 #     return HttpResponse("Hello World")
 
 #This is the front home page screen view
+def navlinkHome(request):
+    return render(request,'home.html', {})
 
 def home(request):
     message = None
