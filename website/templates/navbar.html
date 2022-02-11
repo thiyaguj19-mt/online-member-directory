@@ -20,9 +20,24 @@
           <div class="dropdown-divider"></div>
           <a href="{% url 'export-page' %}"class="dropdown-item">Export</a>
       </div>
-      </li>
-      <!-- <a class="dropdown-item" href="{% url 'import-page' %}">Import...</a>
-        <a class="dropdown-item" href="{% url 'export-page' %}">Export...</a> -->
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+        >Officers</a
+      >
+      <div class="dropdown-menu">
+        <a href="{% url 'national-officers-page' %}" class="dropdown-item"
+          >National</a
+        >
+        <div class="dropdown-divider"></div>
+        <a href="{% url 'regional-officers-page' %}" class="dropdown-item"
+          >Regional</a
+        >
+        <div class="dropdown-divider"></div>
+        <a href="{% url 'center-officers-page' %}" class="dropdown-item"
+          >Center</a
+        >
+      </div>
     </li>
 
     <li class="nav-item">

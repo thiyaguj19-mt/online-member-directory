@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<center>
+  <h1>Regional Officers</h1>
+  <br />
+  <br />
+  <table class="table">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">App-Role-Name</th>
+      <th scope="col">Access-Level</th>
+      <th scope="col">Role-Description</th>
+    </tr>
+    {% for officer in allRegionalOfficers %}
+    <tr>
+      <th scope="row">1</th>
+      <td>{{ officer.name }}</td>
+      <td>{{ officer.level }}</td>
+      <td>{{ officer.description }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</center>
+{% endblock %}
