@@ -1,21 +1,49 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 <center>
-  <h1>National Officers</h1>
+  <h1>Center Officers</h1>
   <br />
   <br />
   <table class="table">
     <tr>
       <th scope="col">#</th>
-      <th scope="col">App-Role-Name</th>
-      <th scope="col">Access-Level</th>
-      <th scope="col">Role-Description</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Email-ID</th>
+      <th scope="col">Phone-Num</th>
+      <th scope="col">Org-Role</th>
+      <th scope="col">App-Role</th>
+      <th scope="col">Region</th>
+      <th scope="col">Center</th>
     </tr>
     {% for officer in allCenterOfficers %}
     <tr>
       <th scope="row">1</th>
-      <td>{{ officer.name }}</td>
-      <td>{{ officer.level }}</td>
-      <td>{{ officer.description }}</td>
+      <td>{{ officer.first_name}}</td>
+      <td>{{ officer.last_name }}</td>
+      <td>{{ officer.email }}</td>
+      <td>{{ officer.phone }}</td>
+
+      <td>
+        {% for mem in officer.orgrole.all %}
+          {% if forloop.counter == 1 %}
+            {{ mem }}
+          {% else %}
+            | {{ mem }}
+          {% endif %}
+       {% endfor %}
+      </td>
+      <td>{{ officer.approle }}</td>
+      <td>
+        <a href="{% url 'region-page' officer.region_id %}"
+          >{{ officer.region}}</a
+        >
+      </td>
+
+      <td>
+        <a href="{% url 'center-page' officer.center_id %}"
+          >{{ officer.center }}</a
+        >
+      </td>
     </tr>
     {% endfor %}
   </table>
