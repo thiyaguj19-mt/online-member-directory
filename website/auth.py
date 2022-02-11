@@ -10,11 +10,9 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def mailAuthCodetoUser(request, emailaddress):
     auth_code = None
-    host_name = request.META.get('HOSTNAME')
-    logging.debug('host_name: ' + str(host_name))
     today = datetime.now().strftime("%d%m%y")
     logging.debug('today: ' + str(today))
-    user_key = emailaddress + "_" + host_name + "_" + today
+    user_key = emailaddress + "_" + today
     logging.debug('user_key: ' + str(user_key))
     if cache.get(user_key):
         auth_code = cache.get(user_key)
@@ -23,7 +21,8 @@ def mailAuthCodetoUser(request, emailaddress):
         auth_code = ''.join(random.sample(string.digits,6))
         logging.debug('auth_code: ' + str(auth_code))
         cache.set(user_key, auth_code, 14400)
-        logging.debug('auth code in cache: ' + str(today))
+        cache.set(auth_code, today, 14400)
+        logging.debug('auth code set in cache: ' + cache.get(user_key))
     if auth_code is not None:
         mailuser(recipient=emailaddress,
             header='Your "Auth Code" from SSSIO Officers Portal',
