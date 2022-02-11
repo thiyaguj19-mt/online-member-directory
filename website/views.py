@@ -89,7 +89,7 @@ def getAllRegionalOfficers(request):
         allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
         cache.set('allRegionalOfficers', allRegionalOfficers)
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
-    return render(request, 'regional-officers-page.html', {' allRegionalOfficers':  allRegionalOfficers})
+    return render(request, 'regional-officers-page.html', {'allRegionalOfficers':  allRegionalOfficers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
