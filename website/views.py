@@ -44,7 +44,6 @@ def home(request):
             user_key = email + "_" + today
             auth_code = cache.get(user_key)
             if auth_code == authcode:
-                cache.set(loggedin, True, 7200)
                 return render(request,'home.html',{'message': message})
             else:
                 return render(request,'auth.html', {
