@@ -89,6 +89,7 @@ def getAllRegionalOfficers(request):
         allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
         cache.set('allRegionalOfficers', allRegionalOfficers)
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
+    return render(request, 'regional-officers-page.html', {' allRegionalOfficers':  allRegionalOfficers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
@@ -98,6 +99,7 @@ def getAllNationalOfficers(request):
         allNationalOfficers = Member.objects.filter(approle__name='National Officer')
         cache.set('allNationalOfficers', allNationalOfficers)
     logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
+    return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers})
 
 #Get all center officers
 def getAllCenterOfficers(request):
@@ -107,6 +109,7 @@ def getAllCenterOfficers(request):
         allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
         cache.set('allCenterOfficers', allCenterOfficers)
     logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
+    return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers})
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
