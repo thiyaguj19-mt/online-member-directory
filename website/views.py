@@ -21,13 +21,14 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 def home(request):
     message = None
     today = datetime.now().strftime("%d%m%y")
-    user_key = email + "_" + today
+    emailaddress = request.POST['emailaddress']
+    user_key = emailaddress + "_" + today
     if user_key is not None:
         if cache.get(user_key):
             return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
-            emailaddress = request.POST['emailaddress']
+            #emailaddress = request.POST['emailaddress']
             if len(emailaddress) > 0:
                 logging.debug('your email addresss--- ' + emailaddress)
                 member = Member.objects.filter(email=emailaddress).first()
