@@ -25,6 +25,7 @@ def home(request):
     if login_access is not None:
         logging.debug('login_access--- ' + str(login_access))
         cache_auth_code = cache.get(login_access)
+        logging.debug('cache_auth_code--- ' + str(cache_auth_code))
         if cache_auth_code is not None:
             logging.debug('cache_auth_code--- ' + cache_auth_code)
             cache_date = cache.get(cache_auth_code)
@@ -56,8 +57,7 @@ def home(request):
             auth_code = cache.get(user_key)
             if auth_code == authcode:
                 login_access = request.session.get("login_access", None)
-                if login_access == None:
-                    request.session["login_access"] = user_key
+                request.session["login_access"] = user_key
                 return render(request,'home.html',{'message': message})
             else:
                 return render(request,'auth.html', {
