@@ -8,6 +8,22 @@ from .models import Metadata
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
+def authenticateUser(request):
+    today = datetime.now().strftime("%d%m%y")
+    login_access = request.session.get("login_access", None)
+    if login_access is not None:
+        logging.debug('login_access--- ' + str(login_access))
+        cache_auth_code = cache.get(login_access)
+        logging.debug('cache_auth_code--- ' + str(cache_auth_code))
+        if cache_auth_code is not None:
+            logging.debug('cache_auth_code--- ' + cache_auth_code)
+            cache_date = cache.get(cache_auth_code)
+            if cache_date is not None:
+                logging.debug('cache_date--- ' + cache_date)
+                if cache_date == today:
+                    return True
+    return False
+
 def mailAuthCodetoUser(request, emailaddress):
     auth_code = None
     today = datetime.now().strftime("%d%m%y")

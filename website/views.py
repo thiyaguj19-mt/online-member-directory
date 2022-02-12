@@ -20,19 +20,9 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def home(request):
     message = None
+    if authenticateUser(request):
+        return render(request,'home.html', {})
     today = datetime.now().strftime("%d%m%y")
-    login_access = request.session.get("login_access", None)
-    if login_access is not None:
-        logging.debug('login_access--- ' + str(login_access))
-        cache_auth_code = cache.get(login_access)
-        logging.debug('cache_auth_code--- ' + str(cache_auth_code))
-        if cache_auth_code is not None:
-            logging.debug('cache_auth_code--- ' + cache_auth_code)
-            cache_date = cache.get(cache_auth_code)
-            if cache_date is not None:
-                logging.debug('cache_date--- ' + cache_date)
-                if cache_date == today:
-                    return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
             emailaddress = request.POST['emailaddress']
