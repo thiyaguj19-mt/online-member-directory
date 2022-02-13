@@ -103,12 +103,7 @@ def getAllCenterOfficers(request):
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
-    logging.debug('regionId: ' + str(regionId))
-    if cache.get('regionOfficers'):
-        regionOfficers = cache.get('regionOfficers')
-    else:
-        regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
-        cache.set('regionOfficers', regionOfficers)
+    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
     logging.debug('regionOfficers: ' + str(regionOfficers))
     return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
 
@@ -140,6 +135,7 @@ def search_members(request):
         members = Member.objects.filter(
             Q(first_name__contains=searched)
             | Q(last_name__contains=searched)
+            | Q(region__name__contains=searched)
             | Q(orgrole__name__contains=searched)
             | Q(approle__name__contains=searched)).distinct()
         # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
