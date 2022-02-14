@@ -32,6 +32,7 @@ def home(request):
                 logging.debug('member--- ' + str(member))
                 if member == None:
                     message = "Your email is not in our database. Please request for access via Contact Us link"
+                    return render(request,'auth.html', {'message': message})
                 else:
                     mailAuthCodetoUser(request, emailaddress)
                     return render(request,'auth.html',
