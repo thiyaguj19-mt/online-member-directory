@@ -73,63 +73,38 @@ def exportFile(request):
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
-    if cache.get('allRegionalOfficers'):
-        allRegionalOfficers = cache.get('allRegionalOfficers')
-    else:
-        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-        cache.set('allRegionalOfficers', allRegionalOfficers)
+    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
     return render(request, 'regional-officers-page.html', {'allRegionalOfficers':  allRegionalOfficers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
-    if cache.get('allNationalOfficers'):
-        allNationalOfficers = cache.get('allNationalOfficers')
-    else:
-        allNationalOfficers = Member.objects.filter(approle__name='National Officer')
-        cache.set('allNationalOfficers', allNationalOfficers)
+    allNationalOfficers = Member.objects.filter(approle__name='National Officer')
     logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
     return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers})
 
 #Get all center officers
 def getAllCenterOfficers(request):
-    if cache.get('allCenterOfficers'):
-        allCenterOfficers = cache.get('allCenterOfficers')
-    else:
-        allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
-        cache.set('allCenterOfficers', allCenterOfficers)
+    allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
     logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
     return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers})
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
-    logging.debug('regionId: ' + str(regionId))
-    if cache.get('regionOfficers'):
-        regionOfficers = cache.get('regionOfficers')
-    else:
-        regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
-        cache.set('regionOfficers', regionOfficers)
+    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
     logging.debug('regionOfficers: ' + str(regionOfficers))
-    return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
+    return render(request, 'display-region.html', {'regionOfficers': regionOfficers})
 
 
 #Get center officers for specific center
 def getCenterOfficers(request, centerId):
-    if cache.get('centerOfficers'):
-        centerOfficers = cache.get('centerOfficers')
-    else:
-        centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
-        cache.set('centerOfficers', centerOfficers)
+    centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
     logging.debug('centerOfficers: ' + str(centerOfficers))
-    return render(request, 'show-center.html', {'centerOfficers': centerOfficers})
+    return render(request, 'display-center.html', {'centerOfficers': centerOfficers})
 
 #Get all centers of a region
 def getRegionalCenters(request, regionId):
-    if cache.get('centersByRegionId'):
-        centersByRegionId = cache.get('centers')
-    else:
-        centersByRegionId = Center.objects.filter(region_id=regionId)
-        cache.set('centersByRegionId', centersByRegionId)
+    centersByRegionId = Center.objects.filter(region_id=regionId)
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
 
 # Search By Member-Names
@@ -140,6 +115,7 @@ def search_members(request):
         members = Member.objects.filter(
             Q(first_name__contains=searched)
             | Q(last_name__contains=searched)
+            | Q(region__name__contains=searched)
             | Q(orgrole__name__contains=searched)
             | Q(approle__name__contains=searched)).distinct()
         # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
