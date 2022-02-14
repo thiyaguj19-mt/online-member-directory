@@ -18,12 +18,12 @@ For example, python -m venv env
 
 ## activate virtual environment
 
-linux / max => source env/bin/activate
+linux / max => source env/bin/activate .\
 windows     => env/bin/activate.bat
 
 command prompt should change for instance
 
-[tmohan@sairam online-member-directory]$ source env/bin/activate
+[tmohan@sairam online-member-directory]$ source env/bin/activate .\
 (env) [tmohan@sairam online-member-directory]$
 
 ## install requirements packages
