@@ -38,11 +38,19 @@ def createMemberData(column):
         #print ("column--", column)
         try:
 
-            orole = retrieveFromCache(OrgRole, column[8], "name")
-            arole = retrieveFromCache(AppRole, column[9], "name")
-            region = retrieveFromCache(Region, column[12], "name")
-            center = retrieveFromCache(Center, column[13], "name")
             member = retrieveFromCache(Member, column[3], "email")
+            orole = retrieveFromCache(OrgRole, column[13], "name")
+            arole = retrieveFromCache(AppRole, column[14], "name")
+            region = retrieveFromCache(Region, column[17], "name")
+            center = retrieveFromCache(Center, column[18], "name")
+
+            member_status=0
+            if len(column[12]) > 0:
+                if column[12] == 'Approved':
+                    member_status = 1
+
+            start_date=None
+            end_date=None
 
             created = False
             memobj = None
@@ -53,12 +61,17 @@ def createMemberData(column):
                     gender=column[2],
                     email=column[3],
                     phone=column[4],
-                    address=column[5],
-                    age=column[6],
-                    verified=column[7],
+                    address_1=column[5],
+                    address_2=column[6],
+                    city=column[7],
+                    state=column[8],
+                    zip_code=column[9],
+                    country=column[10],
+                    age_group=column[11],
+                    member_status=member_status,
                     approle=arole,
-                    start_date=None,
-                    end_date=None,
+                    start_date=start_date,
+                    end_date=end_date,
                     region=region,
                     center=center,
                 )
