@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<br />
+<br />
+<div class="container">
+  <form method="get">
+    {{ filtered_persons.form }}
+    <input type="submit" value="Search" name="" />
+  </form>
+  <br />
+  <br />
+  <table class="table">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Gender</th>
+    </tr>
+    {% for person in filtered_persons.qs %}
+    <tr>
+      <td>{{ person.first_name }}</td>
+      <td>{{ person.last_name }}</td>
+      <td>{{ person.gender }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br />
+
+  <br />
+</div>
+{% endblock content %}

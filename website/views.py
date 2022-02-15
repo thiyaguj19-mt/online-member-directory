@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
 from .models import Member,AppRole,OrgRole,Center,Region
+from .filters import RoleFilter
 from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
 import logging
-from .auth import *
-from datetime import datetime
+from .email import sendemail
+
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -20,18 +22,6 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 def home(request):
     message = None
-    today = datetime.now().strftime("%d%m%y")
-    login_access = request.session.get("login_access", None)
-    if login_access is not None:
-        logging.debug('login_access--- ' + str(login_access))
-        cache_auth_code = cache.get(login_access)
-        if cache_auth_code is not None:
-            logging.debug('cache_auth_code--- ' + cache_auth_code)
-            cache_date = cache.get(cache_auth_code)
-            if cache_date is not None:
-                logging.debug('cache_date--- ' + cache_date)
-                if cache_date == today:
-                    return render(request,'home.html', {})
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
             emailaddress = request.POST['emailaddress']
@@ -42,28 +32,11 @@ def home(request):
                 if member == None:
                     message = "Your email is not in our database. Please request for access via Contact Us link"
                 else:
-                    mailAuthCodetoUser(request, emailaddress)
-                    return render(request,'auth.html',
-                    {
-                        "issued" : True,
-                        "email" : emailaddress,
-                        "message" : "Please enter the auth code sent to your email (make sure to check your spam folder)"
-                    })
-        elif request.POST.keys() >= { 'authcode', 'email' }:
-            email = request.POST['email']
-            authcode = request.POST['authcode']
-            user_key = email + "_" + today
-            auth_code = cache.get(user_key)
-            if auth_code == authcode:
-                login_access = request.session.get("login_access", None)
-                if login_access == None:
-                    request.session["login_access"] = user_key
-                return render(request,'home.html',{'message': message})
-            else:
-                return render(request,'auth.html', {
-                    "issued" : True,
-                    "email" : email,
-                    'message': "Something went wrong. Code didn't match. Please try again."})
+                    sendemail(to=emailaddress,
+                                subject='Your Auth Code',
+                                body="Your Auth Code")
+                    return render(request,'home.html',{})
+        return render(request,'auth.html',{'message': message})
     #return render(request,'home.html',{})
     return render(request,'auth.html',{})
 
@@ -89,7 +62,7 @@ def getAllRegionalOfficers(request):
         allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
         cache.set('allRegionalOfficers', allRegionalOfficers)
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
-    return render(request, 'regional-officers-page.html', {' allRegionalOfficers':  allRegionalOfficers})
+    return render(request, 'regional-officers-page.html', {'allRegionalOfficers':  allRegionalOfficers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
@@ -133,14 +106,32 @@ def getCenterOfficers(request, centerId):
     logging.debug('centerOfficers: ' + str(centerOfficers))
     return render(request, 'show-center.html', {'centerOfficers': centerOfficers})
 
-#Get all centers of a region
+#Get all centers of a region - Radhika
 def getRegionalCenters(request, regionId):
     if cache.get('centersByRegionId'):
         centersByRegionId = cache.get('centers')
     else:
+        # centersByRegionId = Center.objects.get(pk=regionId)
         centersByRegionId = Center.objects.filter(region_id=regionId)
+       
         cache.set('centersByRegionId', centersByRegionId)
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
+    return render(request, 'show-regionCenters.html', {'centersByRegionId': centersByRegionId})
+
+#Radhika
+def getAllRegions(request):
+    region_names = Region.objects.all()
+    return render(request,'list-all-regions.html', {'region_names': region_names})
+
+#Radhika
+def getallCenters(request):
+    center_names = Center.objects.all()
+    return render(request,'list-all-centers.html', {'center_names': center_names}) 
+
+#Radhika - but didn't use it.
+def showCenters(request, centerId):
+    show_center = Center.objects.get(pk=centerId)
+    return render(request,'list-centerNames.html', {'show_center': show_center}) 
 
 # Search By Member-Names
 def search_members(request):
@@ -151,6 +142,7 @@ def search_members(request):
             Q(first_name__contains=searched)
             | Q(last_name__contains=searched)
             | Q(orgrole__name__contains=searched)
+            | Q(region__name__contains=searched)
             | Q(approle__name__contains=searched)).distinct()
         # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
         # Asset.objects.filter( project__name__contains="Foo" )
@@ -186,3 +178,20 @@ def uploadFile(request):
                 return render(request, 'import-page.html', {"loadeddata": loadeddata})
     else:
         return render(request, 'import-page.html',{})
+
+def role_filter_list(request):
+    
+    
+    filtered_persons = RoleFilter(request.GET, queryset=Member.objects.all())
+    
+    context = {'filtered_persons':filtered_persons}
+    return render(request,'filter-list.html', context)
+
+
+# Write a view for the 
+
+# def role_filter_list(request):
+#     role_list = Member.objects.all()
+#     role_filter = RoleFilter(request.GET, queryset=role_list)
+#     return render(request, 'filter-list.html', {'role_filter': role_filter})        
+
