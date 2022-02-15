@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.core.cache import cache
 import logging
 from .email import sendemail
+from .filters import MemberFilter
 
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
@@ -38,7 +39,7 @@ def home(request):
                     return render(request,'home.html',{})
         return render(request,'auth.html',{'message': message})
     #return render(request,'home.html',{})
-    return render(request,'auth.html',{})
+    return render(request,'home.html',{})
 
 
 #To import file - Admin Use
@@ -56,13 +57,13 @@ def exportFile(request):
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
-    if cache.get('allRegionalOfficers'):
-        allRegionalOfficers = cache.get('allRegionalOfficers')
-    else:
-        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-        cache.set('allRegionalOfficers', allRegionalOfficers)
+    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
-    return render(request, 'regional-officers-page.html', {'allRegionalOfficers':  allRegionalOfficers})
+    filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
+    allRegionalOfficers = filterMembers.qs
+
+    return render(request, 'regional-officers-page.html',
+            {'allRegionalOfficers':  allRegionalOfficers, 'filterMembers' : filterMembers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
@@ -93,6 +94,7 @@ def getRegionOfficers(request, regionId):
         regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
         cache.set('regionOfficers', regionOfficers)
     logging.debug('regionOfficers: ' + str(regionOfficers))
+
     return render(request, 'show-region.html', {'regionOfficers': regionOfficers})
 
 
@@ -113,7 +115,7 @@ def getRegionalCenters(request, regionId):
     else:
         # centersByRegionId = Center.objects.get(pk=regionId)
         centersByRegionId = Center.objects.filter(region_id=regionId)
-       
+
         cache.set('centersByRegionId', centersByRegionId)
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
     return render(request, 'show-regionCenters.html', {'centersByRegionId': centersByRegionId})
@@ -126,18 +128,18 @@ def getAllRegions(request):
 #Radhika
 def getallCenters(request):
     center_names = Center.objects.all()
-    return render(request,'list-all-centers.html', {'center_names': center_names}) 
+    return render(request,'list-all-centers.html', {'center_names': center_names})
 
 #Radhika - but didn't use it.
 def showCenters(request, centerId):
     show_center = Center.objects.get(pk=centerId)
-    return render(request,'list-centerNames.html', {'show_center': show_center}) 
+    return render(request,'list-centerNames.html', {'show_center': show_center})
 
 # Search By Member-Names
 def search_members(request):
     if request.method == "POST":
         searched =  request.POST['searched']
-
+        print('searched-----', searched)
         members = Member.objects.filter(
             Q(first_name__contains=searched)
             | Q(last_name__contains=searched)
@@ -148,7 +150,7 @@ def search_members(request):
         # Asset.objects.filter( project__name__contains="Foo" )
         # members = MemberInfo.objects.filter(firstName__contains=searched)
         logging.debug('members: ' + str(members))
-        return render(request, 'search-members.html', {'searched':searched, 'members': members})
+        return render(request, 'search-members.html', {'searched':searched, 'members': members })
     else:
         return render(request, 'search-members.html', {})
 
@@ -180,18 +182,17 @@ def uploadFile(request):
         return render(request, 'import-page.html',{})
 
 def role_filter_list(request):
-    
-    
+
+
     filtered_persons = RoleFilter(request.GET, queryset=Member.objects.all())
-    
+
     context = {'filtered_persons':filtered_persons}
     return render(request,'filter-list.html', context)
 
 
-# Write a view for the 
+# Write a view for the
 
 # def role_filter_list(request):
 #     role_list = Member.objects.all()
 #     role_filter = RoleFilter(request.GET, queryset=role_list)
-#     return render(request, 'filter-list.html', {'role_filter': role_filter})        
-
+#     return render(request, 'filter-list.html', {'role_filter': role_filter})
