@@ -47,3 +47,13 @@ create .env file and get the content of the file from your team members
 ## Reference documents
 
 List of tasks are captured here (https://docs.google.com/spreadsheets/d/12-JFNXF-xMm4LTLOVvtU-hCHyq2TKfR3E-KI_g9BgjY/edit#gid=0)
+
+## Data Model changes
+
+Pull Request #44 changes data model of members table. If your local database has member table then  then do the following \
+1. comment out Member data model in models.py file \
+2. save and run ./simple.sh
+3. git checkout main
+4. git pull
+5. run ./simple.sh command and this should create new member
+6. using import utility import member_data.csv file
