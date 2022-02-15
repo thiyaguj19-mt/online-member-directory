@@ -1,45 +1,45 @@
-FIRST_NAME,LAST_NAME,GENDER,EMAIL,PHONE,ADDRESS_1,AGE_GROUP,VERIFIED,ORGROLE,ACCESSLEVEL,START_DATE,END_DATE,REGION,CENTER
-Yatish,Merchant,M,user1@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
-Aparna,Chitturi,F,user2@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
-Sai Kishore,Paluru,M,user3@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
-krishna,dube,M,user4@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
-Prasad,Chaturvedula,M,user5@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
-Sarita,Kumar,F,user6@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
-Ramakanth,Velagala,M,user7@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
-Sairam,Tadigadapa,M,user8@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
-Anjali,Suresh,M,user9@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
-Paavan,Kotini,M,user10@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
-Beverley,Getfield,M,user11@yahoo.com,1234567890,USA,30,No,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
-anotheruser1,lname1,M,testuser1@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
-anotheruser2,lname2,F,testuser2@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
-anotheruser3,lname3,M,testuser3@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
-anotheruser4,lname4,M,testuser4@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
-anotheruser5,lname5,M,testuser5@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
-anotheruser6,lname6,F,testuser6@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
-anotheruser7,lname7,M,testuser7@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
-anotheruser8,lname8,M,testuser8@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
-anotheruser9,lname9,M,testuser9@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
-anotheruser10,lname10,M,testuser10@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
-anotheruser11,lname11,M,testuser11@yahoo.com,1234567890,USA,30,No,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
-user1,lastname1,M,testuser12@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
-user2,lastname2,F,testuser13@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
-user3,lastname3,M,testuser14@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
-user4,lastname4,M,testuser15@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
-user5,lastname5,M,testuser16@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
-user6,lastname6,F,testuser17@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
-user7,lastname7,M,testuser18@yahoo.com,1234567890,USA,30,No,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
-user8,lastname8,M,testuser19@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
-user9,lastname9,M,testuser20@yahoo.com,1234567890,USA,30,No,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
-user10,lastname10,M,testuser21@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
-user11,lastname11,M,testuser22@yahoo.com,1234567890,USA,30,No,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
-user12,lastname12,M,testuser23@yahoo.com,1234567890,USA,30,No,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
-user13,lastname13,F,testuser24@yahoo.com,1234567890,USA,30,No,Vice President,Regional Officer,,,Region 9,Sathya Sai Center of Albany
-user14,lastname14,M,testuser25@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Baltimore
-user15,lastname15,M,testuser26@yahoo.com,1234567890,USA,30,No,Service Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Anderson
-user16,lastname16,M,testuser27@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Columbia
-user17,lastname17,F,testuser28@yahoo.com,1234567890,USA,30,No,President,Regional Officer,,,Region 9,Sathya Sai Center of Columbus
-user18,lastname18,M,testuser29@yahoo.com,1234567890,USA,30,No,Vice President,Regional Officer,,,Region 9,Sathya Sai Center of Beaverton
-user19,lastname19,M,testuser30@yahoo.com,1234567890,USA,30,No,Devotional Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Concord
-user20,lastname20,M,testuser31@yahoo.com,1234567890,USA,30,No,Service Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Arcadia
-user21,lastname21,M,testuser32@yahoo.com,1234567890,USA,30,No,Educational Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Phoenix
-user22,lastname22,M,testuser33@yahoo.com,1234567890,USA,30,No,Group Leader,Regional Officer,,,Region 9,Sathya Sai Center of Cherry Hill
+FIRST_NAME,LAST_NAME,GENDER,EMAIL,PHONE,ADDRESS_1,ADDRESS_2,CITY,STATE,ZIP_CODE,COUNTRY,AGE_GROUP,MEMBER_STATUS,ORG_TITLE,APP_ROLE,START_DATE,END_DATE,REGION,CENTER
+Yatish,Merchant,M,user1@yahoo.com,1234567890,,,Fremont,California,94536,USA,SSE,Pending_Approved,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
+Aparna,Chitturi,F,user2@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
+Sai Kishore,Paluru,M,user3@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
+krishna,dube,M,user4@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
+Prasad,Chaturvedula,M,user5@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
+Sarita,Kumar,F,user6@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
+Ramakanth,Velagala,M,user7@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
+Sairam,Tadigadapa,M,user8@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
+Anjali,Suresh,M,user9@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
+Paavan,Kotini,M,user10@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
+Beverley,Getfield,M,user11@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
+anotheruser1,lname1,M,testuser1@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,YA,Pending_Approved,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
+anotheruser2,lname2,F,testuser2@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,YA,Pending_Approved,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
+anotheruser3,lname3,M,testuser3@yahoo.com,1234567890,,,San Jose,California,94538,USA,YA,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
+anotheruser4,lname4,M,testuser4@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
+anotheruser5,lname5,M,testuser5@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
+anotheruser6,lname6,F,testuser6@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
+anotheruser7,lname7,M,testuser7@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
+anotheruser8,lname8,M,testuser8@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
+anotheruser9,lname9,M,testuser9@yahoo.com,1234567890,,,Palo Alto,California,94304,USA,YA,Pending_Approved,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
+anotheruser10,lname10,M,testuser10@yahoo.com,1234567890,,,Palo Alto,California,94304,USA,YA,Pending_Approved,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
+anotheruser11,lname11,M,testuser11@yahoo.com,1234567890,,,Palo Alto,California,94304,USA,YA,Pending_Approved,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
+user1,lastname1,M,testuser12@yahoo.com,1234567890,,,Palo Alto,California,91103,USA,YA,Pending_Approved,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
+user2,lastname2,F,testuser13@yahoo.com,1234567890,,,Palo Alto,California,91103,USA,Adult,Pending_Approved,Vice President,Center Officer,,,Region 1,Sathya Sai Center of Albany
+user3,lastname3,M,testuser14@yahoo.com,1234567890,,,Palo Alto,California,91103,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 2,Sathya Sai Center of Baltimore
+user4,lastname4,M,testuser15@yahoo.com,1234567890,,,San Francisco,California,91103,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,,,Region 3,Sathya Sai Center of Anderson
+user5,lastname5,M,testuser16@yahoo.com,1234567890,,,San Francisco,California,91103,USA,Adult,Pending_Approved,Educational Coordinator,Regional Officer,,,Region 4,Sathya Sai Center of Columbia
+user6,lastname6,F,testuser17@yahoo.com,1234567890,,,San Francisco,California,91103,USA,Adult,Pending_Approved,President,Center Officer,,,Region 5,Sathya Sai Center of Columbus
+user7,lastname7,M,testuser18@yahoo.com,1234567890,,,San Francisco,California,91103,USA,Adult,Pending_Approved,Vice President,Center Officer,,,Region 6,Sathya Sai Center of Beaverton
+user8,lastname8,M,testuser19@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,,,Region 7,Sathya Sai Center of Concord
+user9,lastname9,M,testuser20@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,,,Region 8,Sathya Sai Center of Arcadia
+user10,lastname10,M,testuser21@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Educational Coordinator,Center Officer,,,Region 9,Sathya Sai Center of Phoenix
+user11,lastname11,M,testuser22@yahoo.com,1234567890,,,West Allis,California,93000,USA,Adult,Pending_Approved,Group Leader,Center Officer,,,Region 2,Sathya Sai Center of Cherry Hill
+user12,lastname12,M,testuser23@yahoo.com,1234567890,,,West Allis,California,93000,USA,Adult,Pending_Approved,President,Center Officer,,,Region 10,Sathya Sai Center of Austin
+user13,lastname13,F,testuser24@yahoo.com,1234567890,,,West Allis,California,93000,USA,Adult,Pending_Approved,Vice President,Regional Officer,,,Region 9,Sathya Sai Center of Albany
+user14,lastname14,M,testuser25@yahoo.com,1234567890,,,West Allis,California,93000,USA,Adult,Pending_Approved,Devotional Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Baltimore
+user15,lastname15,M,testuser26@yahoo.com,1234567890,,,West Allis,California,48795,USA,Adult,Pending_Approved,Service Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Anderson
+user16,lastname16,M,testuser27@yahoo.com,1234567890,,,West Allis,California,48795,USA,Adult,Pending_Approved,Educational Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Columbia
+user17,lastname17,F,testuser28@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,President,Regional Officer,,,Region 9,Sathya Sai Center of Columbus
+user18,lastname18,M,testuser29@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,Vice President,Regional Officer,,,Region 9,Sathya Sai Center of Beaverton
+user19,lastname19,M,testuser30@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,Devotional Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Concord
+user20,lastname20,M,testuser31@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,Service Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Arcadia
+user21,lastname21,M,testuser32@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,Educational Coordinator,Regional Officer,,,Region 9,Sathya Sai Center of Phoenix
+user22,lastname22,M,testuser33@yahoo.com,1234567890,,,Warm Springs,California,48795,USA,Adult,Pending_Approved,Group Leader,Regional Officer,,,Region 9,Sathya Sai Center of Cherry Hill

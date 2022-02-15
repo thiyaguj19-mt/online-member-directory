@@ -71,22 +71,33 @@ class Member(models.Model):
         ('f', 'Female'),
         ('', 'Not Specified'),
     ]
-    gender = models.CharField(max_length=1, choices=GENGERCHOICES, default='', help_text='Choose Member Gender')
+    gender = models.CharField(max_length=1, choices=GENGERCHOICES, default='', help_text='Member Gender', blank=True)
     email = models.EmailField(max_length=30, help_text='Member Email', primary_key=True, null=False)
     phone = models.BigIntegerField(help_text='Member Phone')
-    address = models.CharField(max_length=300, help_text='Member Address', null=True, blank=True)
-    age = models.CharField(max_length=3, help_text='Member Age', blank=True)
-    MEMBERCHOICES = [
-        (0, 'No'),
-        (1, 'Yes'),
+    address_1 = models.CharField(max_length=150, help_text='Member Address_1', null=True, blank=True)
+    address_2 = models.CharField(max_length=150, help_text='Member Address_2', null=True, blank=True)
+    city = models.CharField(max_length=60, help_text='Member City')
+    zip_code = models.CharField(max_length=10, help_text='Member zip_code', null=True, blank=True)
+    state = models.CharField(max_length=30, help_text='Member state')
+    country = models.CharField(max_length=30, help_text='Member country', default='USA')
+    AGEGROUPCHOICES = [
+        ('SSE', 'SSE (4 - 8)'),
+        ('YA', 'YA (18 - 40)'),
+        ('Adult', 'Adult (40 +)'),
+        ('', 'Not Specified'),
     ]
-    verified = models.IntegerField(choices=MEMBERCHOICES, default=0, help_text='member status')
+    age_group = models.CharField(max_length=10, choices=AGEGROUPCHOICES, default='', blank=True)
+    MEMBERCHOICES = [
+        (0, 'Pending_Approval'),
+        (1, 'Approved'),
+    ]
+    member_status = models.IntegerField(choices=MEMBERCHOICES, default=0, help_text='member status')
     orgrole = models.ManyToManyField(OrgRole, help_text='select organization role')
     approle = models.ForeignKey(AppRole, on_delete=models.CASCADE)
     start_date = models.DateField(help_text="Member's OrgRole Start Date", blank=True, null=True)
     end_date = models.DateField(help_text="Member's OrgRole End Date", blank=True, null=True)
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, blank=True, null=True)
-    center = models.ForeignKey(Center, on_delete=models.SET_NULL, blank=True, null=True)
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+    center = models.ForeignKey(Center, on_delete=models.SET_NULL, null=True)
 
     def get_orgrole(self):
         return " | ".join([orgtitle.name for orgtitle in self.orgrole.all()])
