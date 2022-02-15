@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Member,AppRole,OrgRole,Center,Region
+from .filters import MemberFilter
 from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
@@ -22,6 +23,7 @@ def home(request):
     message = None
     if authenticateUser(request):
         return render(request,'home.html', {})
+
     today = datetime.now().strftime("%d%m%y")
     if request.method == 'POST':
         if request.POST.keys() >= {'emailaddress'}:
@@ -76,19 +78,25 @@ def exportFile(request):
 def getAllRegionalOfficers(request):
     allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
     logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
-    return render(request, 'regional-officers-page.html', {'allRegionalOfficers':  allRegionalOfficers})
+    filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
+    allRegionalOfficers = filterMembers.qs
+    return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
 
 #Get all national officers
 def getAllNationalOfficers(request):
     allNationalOfficers = Member.objects.filter(approle__name='National Officer')
     logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
-    return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers})
+    filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
+    allNationalOfficers = filterMembers.qs
+    return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
 
 #Get all center officers
 def getAllCenterOfficers(request):
     allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
     logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
-    return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers})
+    filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
+    allCenterOfficers = filterMembers.qs
+    return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
