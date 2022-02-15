@@ -71,7 +71,7 @@ class Member(models.Model):
         ('f', 'Female'),
         ('', 'Not Specified'),
     ]
-    gender = models.CharField(max_length=1, choices=GENGERCHOICES, default='', help_text='Member Gender')
+    gender = models.CharField(max_length=1, choices=GENGERCHOICES, default='', help_text='Member Gender', blank=True)
     email = models.EmailField(max_length=30, help_text='Member Email', primary_key=True, null=False)
     phone = models.BigIntegerField(help_text='Member Phone')
     address_1 = models.CharField(max_length=150, help_text='Member Address_1', null=True, blank=True)
@@ -86,7 +86,7 @@ class Member(models.Model):
         ('Adult', 'Adult (40 +)'),
         ('', 'Not Specified'),
     ]
-    age_group = models.CharField(max_length=10, choices=AGEGROUPCHOICES, default='')
+    age_group = models.CharField(max_length=10, choices=AGEGROUPCHOICES, default='', blank=True)
     MEMBERCHOICES = [
         (0, 'Pending_Approval'),
         (1, 'Approved'),
