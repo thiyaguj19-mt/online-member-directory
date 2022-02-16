@@ -26,6 +26,7 @@ admin.site.register(Center, CenterAdmin)
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'region', 'center', 'get_orgrole', 'approle')
+    list_filter = ('region', 'member_status')
 
 admin.site.register(Member, MemberAdmin)
 

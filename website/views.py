@@ -8,6 +8,7 @@ from django.core.cache import cache
 import logging
 from .auth import *
 from datetime import datetime
+from django.core.paginator import Paginator
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -57,8 +58,8 @@ def home(request):
                     "issued" : True,
                     "email" : email,
                     'message': "Something went wrong. Code didn't match. Please try again."})
-    #return render(request,'home.html',{})
-    return render(request,'auth.html',{})
+    return render(request,'home.html',{})
+    #return render(request,'auth.html',{})
 
 
 #To import file - Admin Use
@@ -77,9 +78,15 @@ def exportFile(request):
 #Get all regional officers
 def getAllRegionalOfficers(request):
     allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-    logging.debug('allRegionalOfficers: ' + str(allRegionalOfficers))
+    logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
     filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
     allRegionalOfficers = filterMembers.qs
+    logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
+
+    page_obj = Paginator(allRegionalOfficers, 12)
+    page = request.GET.get('page')
+    allRegionalOfficers = page_obj.get_page(page)
+
     return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
 
 #Get all national officers
@@ -88,6 +95,11 @@ def getAllNationalOfficers(request):
     logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
     filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
     allNationalOfficers = filterMembers.qs
+
+    page_obj = Paginator(allNationalOfficers, 12)
+    page = request.GET.get('page')
+    allNationalOfficers = page_obj.get_page(page)
+
     return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
 
 #Get all center officers
@@ -96,6 +108,11 @@ def getAllCenterOfficers(request):
     logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
     filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
     allCenterOfficers = filterMembers.qs
+
+    page_obj = Paginator(allCenterOfficers, 12)
+    page = request.GET.get('page')
+    allCenterOfficers = page_obj.get_page(page)
+
     return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
 
 #Get regional officers for specific region
