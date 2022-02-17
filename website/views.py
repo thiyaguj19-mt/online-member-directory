@@ -42,11 +42,17 @@ def home(request):
 
 #To import file - Admin Use
 def importFile(request):
-    return render(request, 'import-page.html',{})
+    if request.user.is_authenticated:
+        return render(request, 'import-page.html',{})
+    else:
+        return render(request,'auth.html',{})
 
 #To export file - Admin Use
 def exportFile(request):
-    return render(request, 'export-page.html',{})
+    if request.user.is_authenticated:
+        return render(request, 'export-page.html',{})
+    else:
+        return render(request,'auth.html',{})
 
 # #Show All Cards of Region Officers
 # def show_regions(request):
@@ -55,43 +61,52 @@ def exportFile(request):
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
-    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-    logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
-    allRegionalOfficers = filterMembers.qs
-    logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
+    if request.user.is_authenticated:
+        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+        logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
+        allRegionalOfficers = filterMembers.qs
+        logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
 
-    page_obj = Paginator(allRegionalOfficers, 12)
-    page = request.GET.get('page')
-    allRegionalOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allRegionalOfficers, 12)
+        page = request.GET.get('page')
+        allRegionalOfficers = page_obj.get_page(page)
 
-    return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
+        return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get all national officers
 def getAllNationalOfficers(request):
-    allNationalOfficers = Member.objects.filter(approle__name='National Officer')
-    logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
-    allNationalOfficers = filterMembers.qs
+    if request.user.is_authenticated:
+        allNationalOfficers = Member.objects.filter(approle__name='National Officer')
+        logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
+        allNationalOfficers = filterMembers.qs
 
-    page_obj = Paginator(allNationalOfficers, 12)
-    page = request.GET.get('page')
-    allNationalOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allNationalOfficers, 12)
+        page = request.GET.get('page')
+        allNationalOfficers = page_obj.get_page(page)
 
-    return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+        return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get all center officers
 def getAllCenterOfficers(request):
-    allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
-    logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
-    allCenterOfficers = filterMembers.qs
+    if request.user.is_authenticated:
+        allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+        logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
+        allCenterOfficers = filterMembers.qs
 
-    page_obj = Paginator(allCenterOfficers, 12)
-    page = request.GET.get('page')
-    allCenterOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allCenterOfficers, 12)
+        page = request.GET.get('page')
+        allCenterOfficers = page_obj.get_page(page)
 
-    return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+        return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
@@ -136,27 +151,30 @@ def search_members(request):
 
 def uploadFile(request):
 
-    csv_file = None
-    message = "All are up to date"
-    importType = None
-    if request.method == "POST":
-        importType = request.POST.get('importType')
-        try:
-            csv_file = request.FILES['file']
-        except Exception as ex:
-            message = str(ex)
-            return render(request, 'import-page.html', {"message" : "upload failed. check your input file."})
-        # let's check if it is a csv file
-        if not csv_file.name.endswith('.csv'):
-            message = 'Please upload a CSV file'
-            return render(request, 'import-page.html', {"message" : message})
-        else:
-            loadeddata = ""
-            loadeddata = uploadCSVFile(csv_file, importType)
-            #print(loadeddata, "loadeddata")
-            if len(loadeddata) == 0:
+    if request.user.is_authenticated:
+        csv_file = None
+        message = "All are up to date"
+        importType = None
+        if request.method == "POST":
+            importType = request.POST.get('importType')
+            try:
+                csv_file = request.FILES['file']
+            except Exception as ex:
+                message = str(ex)
+                return render(request, 'import-page.html', {"message" : "upload failed. check your input file."})
+            # let's check if it is a csv file
+            if not csv_file.name.endswith('.csv'):
+                message = 'Please upload a CSV file'
                 return render(request, 'import-page.html', {"message" : message})
             else:
-                return render(request, 'import-page.html', {"loadeddata": loadeddata})
+                loadeddata = ""
+                loadeddata = uploadCSVFile(csv_file, importType)
+                #print(loadeddata, "loadeddata")
+                if len(loadeddata) == 0:
+                    return render(request, 'import-page.html', {"message" : message})
+                else:
+                    return render(request, 'import-page.html', {"loadeddata": loadeddata})
+        else:
+            return render(request, 'import-page.html',{})
     else:
-        return render(request, 'import-page.html',{})
+        return render(request,'auth.html',{})
