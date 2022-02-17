@@ -9,58 +9,36 @@ import logging
 from .auth import *
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.contrib.auth.models import Permission, User
+from django.shortcuts import get_object_or_404
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
-# Create a list for cards
-
-
-# def index(request):
-#     return HttpResponse("Hello World")
-
-#This is the front home page screen view
-
+#this new code for authenticate user using
+#OOTB user authentication data model
 def home(request):
-    message = None
-    if authenticateUser(request):
-        return render(request,'home.html', {})
 
-    today = datetime.now().strftime("%d%m%y")
-    if request.method == 'POST':
-        if request.POST.keys() >= {'emailaddress'}:
-            emailaddress = request.POST['emailaddress']
-            if len(emailaddress) > 0:
-                logging.debug('your email addresss--- ' + emailaddress)
-                member = Member.objects.filter(email=emailaddress).first()
-                logging.debug('member--- ' + str(member))
-                if member == None:
-                    message = "Your email is not in our database. Please request for access via Contact Us link"
-                    return render(request,'auth.html', {'message': message})
+    try:
+        print("request.user.is_authenticated--- ", request.user.is_authenticated)
+        if request.user.is_authenticated:
+            return render(request,'home.html', {})
+        if request.method == 'POST':
+            if request.POST.keys() >= {'emailaddress'}:
+                emailaddress = request.POST['emailaddress']
+                context = generateAuthCode(request, emailaddress)
+                return render(request, 'auth.html', context)
+            elif request.POST.keys() >= { 'authcode', 'email' }:
+                emailaddress = request.POST['email']
+                context = authenticateUser(request, emailaddress)
+                if context == True:
+                    setupAppPermissions(request, emailaddress)
+                    return render(request,'home.html',{})
                 else:
-                    mailAuthCodetoUser(request, emailaddress)
-                    return render(request,'auth.html',
-                    {
-                        "issued" : True,
-                        "email" : emailaddress,
-                        "message" : "Please enter the auth code sent to your email (make sure to check your spam folder)"
-                    })
-        elif request.POST.keys() >= { 'authcode', 'email' }:
-            email = request.POST['email']
-            authcode = request.POST['authcode']
-            user_key = email + "_" + today
-            auth_code = cache.get(user_key)
-            if auth_code == authcode:
-                login_access = request.session.get("login_access", None)
-                request.session["login_access"] = user_key
-                return render(request,'home.html',{'message': message})
-            else:
-                return render(request,'auth.html', {
-                    "issued" : True,
-                    "email" : email,
-                    'message': "Something went wrong. Code didn't match. Please try again."})
-    return render(request,'home.html',{})
-    #return render(request,'auth.html',{})
-
+                    return render(request, 'auth.html', context)
+    except Exception as err:
+        print(f'Unexpected {err} from home(), {type(err)}')
+        raise
+    return render(request,'auth.html',{})
 
 #To import file - Admin Use
 def importFile(request):
@@ -135,22 +113,26 @@ def getRegionalCenters(request, regionId):
 
 # Search By Member-Names
 def search_members(request):
-    if request.method == "POST":
-        searched =  request.POST['searched']
 
-        members = Member.objects.filter(
-            Q(first_name__contains=searched)
-            | Q(last_name__contains=searched)
-            | Q(region__name__contains=searched)
-            | Q(orgrole__name__contains=searched)
-            | Q(approle__name__contains=searched)).distinct()
-        # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
-        # Asset.objects.filter( project__name__contains="Foo" )
-        # members = MemberInfo.objects.filter(firstName__contains=searched)
-        logging.debug('members: ' + str(members))
-        return render(request, 'search-members.html', {'searched':searched, 'members': members})
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            searched =  request.POST['searched']
+
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)).distinct()
+            # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
+            # Asset.objects.filter( project__name__contains="Foo" )
+            # members = MemberInfo.objects.filter(firstName__contains=searched)
+            logging.debug('members: ' + str(members))
+            return render(request, 'search-members.html', {'searched':searched, 'members': members})
+        else:
+            return render(request, 'search-members.html', {})
     else:
-        return render(request, 'search-members.html', {})
+        return render(request,'auth.html',{})
 
 def uploadFile(request):
 

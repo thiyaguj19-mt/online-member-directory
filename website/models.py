@@ -103,3 +103,11 @@ class Member(models.Model):
         return " | ".join([orgtitle.name for orgtitle in self.orgrole.all()])
 
     get_orgrole.short_description = 'Org Title'
+
+    class Meta:
+        permissions = (
+                        ("is_central_officer", "is central officer"),
+                        ("is_regional_officer", "is regional officer"),
+                        ("is_national_officer", "is national officer"),
+                        #("can_modify_member_data", "to modify member data"),
+                    )
