@@ -26,17 +26,23 @@
         >Officers</a
       >
       <div class="dropdown-menu">
-        <a href="{% url 'national-officers-page' %}" class="dropdown-item"
-          >National</a
-        >
-        <div class="dropdown-divider"></div>
-        <a href="{% url 'regional-officers-page' %}" class="dropdown-item"
-          >Regional</a
-        >
-        <div class="dropdown-divider"></div>
-        <a href="{% url 'center-officers-page' %}" class="dropdown-item"
-          >Center</a
-        >
+        {% if perms.website.is_national_officer %}
+          <a href="{% url 'national-officers-page' %}" class="dropdown-item"
+            >National</a
+          >
+          <div class="dropdown-divider"></div>
+        {% endif %}
+        {% if perms.website.is_national_officer or perms.website.is_regional_officer %}
+          <a href="{% url 'regional-officers-page' %}" class="dropdown-item"
+            >Regional</a
+          >
+          <div class="dropdown-divider"></div>
+        {% endif %}
+        {% if perms.website.is_national_officer or perms.website.is_regional_officer or perms.website.is_central_officer %}
+          <a href="{% url 'center-officers-page' %}" class="dropdown-item"
+            >Center</a
+          >
+        {% endif %}
       </div>
     </li>
 
