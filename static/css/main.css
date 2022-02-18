@@ -172,3 +172,57 @@ kbd {
 .breadcrumb {
   background-color: #0d2d3d;
 }
+
+.region-boxed {
+  color: #313437;
+  /* background-color: #eef4f7; */
+}
+
+.region-boxed h1 {
+  font-weight: bold;
+  margin-bottom: 40px;
+  padding-top: 40px;
+  color: inherit;
+}
+
+.region-boxed region-intro {
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.region-boxed .officers {
+  padding: 50px 0;
+}
+
+.region-boxed .item {
+  text-align: center;
+}
+
+.region-boxed .item .box {
+  text-align: center;
+  padding: 30px;
+  background-color: #fff;
+  margin-bottom: 30px;
+}
+
+.region-boxed .item .name {
+  font-weight: bold;
+  margin-top: 28px;
+  margin-bottom: 8px;
+  color: inherit;
+}
+
+.region-boxed .item .officer-email {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #d0d0d0;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+
+.region-boxed .item .officer-details {
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
