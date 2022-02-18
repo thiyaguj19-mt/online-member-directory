@@ -173,47 +173,47 @@ kbd {
   background-color: #0d2d3d;
 }
 
-.region-boxed {
+.region-center-box {
   color: #313437;
   /* background-color: #eef4f7; */
 }
 
-.region-boxed h1 {
+.region-center-box h1 {
   font-weight: bold;
   margin-bottom: 40px;
   padding-top: 40px;
   color: inherit;
 }
 
-.region-boxed region-intro {
+.region-center-box region-center-intro {
   font-size: 16px;
   max-width: 500px;
   margin: 0 auto;
 }
 
-.region-boxed .officers {
+.region-center-box .officers {
   padding: 50px 0;
 }
 
-.region-boxed .item {
+.region-center-box .item {
   text-align: center;
 }
 
-.region-boxed .item .box {
+.region-center-box .item .box {
   text-align: center;
   padding: 30px;
   background-color: #fff;
   margin-bottom: 30px;
 }
 
-.region-boxed .item .name {
+.region-center-box .item .name {
   font-weight: bold;
   margin-top: 28px;
   margin-bottom: 8px;
   color: inherit;
 }
 
-.region-boxed .item .officer-email {
+.region-center-box .item .officer-email {
   text-transform: uppercase;
   font-weight: bold;
   color: #d0d0d0;
@@ -221,7 +221,7 @@ kbd {
   font-size: 13px;
 }
 
-.region-boxed .item .officer-details {
+.region-center-box .item .officer-details {
   font-size: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
