@@ -6,19 +6,56 @@
       <a class="nav-link" href="{% url 'center-page' 5197 %}">Show Centers</a>
     </nav>
 
-    <div class="row mt-3">
-    {% for regoff in regionOfficers %}
-
-            <div class="col-sm-3 mt-3">
-              <div class="card" style="width: 20rem;">
-                  <h5 class="card-title">Special title treatment</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
+    {% if regionOfficers %}
+      <div class="row mt-3">        
+        <div class="region-center-box">
+          <div class="container">
+            <div class="region-center-intro">
+              <h1 class="text-center">Regional Officers</h1>              
             </div>
+          </div>
 
-    {% endfor %}
-    <div>
+          <div class="row officers">
+            {% for regOff in regionOfficers %}
+              <div class="col-md-6 col-lg-4 item">
+                <div class="box">
+                  <h3 class="name">{{ regOff.first_name }} {{regOff.last_name}}</h3>
+                  <p class="officer-email">{{regOff.email}}</p>
+                  <p class="officer-details">Group: {{regOff.age_group}}</p>
+                  <p class="officer-details">Phone #: {{regOff.phone}}</p>
+                  <p class="officer-details">City #: {{regOff.city}}</p>
+                </div>
+              </div>
+            {% endfor %}       
+          </div>
+        </div>
+          
+        <!-- {% for regOff in regionOfficers %}
+        <div class="col-sm-3 mt-3">
+          <div class="card" style="width: 18;">  
+              <div class="card-body">
+                <h5 class="card-title">{{ regOff.first_name }} {{regOff.last_name}}</h5>
+                <p class="card-text">Email: {{regOff.email}}</p>
+                <p class="card-text">Phone Number: {{regOff.phone}}</p>
+                <p class="card-text">Group: {{regOff.age_group}}</p>
+                <a href="#" class="btn btn-primary">Send an Email</a>
+              </div>            
+            </div>
+        </div> 
+      {% endfor %} -->
+      <div>
+
+      {% else %}
+        <div class="row mt-3">
+          <div class="region-center-box">
+            <div class="container">
+              <div class="region-center-intro">
+                <h1 class="text-center">No Regional Officers Available</h1>              
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
 
   </div>
 {% endblock content %}
