@@ -40,11 +40,18 @@
       </div>
     </li>
 
-    <li class="nav-item">
-      <a class="nav-link" href="#">About</a>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+        >Sai Centers</a
+      >
+      <div class="dropdown-menu">
+        <a href="{% url 'findsai-centers-page' %}" class="dropdown-item"
+          >Find Sai Centers</a
+        >
+      </div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Contact Us</a>
+      <a class="nav-link" href="{% url 'contactus' %}">Contact Us</a>
     </li>
   </ul>
 </nav>

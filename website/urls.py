@@ -14,4 +14,6 @@ urlpatterns = [
     path('getCenterOfficers/<int:centerId>', views.getCenterOfficers, name = 'centerOfficers'),
     path('getRegionalCenters/<int:regionId>', views.getRegionalCenters, name = 'regionalCenters'),
     path('uploadFile', views.uploadFile, name = 'uploadFile'),
+    path('findsai-centers-page', views.findSaiCenters, name = 'findsai-centers-page'),
+    path('contactus', views.contactus, name = 'contactus'),
 ]

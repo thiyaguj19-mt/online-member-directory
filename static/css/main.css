@@ -30,6 +30,17 @@ h6 {
   margin: 0 25px;
 }
 
+.outer-header {
+  width: 647px;
+  height: 39px;
+}
+.inner-title {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font: 30px, poppins, sans-serif;
+  color: #1a56a7;
+}
+
 .box-element {
   box-shadow: hsl(0, 0%, 80%) 0 0 16px;
   background-color: #fff;
@@ -74,6 +85,7 @@ h6 {
 }
 
 .s-signup-btn {
+  text-align: center;
   margin-top: 15px;
 }
 

@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Member,AppRole,OrgRole,Center,Region
+from .models import Member,AppRole,OrgRole,Center,Region,Metadata
 from .filters import MemberFilter
 from .utils import *
 from django.db.models import Q
 from django.core.cache import cache
+from .email import sendemail
 import logging
 from .auth import *
 from datetime import datetime
+from operator import itemgetter
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -23,6 +25,7 @@ def home(request):
     message = None
     if authenticateUser(request):
         return render(request,'home.html', {})
+
 
     today = datetime.now().strftime("%d%m%y")
     if request.method == 'POST':
@@ -57,7 +60,7 @@ def home(request):
                     "issued" : True,
                     "email" : email,
                     'message': "Something went wrong. Code didn't match. Please try again."})
-    #return render(request,'home.html',{})
+    # return render(request,'home.html',{})
     return render(request,'auth.html',{})
 
 
@@ -68,10 +71,6 @@ def importFile(request):
 #To export file - Admin Use
 def exportFile(request):
     return render(request, 'export-page.html',{})
-
-# #Show All Cards of Region Officers
-# def show_regions(request):
-#     return render(request, 'show-region.html',{})
 
 
 #Get all regional officers
@@ -161,3 +160,54 @@ def uploadFile(request):
                 return render(request, 'import-page.html', {"loadeddata": loadeddata})
     else:
         return render(request, 'import-page.html',{})
+
+
+#This is from Sai_Relief Contact Us
+def contactus(request):
+
+    path = 'contactus.html'
+    if request.method == 'POST':
+
+        context = {}
+        print('request.POST... ', request.POST)
+
+        metadata = Metadata.objects.get(key='contact-msg-header')
+        metadata2 = Metadata.objects.get(key='contact-email')
+        messagebody = "".join("<table>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Full Name</td>"
+                    + "<td>" + request.POST.get('fullname') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Email</td>"
+                    + "<td>" + request.POST.get('email') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Phone</td>"
+                    + "<td>" + request.POST.get('phone') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Subject</td>"
+                    + "<td>" + request.POST.get('subject') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Message</td>"
+                    + "<td>" + request.POST.get('message') + "</td>"
+                    + "</tr>"
+                    + "</table>")
+
+        # send_simple_message())
+
+        sendemail(metadata2,metadata,messagebody)
+        print ("Sent email successfully")
+        path = 'ack.html'
+
+
+    else:
+        context = getHelp(request)
+    return render(request, path, context)
+
+
+#     #Find nearby sai-centers
+def findSaiCenters(request):
+        return render(request,'findsai-centers.html', {})

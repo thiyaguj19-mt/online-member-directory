@@ -1,7 +1,9 @@
 import io
 import csv
-from .models import Center, Region, Member, OrgRole, AppRole
+from .models import Center, Region, Member, OrgRole, AppRole, Metadata
 from django.core.cache import cache
+from operator import itemgetter
+from .email import sendemail
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
@@ -128,3 +130,10 @@ def retrieveFromCache(obj, columnval, field):
         print("error from retrieveFromCache - " + str(ex))
     #print("retrieveFromCache-result, " , result)
     return result
+
+   # This is a helper function for contact us - header text
+def getHelp(request):
+    if request.method == 'GET':
+        metadata = Metadata.objects.filter(key__contains='contact-header-line')
+        context = {'metadata' : metadata}
+        return context
