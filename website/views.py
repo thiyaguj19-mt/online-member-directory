@@ -9,66 +9,50 @@ import logging
 from .auth import *
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.contrib.auth.models import Permission, User
+from django.shortcuts import get_object_or_404
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
-# Create a list for cards
-
-
-# def index(request):
-#     return HttpResponse("Hello World")
-
-#This is the front home page screen view
-
+#this new code for authenticate user using
+#OOTB user authentication data model
 def home(request):
-    message = None
-    if authenticateUser(request):
-        return render(request,'home.html', {})
 
-    today = datetime.now().strftime("%d%m%y")
-    if request.method == 'POST':
-        if request.POST.keys() >= {'emailaddress'}:
-            emailaddress = request.POST['emailaddress']
-            if len(emailaddress) > 0:
-                logging.debug('your email addresss--- ' + emailaddress)
-                member = Member.objects.filter(email=emailaddress).first()
-                logging.debug('member--- ' + str(member))
-                if member == None:
-                    message = "Your email is not in our database. Please request for access via Contact Us link"
-                    return render(request,'auth.html', {'message': message})
+    try:
+        print("request.user.is_authenticated--- ", request.user.is_authenticated)
+        if request.user.is_authenticated:
+            return render(request,'home.html', {})
+        if request.method == 'POST':
+            if request.POST.keys() >= {'emailaddress'}:
+                emailaddress = request.POST['emailaddress']
+                context = generateAuthCode(request, emailaddress)
+                return render(request, 'auth.html', context)
+            elif request.POST.keys() >= { 'authcode', 'email' }:
+                emailaddress = request.POST['email']
+                context = authenticateUser(request, emailaddress)
+                if context == True:
+                    setupAppPermissions(request, emailaddress)
+                    return render(request,'home.html',{})
                 else:
-                    mailAuthCodetoUser(request, emailaddress)
-                    return render(request,'auth.html',
-                    {
-                        "issued" : True,
-                        "email" : emailaddress,
-                        "message" : "Please enter the auth code sent to your email (make sure to check your spam folder)"
-                    })
-        elif request.POST.keys() >= { 'authcode', 'email' }:
-            email = request.POST['email']
-            authcode = request.POST['authcode']
-            user_key = email + "_" + today
-            auth_code = cache.get(user_key)
-            if auth_code == authcode:
-                login_access = request.session.get("login_access", None)
-                request.session["login_access"] = user_key
-                return render(request,'home.html',{'message': message})
-            else:
-                return render(request,'auth.html', {
-                    "issued" : True,
-                    "email" : email,
-                    'message': "Something went wrong. Code didn't match. Please try again."})
-    return render(request,'home.html',{})
-    #return render(request,'auth.html',{})
-
+                    return render(request, 'auth.html', context)
+    except Exception as err:
+        print(f'Unexpected {err} from home(), {type(err)}')
+        raise
+    return render(request,'auth.html',{})
 
 #To import file - Admin Use
 def importFile(request):
-    return render(request, 'import-page.html',{})
+    if request.user.is_authenticated:
+        return render(request, 'import-page.html',{})
+    else:
+        return render(request,'auth.html',{})
 
 #To export file - Admin Use
 def exportFile(request):
-    return render(request, 'export-page.html',{})
+    if request.user.is_authenticated:
+        return render(request, 'export-page.html',{})
+    else:
+        return render(request,'auth.html',{})
 
 # #Show All Cards of Region Officers
 # def show_regions(request):
@@ -77,43 +61,52 @@ def exportFile(request):
 
 #Get all regional officers
 def getAllRegionalOfficers(request):
-    allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
-    logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
-    allRegionalOfficers = filterMembers.qs
-    logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
+    if request.user.is_authenticated:
+        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+        logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
+        allRegionalOfficers = filterMembers.qs
+        logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
 
-    page_obj = Paginator(allRegionalOfficers, 12)
-    page = request.GET.get('page')
-    allRegionalOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allRegionalOfficers, 12)
+        page = request.GET.get('page')
+        allRegionalOfficers = page_obj.get_page(page)
 
-    return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
+        return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get all national officers
 def getAllNationalOfficers(request):
-    allNationalOfficers = Member.objects.filter(approle__name='National Officer')
-    logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
-    allNationalOfficers = filterMembers.qs
+    if request.user.is_authenticated:
+        allNationalOfficers = Member.objects.filter(approle__name='National Officer')
+        logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
+        allNationalOfficers = filterMembers.qs
 
-    page_obj = Paginator(allNationalOfficers, 12)
-    page = request.GET.get('page')
-    allNationalOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allNationalOfficers, 12)
+        page = request.GET.get('page')
+        allNationalOfficers = page_obj.get_page(page)
 
-    return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+        return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get all center officers
 def getAllCenterOfficers(request):
-    allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
-    logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
-    filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
-    allCenterOfficers = filterMembers.qs
+    if request.user.is_authenticated:
+        allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+        logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
+        filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
+        allCenterOfficers = filterMembers.qs
 
-    page_obj = Paginator(allCenterOfficers, 12)
-    page = request.GET.get('page')
-    allCenterOfficers = page_obj.get_page(page)
+        page_obj = Paginator(allCenterOfficers, 12)
+        page = request.GET.get('page')
+        allCenterOfficers = page_obj.get_page(page)
 
-    return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+        return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+    else:
+        return render(request,'auth.html',{})
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
@@ -135,46 +128,53 @@ def getRegionalCenters(request, regionId):
 
 # Search By Member-Names
 def search_members(request):
-    if request.method == "POST":
-        searched =  request.POST['searched']
 
-        members = Member.objects.filter(
-            Q(first_name__contains=searched)
-            | Q(last_name__contains=searched)
-            | Q(region__name__contains=searched)
-            | Q(orgrole__name__contains=searched)
-            | Q(approle__name__contains=searched)).distinct()
-        # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
-        # Asset.objects.filter( project__name__contains="Foo" )
-        # members = MemberInfo.objects.filter(firstName__contains=searched)
-        logging.debug('members: ' + str(members))
-        return render(request, 'search-members.html', {'searched':searched, 'members': members})
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            searched =  request.POST['searched']
+
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)).distinct()
+            # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
+            # Asset.objects.filter( project__name__contains="Foo" )
+            # members = MemberInfo.objects.filter(firstName__contains=searched)
+            logging.debug('members: ' + str(members))
+            return render(request, 'search-members.html', {'searched':searched, 'members': members})
+        else:
+            return render(request, 'search-members.html', {})
     else:
-        return render(request, 'search-members.html', {})
+        return render(request,'auth.html',{})
 
 def uploadFile(request):
 
-    csv_file = None
-    message = "All are up to date"
-    importType = None
-    if request.method == "POST":
-        importType = request.POST.get('importType')
-        try:
-            csv_file = request.FILES['file']
-        except Exception as ex:
-            message = str(ex)
-            return render(request, 'import-page.html', {"message" : "upload failed. check your input file."})
-        # let's check if it is a csv file
-        if not csv_file.name.endswith('.csv'):
-            message = 'Please upload a CSV file'
-            return render(request, 'import-page.html', {"message" : message})
-        else:
-            loadeddata = ""
-            loadeddata = uploadCSVFile(csv_file, importType)
-            #print(loadeddata, "loadeddata")
-            if len(loadeddata) == 0:
+    if request.user.is_authenticated:
+        csv_file = None
+        message = "All are up to date"
+        importType = None
+        if request.method == "POST":
+            importType = request.POST.get('importType')
+            try:
+                csv_file = request.FILES['file']
+            except Exception as ex:
+                message = str(ex)
+                return render(request, 'import-page.html', {"message" : "upload failed. check your input file."})
+            # let's check if it is a csv file
+            if not csv_file.name.endswith('.csv'):
+                message = 'Please upload a CSV file'
                 return render(request, 'import-page.html', {"message" : message})
             else:
-                return render(request, 'import-page.html', {"loadeddata": loadeddata})
+                loadeddata = ""
+                loadeddata = uploadCSVFile(csv_file, importType)
+                #print(loadeddata, "loadeddata")
+                if len(loadeddata) == 0:
+                    return render(request, 'import-page.html', {"message" : message})
+                else:
+                    return render(request, 'import-page.html', {"loadeddata": loadeddata})
+        else:
+            return render(request, 'import-page.html',{})
     else:
-        return render(request, 'import-page.html',{})
+        return render(request,'auth.html',{})
