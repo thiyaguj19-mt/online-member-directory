@@ -1,8 +1,9 @@
 import io
 import csv
-from .models import Center, Region, Member, OrgRole, AppRole
+from .models import Center, Region, Member, OrgRole, AppRole, Metadata
 from django.core.cache import cache
 import logging
+from .email import sendemail
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -128,3 +129,37 @@ def retrieveFromCache(obj, columnval, field):
         print("error from retrieveFromCache - " + str(ex))
     #print("retrieveFromCache-result, " , result)
     return result
+
+def getHelp(request):
+    context = {}
+    if request.method == 'GET':
+        metadata = Metadata.objects.filter(key__contains='contact-header-line').first()
+        context = {'metadata' : metadata.value}
+    elif request.method == 'POST':
+        path = 'contactus.html'
+        msgheader = Metadata.objects.get(key='contact-msg-header')
+        contactaddress = Metadata.objects.get(key='contact-email')
+        messagebody = "".join("<table>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Full Name</td>"
+                    + "<td>" + request.POST.get('fullname') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Email</td>"
+                    + "<td>" + request.POST.get('email') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Phone</td>"
+                    + "<td>" + request.POST.get('phone') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Subject</td>"
+                    + "<td>" + request.POST.get('subject') + "</td>"
+                    + "</tr>"
+                    + "<tr style='background-color: #f2f2f2;'>"
+                    + "<td>Message</td>"
+                    + "<td>" + request.POST.get('message') + "</td>"
+                    + "</tr>"
+                    + "</table>")
+        sendemail(contactaddress.value, msgheader.value, messagebody)
+    return context
