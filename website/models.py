@@ -105,6 +105,7 @@ class Member(models.Model):
     get_orgrole.short_description = 'Org Title'
 
     class Meta:
+        ordering = ['first_name']
         permissions = (
                         ("is_central_officer", "is central officer"),
                         ("is_regional_officer", "is regional officer"),

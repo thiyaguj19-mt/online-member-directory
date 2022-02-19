@@ -62,51 +62,86 @@ def exportFile(request):
 #Get all regional officers
 def getAllRegionalOfficers(request):
     if request.user.is_authenticated:
-        member = Member.objects.filter(email=request.user).first()
-        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer',region=member.region)
-        logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
-        filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
-        allRegionalOfficers = filterMembers.qs
-        logging.debug('allRegionalOfficers:2 ' + str(allRegionalOfficers))
-
-        page_obj = Paginator(allRegionalOfficers, 12)
+        gridcheckflag = request.GET.get('gridcheckflag')
+        user = User.objects.filter(username=request.user).first()
+        if user.has_perm('website.is_national_officer'):
+            officers_data = Member.objects.filter(approle__name='Regional Officer')
+        else:
+            member = Member.objects.filter(email=request.user).first()
+            officers_data = Member.objects.filter(approle__name='Regional Officer',region=member.region)
+        filterMembers = MemberFilter(request.GET, queryset=officers_data)
+        officers_data = filterMembers.qs
+        page_obj = Paginator(officers_data, 12)
         page = request.GET.get('page')
-        allRegionalOfficers = page_obj.get_page(page)
-
-        return render(request,'regional-officers-page.html',{'allRegionalOfficers':allRegionalOfficers,'filterMembers':filterMembers})
+        officers_data = page_obj.get_page(page)
+        context = {}
+        if gridcheckflag is not None:
+            context = {'officers_data':officers_data,
+                    'officer_header':'Regional Officers',
+                    'filterMembers':filterMembers,
+                    'gridcheckflag': gridcheckflag}
+        else:
+            context = {'officers_data':officers_data,
+                    'officer_header':'Regional Officers',
+                    'filterMembers':filterMembers}
+        return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
 
 #Get all national officers
 def getAllNationalOfficers(request):
     if request.user.is_authenticated:
-        allNationalOfficers = Member.objects.filter(approle__name='National Officer')
-        logging.debug('allNationalOfficers: ' + str(allNationalOfficers))
-        filterMembers = MemberFilter(request.GET, queryset=allNationalOfficers)
-        allNationalOfficers = filterMembers.qs
-
-        page_obj = Paginator(allNationalOfficers, 12)
+        gridcheckflag = request.GET.get('gridcheckflag')
+        officers_data = Member.objects.filter(approle__name='National Officer')
+        logging.debug('allNationalOfficers: ' + str(officers_data))
+        filterMembers = MemberFilter(request.GET, queryset=officers_data)
+        officers_data = filterMembers.qs
+        page_obj = Paginator(officers_data, 12)
         page = request.GET.get('page')
-        allNationalOfficers = page_obj.get_page(page)
-
-        return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+        officers_data = page_obj.get_page(page)
+        #return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
+        context = {}
+        if gridcheckflag is not None:
+            context = {'officers_data':officers_data,
+                    'officer_header':'National Officers',
+                    'filterMembers':filterMembers,
+                    'gridcheckflag': gridcheckflag}
+        else:
+            context = {'officers_data':officers_data,
+                    'officer_header':'National Officers',
+                    'filterMembers':filterMembers}
+        return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
 
 #Get all center officers
 def getAllCenterOfficers(request):
     if request.user.is_authenticated:
-        member = Member.objects.filter(email=request.user).first()
-        allCenterOfficers = Member.objects.filter(approle__name='Center Officer', region=member.region)
-        logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
-        filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
-        allCenterOfficers = filterMembers.qs
-
-        page_obj = Paginator(allCenterOfficers, 12)
+        gridcheckflag = request.GET.get('gridcheckflag')
+        user = User.objects.filter(username=request.user).first()
+        if user.has_perm('website.is_national_officer'):
+            officers_data = Member.objects.filter(approle__name='Center Officer')
+        else:
+            member = Member.objects.filter(email=request.user).first()
+            officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region)
+        logging.debug('officers_data: ' + str(officers_data))
+        filterMembers = MemberFilter(request.GET, queryset=officers_data)
+        officers_data = filterMembers.qs
+        page_obj = Paginator(officers_data, 12)
         page = request.GET.get('page')
-        allCenterOfficers = page_obj.get_page(page)
-
-        return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+        officers_data = page_obj.get_page(page)
+        #return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
+        context = {}
+        if gridcheckflag is not None:
+            context = {'officers_data':officers_data,
+                    'officer_header':'Center Officers',
+                    'filterMembers':filterMembers,
+                    'gridcheckflag': gridcheckflag}
+        else:
+            context = {'officers_data':officers_data,
+                    'officer_header':'Center Officers',
+                    'filterMembers':filterMembers}
+        return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
 
