@@ -114,7 +114,7 @@ def getAllCenterOfficers(request):
 def getRegionOfficers(request, regionId):
     regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
     logging.debug('regionOfficers: ' + str(regionOfficers))
-    return render(request, 'display-region.html', {'regionOfficers': regionOfficers})
+    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId})
 
 
 #Get center officers for specific center
@@ -181,6 +181,11 @@ def uploadFile(request):
     else:
         return render(request,'auth.html',{})
 
+def displayRegionCenters(request, regionId):
+    centersByRegionId = Center.objects.filter(region_id=regionId)    
+    logging.debug('centersByRegionId' + str(centersByRegionId))        
+    return render(request, 'display-all-centers.html', {'centersByRegionId': centersByRegionId})
+    
 def contactus(request):
     context = {}
     path = 'contactus.html'

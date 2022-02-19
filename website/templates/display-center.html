@@ -11,38 +11,65 @@
         <div class="region-center-box">
           <div class="container">
             <div class="region-center-intro">
-              <h1 class="text-center">Centers Officers</h1>              
+              <h1 class="text-center officers-page-title">Center Officers</h1>              
             </div>
           </div>
 
-          <div class="row officers">
+          <section>
+            <div class="container">
+              <div class="row">
+                {% for cenOff in centerOfficers %}
+                  <div class="col-md-6 col-lg-4">
+                    <div class="card officers-card">
+                        <div class="background-block">
+                            <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="profile-sample1" class="background"/>
+                        </div>
+                        <div class="profile-thumb-block">
+                            <img src="https://www.gravatar.com/avatar/94d093eda664addd6e450d7e9881bcad?s=32&d=identicon&r=PG" alt="profile-image" class="profile"/>
+                        </div>
+                        <div class="card-content">
+                            <h2>{{ cenOff.first_name }} {{cenOff.last_name}}<small>                  
+                              {% for mem in cenOff.orgrole.all %}
+                                  {% if forloop.counter == 1 %}
+                                    {{ mem }}
+                                  {% else %}
+                                    | {{ mem }}
+                                  {% endif %}
+                              {% endfor %}                  
+                            </small></h3>                    
+                            <p class="officer-details">Email: {{cenOff.email}}</p> 
+                            <p class="officer-details">Phone #: {{cenOff.phone}}</p>                          
+                        </div>
+                      </div>              
+                  </div>
+                {% endfor %}
+              </div>
+           </div>
+          </section>
+
+          <!-- <div class="row officers">
             {% for cenOff in centerOfficers %}
               <div class="col-md-6 col-lg-4 item">
                 <div class="box">
+                  <img class="rounded-circle" src="https://i.stack.imgur.com/vr0uy.png">
                   <h3 class="name">{{ cenOff.first_name }} {{cenOff.last_name}}</h3>
-                  <p class="officer-email">{{cenOff.email}}</p>
-                  <p class="officer-details">Group: {{cenOff.age_group}}</p>
+                  <p class="officer-org-role">
+                    {% for mem in cenOff.orgrole.all %}
+                        {% if forloop.counter == 1 %}
+                          {{ mem }}
+                        {% else %}
+                          | {{ mem }}
+                        {% endif %}
+                    {% endfor %}
+                  </p>
+                  <p class="officer-detials">Email: {{cenOff.email}}</p>                                
                   <p class="officer-details">Phone #: {{cenOff.phone}}</p>
-                  <p class="officer-details">City #: {{cenOff.city}}</p>
+                  <p class="officer-details">Address: {{cenOff.city}}, {{cenOff.state}}</p>
                 </div>
-              </div>
-            {% endfor %}       
-          </div>
-        </div>
-          
-        <!-- {% for cenOff in centerOfficers %}
-        <div class="col-sm-3 mt-3">
-          <div class="card" style="width: 18;">  
-              <div class="card-body">
-                <h5 class="card-title">{{ cenOff.first_name }} {{cenOff.last_name}}</h5>
-                <p class="card-text">Email: {{cenOff.email}}</p>
-                <p class="card-text">Phone Number: {{cenOff.phone}}</p>
-                <p class="card-text">Group: {{cenOff.age_group}}</p>
-                <a href="#" class="btn btn-primary">Send an Email</a>
-              </div>            
             </div>
-        </div> 
-      {% endfor %} -->
+            {% endfor %}       
+          </div> -->
+        </div>            
       <div>
 
       {% else %}
