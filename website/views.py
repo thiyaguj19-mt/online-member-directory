@@ -156,7 +156,7 @@ def getRegionOfficers(request, regionId):
 def getCenterOfficers(request, centerId):
     centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
     logging.debug('centerOfficers: ' + str(centerOfficers))
-    return render(request, 'display-center.html', {'centerOfficers': centerOfficers})
+    return render(request, 'display-center.html', {'centerId': centerId, 'centerOfficers': centerOfficers})
 
 #Get all centers of a region
 def getRegionalCenters(request, regionId):
@@ -218,9 +218,9 @@ def uploadFile(request):
 
 def displayRegionCenters(request, regionId):
     centersByRegionId = Center.objects.filter(region_id=regionId)    
-    logging.debug('centersByRegionId' + str(centersByRegionId))        
-    return render(request, 'display-all-centers.html', {'centersByRegionId': centersByRegionId})
-    
+    logging.debug('centersByRegionId' + str(centersByRegionId))
+    return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId})
+
 def contactus(request):
     context = {}
     path = 'contactus.html'
@@ -230,3 +230,8 @@ def contactus(request):
     else:
         context = getHelp(request)
     return render(request, path, context)
+
+def getMembersForCenter(request, centerId):
+    membersForCenter = Member.objects.filter(center_id=centerId)
+    logging.debug('membersForCenter' + str(membersForCenter))
+    return render(request, 'display-all-members.html', {'centerId': centerId, 'membersForCenter': membersForCenter})

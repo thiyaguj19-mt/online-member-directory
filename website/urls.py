@@ -16,4 +16,5 @@ urlpatterns = [
     path('uploadFile', views.uploadFile, name = 'uploadFile'),
     path('region/<int:regionId>/centers', views.displayRegionCenters, name= 'region-centers'),
     path('contactus', views.contactus, name = 'contactus'),
+    path('center/<int:centerId>/members', views.getMembersForCenter, name= 'center-members'),
 ]
