@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-1">
+      <div class="form-check">
+        {% if gridcheckflag %}
+          <input class="form-check-input" type="checkbox" id="gridCheck" onclick="displayFilter();" checked>
+        {% else %}
+          <input class="form-check-input" type="checkbox" id="gridCheck" onclick="displayFilter();">
+        {% endif %}
+        <label class="form-check-label" for="gridCheck" style="font-size: x-small">
+          Show Filter
+        </label>
+      </div>
+    </div>
+    <div class="col-11 text-center">
+      <h3>{{ officer_header }}</h3>
+    </div>
+  </div>
+
+  <div class="row ml-auto">
+    {% if gridcheckflag %}
+      <div id="datafilter" class="col-3" style="border-right: 1px dashed #333;width:18%">
+    {% else %}
+      <div id="datafilter" class="col-3 d-none" style="border-right: 1px dashed #333;width:18%">
+    {% endif %}
+      <form method="get" class="mt-3">
+          <div class="form-row">
+            <div class="form-group col">
+              <label class="form-label" for="id_first_name">First name contains:</label>
+              <input type="text" name="first_name" id="id_first_name" placeholder="First Name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-auto">
+              <label class="form-label" for="id_center__name">Center name contains:</label>
+              <input type="text" name="center__name" id="id_center__name" placeholder="Center Name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-auto">
+              <label class="form-label" for="id_orgrole__name">Orgrole name contains:</label>
+              <input type="text" name="orgrole__name" id="id_orgrole__name" placeholder="Org Role">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col mt-3">
+              <label class="form-label" for="id_region">Region:</label>
+              <select name="region" id="id_region">
+                <option value="" selected="selected">All</option>
+
+                <option value="1">Region 1</option>
+
+                <option value="2">Region 2</option>
+
+                <option value="3">Region 3</option>
+
+                <option value="4">Region 4</option>
+
+                <option value="5">Region 5</option>
+
+                <option value="6">Region 6</option>
+
+                <option value="7">Region 7</option>
+
+                <option value="8">Region 8</option>
+
+                <option value="9">Region 9</option>
+
+                <option value="10">Region 10</option>
+
+                <option value="11">Other</option>
+
+              </select>
+            </div>
+          <div class="form-row">
+            <div class="form-group col mt-3">
+              <label class="form-label" for="id_age_group">Age group:</label>
+              <select name="age_group" id="id_age_group">
+                <option value="" selected="selected">All</option>
+
+                <option value="SSE">SSE (4 - 8)</option>
+
+                <option value="YA">YA (18 - 40)</option>
+
+                <option value="Adult">Adult (40 +)</option>
+
+                <option value="">Not Specified</option>
+
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col mt-3">
+              <label class="form-label" for="id_member_status">Member status:</label>
+              <select name="member_status" id="id_member_status">
+                <option value="" selected="selected">All</option>
+
+                <option value="0">Pending_Approval</option>
+
+                <option value="1">Approved</option>
+
+              </select>
+            </div>
+          </div>
+          </div>
+        <input type="hidden" name="gridcheckflag" id="gridcheckflag" value="true"/>
+        <button class="btn btn-primary mt-3" type="submit">Apply Filter</button>
+      </form>
+    </div>
+    <div class="col">
+      <table class="table">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Email-ID</th>
+          <th scope="col">Phone-Num</th>
+          <th scope="col">Org-Role</th>
+          <th scope="col">App-Role</th>
+          <th scope="col">Region</th>
+          <th scope="col">Center</th>
+        </tr>
+        {% for officer in officers_data %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ officer.first_name}}</td>
+          <td>{{ officer.last_name }}</td>
+          <td>{{ officer.email }}</td>
+          <td>{{ officer.phone }}</td>
+
+          <td>
+            {% for mem in officer.orgrole.all %}
+              {% if forloop.counter == 1 %}
+                {{ mem }}
+              {% else %}
+                | {{ mem }}
+              {% endif %}
+           {% endfor %}
+          </td>
+          <td>{{ officer.approle }}</td>
+          <td>
+            <a href="{% url 'region-page' officer.region_id %}"
+              >{{ officer.region}}</a
+            >
+          </td>
+
+          <td>
+            <a href="{% url 'center-page' officer.center_id %}"
+              >{{ officer.center }}</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      {% if officers_data %}
+        <div class="pagination mt-5">
+          <span class="step-links">
+              {% if officers_data.has_previous %}
+                  <a href="?page=1">&laquo; first</a>
+                  <a href="?page={{ officers_data.previous_page_number }}">previous</a>
+              {% endif %}
+
+              <span class="current">
+                  Page {{ officers_data.number }} of {{ officers_data.paginator.num_pages }}.
+              </span>
+
+              {% if officers_data.has_next %}
+                  <a href="?page={{ officers_data.next_page_number }}">next</a>
+                  <a href="?page={{ officers_data.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
