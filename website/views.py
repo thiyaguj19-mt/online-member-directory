@@ -180,3 +180,13 @@ def uploadFile(request):
             return render(request, 'import-page.html',{})
     else:
         return render(request,'auth.html',{})
+
+ def contactus(request):
+    context = {}
+    path = 'contactus.html'
+    if request.method == 'POST':
+        getHelp(request)
+        path = 'ack.html'
+    else:
+        context = getHelp(request)
+    return render(request, path, context)
