@@ -62,7 +62,8 @@ def exportFile(request):
 #Get all regional officers
 def getAllRegionalOfficers(request):
     if request.user.is_authenticated:
-        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer')
+        member = Member.objects.filter(email=request.user).first()
+        allRegionalOfficers = Member.objects.filter(approle__name='Regional Officer',region=member.region)
         logging.debug('allRegionalOfficers:1 ' + str(allRegionalOfficers))
         filterMembers = MemberFilter(request.GET, queryset=allRegionalOfficers)
         allRegionalOfficers = filterMembers.qs
@@ -95,7 +96,8 @@ def getAllNationalOfficers(request):
 #Get all center officers
 def getAllCenterOfficers(request):
     if request.user.is_authenticated:
-        allCenterOfficers = Member.objects.filter(approle__name='Center Officer')
+        member = Member.objects.filter(email=request.user).first()
+        allCenterOfficers = Member.objects.filter(approle__name='Center Officer', region=member.region)
         logging.debug('allCenterOfficers: ' + str(allCenterOfficers))
         filterMembers = MemberFilter(request.GET, queryset=allCenterOfficers)
         allCenterOfficers = filterMembers.qs
@@ -183,3 +185,13 @@ def displayRegionCenters(request, regionId):
     centersByRegionId = Center.objects.filter(region_id=regionId)    
     logging.debug('centersByRegionId' + str(centersByRegionId))        
     return render(request, 'display-all-centers.html', {'centersByRegionId': centersByRegionId})
+    
+def contactus(request):
+    context = {}
+    path = 'contactus.html'
+    if request.method == 'POST':
+        getHelp(request)
+        path = 'ack.html'
+    else:
+        context = getHelp(request)
+    return render(request, path, context)
