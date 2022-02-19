@@ -181,7 +181,7 @@ def uploadFile(request):
     else:
         return render(request,'auth.html',{})
 
- def contactus(request):
+def contactus(request):
     context = {}
     path = 'contactus.html'
     if request.method == 'POST':
