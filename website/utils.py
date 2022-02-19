@@ -134,6 +134,6 @@ def retrieveFromCache(obj, columnval, field):
    # This is a helper function for contact us - header text
 def getHelp(request):
     if request.method == 'GET':
-        metadata = Metadata.objects.filter(key__contains='contact-header-line')
-        context = {'metadata' : metadata}
+        metadata = Metadata.objects.filter(key__contains='contact-header-line').first()
+        context = {'metadata' : metadata.value}
         return context

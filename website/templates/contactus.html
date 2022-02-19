@@ -5,22 +5,11 @@
 
 <form method="post" action="{% url 'contactus' %}">
   {% csrf_token %}
-  <br>
-  <br>
 
     <div class="container-sm login-form-container">
       <div class="card bg-light text-dark">
         <h5 class="card-header s-signup-card-header">Contact Us</h5>
       <div class="card-body">
-        <div class="col-xs-auto">
-        {% for md in metadata %}
-
-            <small class="text-muted">{{md.value}}</small>
-
-            <br>
-        {% endfor %}
-        </div>
-        <hr>
         <div class="container-sm">
           <div class="row gy-5">
             <div class="col-6">

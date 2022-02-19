@@ -169,10 +169,8 @@ def contactus(request):
     if request.method == 'POST':
 
         context = {}
-        print('request.POST... ', request.POST)
-
-        metadata = Metadata.objects.get(key='contact-msg-header')
-        metadata2 = Metadata.objects.get(key='contact-email')
+        msgheader = Metadata.objects.get(key='contact-msg-header')
+        contactaddress = Metadata.objects.get(key='contact-email')
         messagebody = "".join("<table>"
                     + "<tr style='background-color: #f2f2f2;'>"
                     + "<td>Full Name</td>"
@@ -198,10 +196,8 @@ def contactus(request):
 
         # send_simple_message())
 
-        sendemail(metadata2,metadata,messagebody)
-        print ("Sent email successfully")
+        sendemail(contactaddress.value, msgheader.value, messagebody)
         path = 'ack.html'
-
 
     else:
         context = getHelp(request)
