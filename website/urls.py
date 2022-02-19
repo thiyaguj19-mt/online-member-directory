@@ -14,4 +14,5 @@ urlpatterns = [
     path('getCenterOfficers/<int:centerId>', views.getCenterOfficers, name = 'centerOfficers'),
     path('getRegionalCenters/<int:regionId>', views.getRegionalCenters, name = 'regionalCenters'),
     path('uploadFile', views.uploadFile, name = 'uploadFile'),
+    path('region/<int:regionId>/centers', views.displayRegionCenters, name= 'region-centers')
 ]

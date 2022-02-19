@@ -2,7 +2,7 @@
 {% block content %}
   <div class="container-fluid">
     <nav class="nav nav-pills nav-fill">
-      <a class="nav-link active" aria-current="page" href="{% url 'region-page' 1071 %}">Regional Officers</a>
+      <a class="nav-link active" aria-current="page" href="{% url 'region-page' regionId %}">Regional Officers</a>
       <a class="nav-link" href="{% url 'center-page' 5197 %}">Show Centers</a>
     </nav>
 
@@ -11,38 +11,64 @@
         <div class="region-center-box">
           <div class="container">
             <div class="region-center-intro">
-              <h1 class="text-center">Regional Officers</h1>              
+              <h1 class="text-center officers-page-title">Officers of Region {{ regionId }} </h1>
             </div>
           </div>
 
-          <div class="row officers">
+          <div class="officers">
+            <div class="container">
+              <div class="row">
+                {% for regOff in regionOfficers %}
+                  <div class="col-md-6 col-lg-4 item">
+                    <div class="card officers-card">
+                        <div class="background-block">
+                            <img src="https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="profile-sample1" class="background"/>
+                        </div>
+                        <div class="profile-thumb-block">
+                            <img src="https://www.gravatar.com/avatar/94d093eda664addd6e450d7e9881bcad?s=32&d=identicon&r=PG" alt="profile-image" class="profile"/>
+                        </div>
+                        <div class="card-content">
+                            <h2>{{ regOff.first_name }} {{regOff.last_name}}<small>                  
+                              {% for mem in regOff.orgrole.all %}
+                                  {% if forloop.counter == 1 %}
+                                    {{ mem }}
+                                  {% else %}
+                                    | {{ mem }}
+                                  {% endif %}
+                              {% endfor %}                  
+                            </small></h3>                    
+                            <p class="officer-details">Email: {{regOff.email}}</p> 
+                            <p class="officer-details">Phone #: {{regOff.phone}}</p>                          
+                        </div>
+                    </div>              
+                  </div> 
+                {% endfor %}
+              </div>
+           </div>
+          </div>
+
+          <!-- <div class="row officers">
             {% for regOff in regionOfficers %}
               <div class="col-md-6 col-lg-4 item">
-                <div class="box">
+                <div class="box">                  
                   <h3 class="name">{{ regOff.first_name }} {{regOff.last_name}}</h3>
-                  <p class="officer-email">{{regOff.email}}</p>
-                  <p class="officer-details">Group: {{regOff.age_group}}</p>
+                  <p class="officer-org-role">
+                    {% for mem in regOff.orgrole.all %}
+                        {% if forloop.counter == 1 %}
+                          {{ mem }}
+                        {% else %}
+                          | {{ mem }}
+                        {% endif %}
+                    {% endfor %}
+                  </p>
+                  <p class="officer-detials">Email: {{regOff.email}}</p>                                
                   <p class="officer-details">Phone #: {{regOff.phone}}</p>
-                  <p class="officer-details">City #: {{regOff.city}}</p>
+                  <p class="officer-details">Address: {{regOff.city}}, {{regOff.state}}</p>
                 </div>
               </div>
             {% endfor %}       
-          </div>
-        </div>
-          
-        <!-- {% for regOff in regionOfficers %}
-        <div class="col-sm-3 mt-3">
-          <div class="card" style="width: 18;">  
-              <div class="card-body">
-                <h5 class="card-title">{{ regOff.first_name }} {{regOff.last_name}}</h5>
-                <p class="card-text">Email: {{regOff.email}}</p>
-                <p class="card-text">Phone Number: {{regOff.phone}}</p>
-                <p class="card-text">Group: {{regOff.age_group}}</p>
-                <a href="#" class="btn btn-primary">Send an Email</a>
-              </div>            
-            </div>
-        </div> 
-      {% endfor %} -->
+          </div> -->
+        </div>                
       <div>
 
       {% else %}
