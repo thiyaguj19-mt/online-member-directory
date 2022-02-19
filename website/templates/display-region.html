@@ -3,7 +3,8 @@
   <div class="container-fluid">
     <nav class="nav nav-pills nav-fill">
       <a class="nav-link active" aria-current="page" href="{% url 'region-page' regionId %}">Regional Officers</a>
-      <a class="nav-link" href="{% url 'center-page' 5197 %}">Show Centers</a>
+      <!-- <a class="nav-link" href="{% url 'center-page' 5197 %}">Show Centers</a> -->
+      <a class="nav-link" href="{% url 'region-centers' regionId %}">Show Centers</a>
     </nav>
 
     {% if regionOfficers %}
