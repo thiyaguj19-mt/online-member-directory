@@ -1,5 +1,9 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core import serializers
+from django.http import JsonResponse
+from website import email
 from .models import Member,AppRole,OrgRole,Center,Region
 from .filters import MemberFilter
 from .utils import *
@@ -21,6 +25,7 @@ def home(request):
     try:
         print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
+            print("request.user--- ", request.user)
             return render(request,'home.html', {})
         if request.method == 'POST':
             if request.POST.keys() >= {'emailaddress'}:
@@ -235,3 +240,46 @@ def getMembersForCenter(request, centerId):
     membersForCenter = Member.objects.filter(center_id=centerId)
     logging.debug('membersForCenter' + str(membersForCenter))
     return render(request, 'display-all-members.html', {'centerId': centerId, 'membersForCenter': membersForCenter})
+
+def getMemberData(request):
+    if request.headers.keys() >= {'Emailid'}:
+        emailId = request.headers['Emailid']
+        if len(emailId) > 0:
+            memberdata = Member.objects.filter(email=emailId)
+            return JsonResponse(serializers.serialize('json', memberdata), safe=False)
+    else:
+        return None
+
+def updateMemberProfile(request):
+    data = json.loads(request.body)
+    if len(data) > 0:
+        emailid = data['emailaddr']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        orglist = data['orgrole']
+        age_group = data['agegroup']
+        if emailid is not None:
+            member = Member.objects.filter(email=emailid)
+            member.update(first_name=first_name, 
+                            last_name=last_name,
+                            age_group=age_group)
+            if len(orglist) > 0:
+                member = member.first()
+                allroles = OrgRole.objects.all()
+                for orgRole in allroles:
+                    for orole in orglist:
+                        if int(orgRole.id) == int(orole):
+                            member.orgrole.add(orgRole)
+                    if str(orgRole.id) not in orglist:
+                        member.orgrole.remove(orgRole)
+        return JsonResponse({"message" : "Record successfully updated."}, safe=False)
+
+def updateMemberStatus(request):
+    data = json.loads(request.body)
+    if len(data) > 0:
+        print("data----", data)
+        emailid = data['emailaddr']
+        member_status = data['member_status']
+        if emailid is not None:
+            memberdata = Member.objects.filter(email=emailid).update(member_status=member_status)
+        return JsonResponse({"message" : "Record successfully updated."}, safe=False)

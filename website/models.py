@@ -32,7 +32,8 @@ class Center(models.Model):
 
 class OrgRole(models.Model):
 
-    # Fields
+    #Fields
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, help_text='Organization Role Name')
     description = models.CharField(
         max_length=200, help_text='Organization Role Description', blank=True)

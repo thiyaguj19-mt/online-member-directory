@@ -17,4 +17,7 @@ urlpatterns = [
     path('region/<int:regionId>/centers', views.displayRegionCenters, name= 'region-centers'),
     path('contactus', views.contactus, name = 'contactus'),
     path('center/<int:centerId>/members', views.getMembersForCenter, name= 'center-members'),
+    path('getMemberData/', views.getMemberData, name='memberData'),
+    path('updateMemberProfile/', views.updateMemberProfile, name='updateMemberProfile'),
+    path('updateMemberStatus/', views.updateMemberStatus, name='updateMemberStatus'),
 ]
