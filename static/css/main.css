@@ -17,6 +17,78 @@ h6 {
   color: hsl(0, 0%, 30%);
 }
 
+
+.empty {
+
+  display: block;
+  white-space: pre;
+}
+
+
+.blockquote {
+    max-width: 600px;
+    color: #0b4237;
+    padding: 1rem 1.5rem;
+    padding: 15px 5px;
+    margin: 0 auto;
+    width:auto;
+    display:table;
+}
+
+
+.blockquote-text {
+  font-family: 'Gelasio', serif;
+  font-style: italic;
+  font-size: 1em;
+  color: #b38600;
+  line-height: 1.2;
+  letter-spacing: 0.02px;
+   margin: 0;
+
+}
+
+.blockquote-text:not(:last-child){
+  margin-bottom: 1em;
+}
+
+
+/* .blockquote-quotes::before {
+
+  content: "\201C";
+  font-size: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: -30px;
+  margin-top : -10px;
+  margin-right: 3px;
+
+}
+
+.blockquote-quotes::after {
+
+    content: '\201D';
+    font-size: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    margin-top: -75px;
+    left: -4em;
+} */
+
+.blockquote-cite {
+  font-weight: light;
+  font-style: normal;
+  text-align: right;
+
+}
+
+.blockquote__cite:before {
+  content: "\2014\0020";
+}
+
+
 .s-brand > * {
   vertical-align: middle;
   display: inline-block;
@@ -74,6 +146,7 @@ h6 {
 }
 
 .s-signup-btn {
+  text-align: center;
   margin-top: 15px;
 }
 

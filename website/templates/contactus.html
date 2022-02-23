@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 
+<!-- Adds a line-break -->
+<div class="empty">
+
+</div>
 <form method="post" action="{% url 'contactus' %}">
   {% csrf_token %}
 
