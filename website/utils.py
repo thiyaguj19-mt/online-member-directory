@@ -130,6 +130,22 @@ def retrieveFromCache(obj, columnval, field):
     #print("retrieveFromCache-result, " , result)
     return result
 
+def getAllOrgRoles():
+    mem_roles = None
+    if cache.get("member_orgroles"):
+        mem_roles = cache.get("member_orgroles")
+    else:
+        mem_roles = OrgRole.objects.all()
+    return mem_roles
+
+def getAllRegions():
+    mem_regions = None
+    if cache.get("member_regions"):
+        mem_regions = cache.get("member_regions")
+    else:
+        mem_regions = Region.objects.all()
+    return mem_regions
+
 def getHelp(request):
     context = {}
     if request.method == 'GET':

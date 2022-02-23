@@ -82,6 +82,10 @@ def getAllRegionalOfficers(request):
         page = request.GET.get('page')
         officers_data = page_obj.get_page(page)
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
@@ -91,6 +95,8 @@ def getAllRegionalOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
                     'filterMembers':filterMembers}
+        context['member_regions'] = member_regions
+        context['member_orgroles'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -108,6 +114,10 @@ def getAllNationalOfficers(request):
         officers_data = page_obj.get_page(page)
         #return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
@@ -117,6 +127,8 @@ def getAllNationalOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
                     'filterMembers':filterMembers}
+        context['member_regions'] = member_regions
+        context['member_orgroles'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -137,8 +149,11 @@ def getAllCenterOfficers(request):
         page_obj = Paginator(officers_data, 12)
         page = request.GET.get('page')
         officers_data = page_obj.get_page(page)
-        #return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
@@ -148,6 +163,8 @@ def getAllCenterOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
                     'filterMembers':filterMembers}
+        context['member_orgroles'] = member_regions
+        context['member_regions'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
