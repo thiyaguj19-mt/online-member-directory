@@ -253,28 +253,25 @@ def getMemberData(request):
 def updateMemberProfile(request):
     data = json.loads(request.body)
     if len(data) > 0:
-        print("data----", data)
         emailid = data['emailaddr']
         first_name = data['first_name']
         last_name = data['last_name']
         orglist = data['orgrole']
+        age_group = data['agegroup']
         if emailid is not None:
             member = Member.objects.filter(email=emailid)
-            member.update(first_name=first_name, last_name=last_name)
+            member.update(first_name=first_name, 
+                            last_name=last_name,
+                            age_group=age_group)
             if len(orglist) > 0:
                 member = member.first()
                 allroles = OrgRole.objects.all()
                 for orgRole in allroles:
-                    print("orgRole - " , orgRole)
                     for orole in orglist:
                         if int(orgRole.id) == int(orole):
                             member.orgrole.add(orgRole)
-                            print("Added the role")
-                    print("True/False - " , str(orgRole.id) not in orglist)
                     if str(orgRole.id) not in orglist:
                         member.orgrole.remove(orgRole)
-
-
         return JsonResponse({"message" : "Record successfully updated."}, safe=False)
 
 def updateMemberStatus(request):

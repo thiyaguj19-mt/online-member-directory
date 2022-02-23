@@ -17,6 +17,7 @@ const showEditUI = (emailid) => {
 	const last_name = document.getElementById("last_name");
 	const emailaddr = document.getElementById("emailaddr");
 	const orgrole = document.getElementById('m_id_orgrole');
+	const agegroup = document.getElementById('m_id_age_group');
 	console.log("orgrole" + orgrole.selectedIndex);
 	var url = 'getMemberData/';
 	fetch(url, {
@@ -39,6 +40,8 @@ const showEditUI = (emailid) => {
 		emailaddr.innerHTML	= `${emailid}`;
 		selectedval = memberfields.orgrole.filter((val) => val);
 		$("#m_id_orgrole").val(selectedval);
+		console.log("age_group.... " + `${memberfields.age_group}`);
+		agegroup.value = `${memberfields.age_group}`;
 	 })
 }
 
@@ -47,7 +50,7 @@ const saveChanges = () => {
 	const first_name = document.getElementById("first_name");
 	const last_name = document.getElementById("last_name");
 	const emailaddr = document.getElementById("emailaddr");
-	//const orgrole = document.getElementById("m_id_orgrole");
+	const agegroup = document.getElementById("m_id_age_group");
 	console.log("first_name " + first_name.value);
 	console.log("last_name " + last_name.value);
 	console.log("emailaddr " + emailaddr.innerHTML);
@@ -64,6 +67,7 @@ const saveChanges = () => {
 			'last_name': last_name.value,
 			'emailaddr': emailaddr.innerHTML,
 			'orgrole': $('#m_id_orgrole').val(),
+			'agegroup': agegroup.value,
 		})
 	})
 	.then((response) => {
