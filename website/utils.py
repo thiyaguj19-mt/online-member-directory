@@ -1,9 +1,10 @@
 import io
 import csv
-from .models import Center, Region, Member, OrgRole, AppRole, Metadata
+from .models import *
 from django.core.cache import cache
 import logging
 from .email import sendemail
+from random import randint
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -130,12 +131,26 @@ def retrieveFromCache(obj, columnval, field):
     #print("retrieveFromCache-result, " , result)
     return result
 
+def random_quote():
+    random_quote = None
+    quotes_count = 0
+    if cache.get("random_quote"):
+        random_quote = cache.get("random_quote")
+        quotes_count = cache.get("quotes_count")
+    else:
+        quotes_count = Quotes.objects.count()
+        random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
+        cache.set("quotes_count", quotes_count)
+        cache.set("random_quote", random_quote)
+    return random_quote
+
 def getAllOrgRoles():
     mem_roles = None
     if cache.get("member_orgroles"):
         mem_roles = cache.get("member_orgroles")
     else:
         mem_roles = OrgRole.objects.all()
+        cache.set("member_orgroles", mem_roles)
     return mem_roles
 
 def getAllRegions():
@@ -144,6 +159,7 @@ def getAllRegions():
         mem_regions = cache.get("member_regions")
     else:
         mem_regions = Region.objects.all()
+        cache.set("member_regions", mem_regions)
     return mem_regions
 
 def getHelp(request):

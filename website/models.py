@@ -2,12 +2,12 @@ from django.db import models
 
 class Quotes(models.Model):
     #Fields
-    message = models.CharField(max_length=300, help_text='Swamis Quotes')
+    message = models.CharField(max_length=600, help_text='Swamis Quotes')
     cite = models.CharField(max_length=100, default= "Citation")
 
     def __str__(self):
 
-        return f'{self.message},{self.cite}'
+        return f'{self.message}, {self.cite}'
 
 class Region(models.Model):
 
