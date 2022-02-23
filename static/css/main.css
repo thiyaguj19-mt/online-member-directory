@@ -24,7 +24,6 @@ h6 {
   white-space: pre;
 }
 
-
 .blockquote {
     max-width: 600px;
     color: #0b4237;
@@ -34,7 +33,6 @@ h6 {
     width:auto;
     display:table;
 }
-
 
 .blockquote-text {
   font-family: 'Gelasio', serif;
