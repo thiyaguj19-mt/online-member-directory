@@ -51,20 +51,9 @@
             <div class="form-group col-auto">
               <label class="form-label" for="id_orgrole__name">Orgrole name contains:</label>
               <select name="orgrole" id="id_orgrole" multiple="">
-                <option value="1">Member</option>
-
-                <option value="2">Devotional Coordinator</option>
-
-                <option value="3">Service Coordinator</option>
-
-                <option value="4">President</option>
-
-                <option value="5">Vice President</option>
-
-                <option value="6">Group Leader</option>
-
-                <option value="7">Educational Coordinator</option>
-
+                  {% for member_or in member_orgroles %}
+                    <option value="{{member_or.id}}">{{member_or.name}}</option>
+                  {% endfor %}
               </select>
             </div>
           </div>
@@ -72,30 +61,12 @@
             <div class="form-group col mt-3">
               <label class="form-label" for="id_region">Region:</label>
               <select name="region" id="id_region">
-                <option value="" selected="selected">All</option>
-
-                <option value="1">Region 1</option>
-
-                <option value="2">Region 2</option>
-
-                <option value="3">Region 3</option>
-
-                <option value="4">Region 4</option>
-
-                <option value="5">Region 5</option>
-
-                <option value="6">Region 6</option>
-
-                <option value="7">Region 7</option>
-
-                <option value="8">Region 8</option>
-
-                <option value="9">Region 9</option>
-
-                <option value="10">Region 10</option>
-
-                <option value="11">Other</option>
-
+                {% for member_region in member_regions %}
+                  {% if forloop.counter == 1 %}
+                    <option value="" selected>All</option>
+                  {% endif %}
+                  <option value="{{member_region.id}}">{{member_region.name}}</option>
+                {% endfor %}
               </select>
             </div>
           <div class="form-row">
@@ -161,20 +132,9 @@
                 <th>Organization Role</th>
                 <td>
                   <select name="orgrole" id="m_id_orgrole" multiple="">
-                    <option value="7">Member</option>
-                  
-                    <option value="6">Devotional Coordinator</option>
-                  
-                    <option value="3">Service Coordinator</option>
-                  
-                    <option value="1">President</option>
-                  
-                    <option value="2">Vice President</option>
-                  
-                    <option value="5">Group Leader</option>
-                  
-                    <option value="4">Educational Coordinator</option>
-                  
+                    {% for member_or in member_orgroles %}
+                      <option value="{{member_or.id}}">{{member_or.name}}</option>
+                    {% endfor %}
                   </select>
                 </td>
               </tr>
@@ -206,7 +166,6 @@
           <th scope="col">First</th>
           <th scope="col">Last</th>
           <th scope="col">Email-ID</th>
-          <th scope="col">Phone-Num</th>
           <th scope="col">Org-Role</th>
           <th scope="col">App-Role</th>
           <th scope="col">Member Status</th>
@@ -219,8 +178,6 @@
           <td>{{ officer.first_name}}</td>
           <td>{{ officer.last_name }}</td>
           <td>{{ officer.email }}</td>
-          <td>{{ officer.phone }}</td>
-
           <td>
             {% for mem in officer.orgrole.all %}
               {% if forloop.counter == 1 %}
@@ -265,7 +222,7 @@
   <div class="row">
     <div class="col">
       {% if officers_data %}
-        <div class="pagination mt-5">
+        <div class="text-center mb-3">
           <span class="step-links">
               {% if officers_data.has_previous %}
                   <a href="?page=1">&laquo; first</a>
