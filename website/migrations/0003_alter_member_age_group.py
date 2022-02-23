@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='member',
             name='age_group',
-            field=models.CharField(blank=True, choices=[('SSE', 'SSE (4 - 8)'), ('YA', 'YA (18 - 40)'), ('Adult', 'Adult (40 +)'), ('', 'Not Specified')], default='', max_length=10),
+            field=models.CharField(blank=True, choices=[(
+                'SSE', 'SSE (4 - 18)'), ('YA', 'YA (18 - 40)'), ('Adult', 'Adult (40 +)'), ('', 'Not Specified')], default='', max_length=10),
         ),
     ]
