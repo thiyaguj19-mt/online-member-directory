@@ -1,10 +1,10 @@
 import json
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Member,AppRole,OrgRole,Center,Region,Quotes
 from django.core import serializers
 from django.http import JsonResponse
 from website import email
-from .models import Member,AppRole,OrgRole,Center,Region
 from .filters import MemberFilter
 from .utils import *
 from django.db.models import Q
@@ -25,6 +25,8 @@ def home(request):
     try:
         print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
+            quote_message = Quotes.objects.all()
+            return render(request,'home.html', {'quote_message':quote_message})
             print("request.user--- ", request.user)
             return render(request,'home.html', {})
         if request.method == 'POST':
@@ -222,7 +224,7 @@ def uploadFile(request):
         return render(request,'auth.html',{})
 
 def displayRegionCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)    
+    centersByRegionId = Center.objects.filter(region_id=regionId)
     logging.debug('centersByRegionId' + str(centersByRegionId))
     return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId})
 

@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 
+<div class="empty">
+
+</div>
 <div class="container-fluid">
 
   <div class="row">
@@ -20,6 +23,9 @@
     <div class="col-11 text-center">
       <h3>{{ officer_header }}</h3>
     </div>
+  </div>
+  <div class="empty">
+
   </div>
 
   <div class="row ml-auto">
@@ -46,19 +52,19 @@
               <label class="form-label" for="id_orgrole__name">Orgrole name contains:</label>
               <select name="orgrole" id="id_orgrole" multiple="">
                 <option value="1">Member</option>
-              
+
                 <option value="2">Devotional Coordinator</option>
-              
+
                 <option value="3">Service Coordinator</option>
-              
+
                 <option value="4">President</option>
-              
+
                 <option value="5">Vice President</option>
-              
+
                 <option value="6">Group Leader</option>
-              
+
                 <option value="7">Educational Coordinator</option>
-              
+
               </select>
             </div>
           </div>

@@ -7,6 +7,7 @@ from .models import *
 #admin.site.register(OrgRole)
 #admin.site.register(AppRole)
 #admin.site.register(Member)
+admin.site.register(Quotes)
 
 class OrgRoleAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
