@@ -6,6 +6,7 @@ import logging
 import datetime
 from .email import sendemail
 from random import randint
+from django.http import HttpResponse
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -179,30 +180,29 @@ def getHelp(request):
         metadata = Metadata.objects.filter(key__contains='contact-header-line').first()
         context = {'metadata' : metadata.value}
     elif request.method == 'POST':
-        path = 'contactus.html'
-        msgheader = Metadata.objects.get(key='contact-msg-header')
-        contactaddress = Metadata.objects.get(key='contact-email')
-        messagebody = "".join("<table>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Full Name</td>"
-                    + "<td>" + request.POST.get('fullname') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Email</td>"
-                    + "<td>" + request.POST.get('email') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Phone</td>"
-                    + "<td>" + request.POST.get('phone') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Subject</td>"
-                    + "<td>" + request.POST.get('subject') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Message</td>"
-                    + "<td>" + request.POST.get('message') + "</td>"
-                    + "</tr>"
-                    + "</table>")
-        sendemail(contactaddress.value, msgheader.value, messagebody)
+        if request.POST.keys() >= { 'fullname', 'email', 'subject', 'message' }:
+            path = 'contactus.html'
+            msgheader = Metadata.objects.get(key='contact-msg-header')
+            contactaddress = Metadata.objects.get(key='contact-email')
+            messagebody = "".join("<table>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Full Name</td>"
+                        + "<td>" + request.POST.get('fullname') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Email</td>"
+                        + "<td>" + request.POST.get('email') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Subject</td>"
+                        + "<td>" + request.POST.get('subject') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Message</td>"
+                        + "<td>" + request.POST.get('message') + "</td>"
+                        + "</tr>"
+                        + "</table>")
+            sendemail(contactaddress.value, msgheader.value, messagebody)
+        else:
+            return HttpResponse('Something went wrong. Please try again later.')
     return context
