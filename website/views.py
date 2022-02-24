@@ -1,6 +1,10 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Member,AppRole,OrgRole,Center,Region
+from .models import Member,AppRole,OrgRole,Center,Region,Quotes
+from django.core import serializers
+from django.http import JsonResponse
+from website import email
 from .filters import MemberFilter
 from .utils import *
 from django.db.models import Q
@@ -21,6 +25,9 @@ def home(request):
     try:
         print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
+            quote_message = random_quote()
+            return render(request,'home.html', {'quote':quote_message})
+            print("request.user--- ", request.user)
             return render(request,'home.html', {})
         if request.method == 'POST':
             if request.POST.keys() >= {'emailaddress'}:
@@ -75,6 +82,10 @@ def getAllRegionalOfficers(request):
         page = request.GET.get('page')
         officers_data = page_obj.get_page(page)
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
@@ -84,6 +95,8 @@ def getAllRegionalOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
                     'filterMembers':filterMembers}
+        context['member_regions'] = member_regions
+        context['member_orgroles'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -101,6 +114,10 @@ def getAllNationalOfficers(request):
         officers_data = page_obj.get_page(page)
         #return render(request, 'national-officers-page.html', {'allNationalOfficers': allNationalOfficers, 'filterMembers' : filterMembers})
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
@@ -110,6 +127,8 @@ def getAllNationalOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
                     'filterMembers':filterMembers}
+        context['member_regions'] = member_regions
+        context['member_orgroles'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -130,8 +149,11 @@ def getAllCenterOfficers(request):
         page_obj = Paginator(officers_data, 12)
         page = request.GET.get('page')
         officers_data = page_obj.get_page(page)
-        #return render(request, 'center-officers-page.html', {'allCenterOfficers':  allCenterOfficers,'filterMembers' : filterMembers})
         context = {}
+        #get regions
+        member_regions = getAllRegions()
+        #get organization roles
+        member_orgroles = getAllOrgRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
@@ -141,6 +163,8 @@ def getAllCenterOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
                     'filterMembers':filterMembers}
+        context['member_orgroles'] = member_regions
+        context['member_regions'] = member_orgroles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -217,7 +241,7 @@ def uploadFile(request):
         return render(request,'auth.html',{})
 
 def displayRegionCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)    
+    centersByRegionId = Center.objects.filter(region_id=regionId)
     logging.debug('centersByRegionId' + str(centersByRegionId))
     return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId})
 
@@ -235,3 +259,46 @@ def getMembersForCenter(request, centerId):
     membersForCenter = Member.objects.filter(center_id=centerId)
     logging.debug('membersForCenter' + str(membersForCenter))
     return render(request, 'display-all-members.html', {'centerId': centerId, 'membersForCenter': membersForCenter})
+
+def getMemberData(request):
+    if request.headers.keys() >= {'Emailid'}:
+        emailId = request.headers['Emailid']
+        if len(emailId) > 0:
+            memberdata = Member.objects.filter(email=emailId)
+            return JsonResponse(serializers.serialize('json', memberdata), safe=False)
+    else:
+        return None
+
+def updateMemberProfile(request):
+    data = json.loads(request.body)
+    if len(data) > 0:
+        emailid = data['emailaddr']
+        first_name = data['first_name']
+        last_name = data['last_name']
+        orglist = data['orgrole']
+        age_group = data['agegroup']
+        if emailid is not None:
+            member = Member.objects.filter(email=emailid)
+            member.update(first_name=first_name, 
+                            last_name=last_name,
+                            age_group=age_group)
+            if len(orglist) > 0:
+                member = member.first()
+                allroles = OrgRole.objects.all()
+                for orgRole in allroles:
+                    for orole in orglist:
+                        if int(orgRole.id) == int(orole):
+                            member.orgrole.add(orgRole)
+                    if str(orgRole.id) not in orglist:
+                        member.orgrole.remove(orgRole)
+        return JsonResponse({"message" : "Record successfully updated."}, safe=False)
+
+def updateMemberStatus(request):
+    data = json.loads(request.body)
+    if len(data) > 0:
+        print("data----", data)
+        emailid = data['emailaddr']
+        member_status = data['member_status']
+        if emailid is not None:
+            memberdata = Member.objects.filter(email=emailid).update(member_status=member_status)
+        return JsonResponse({"message" : "Record successfully updated."}, safe=False)

@@ -12,9 +12,17 @@
     <div class="col-9 bg-light p-3 border">
       <div class="container">
         <div class="jumbotron text-center" style="height: 90%">
-          <h1 class="display-5">Welcome to SSSIO Online-Member-Portal</h1>
-          <!--Search Bar with dropdown for Category-->
+            <!-- Swamis Quotes -->
+            <blockquote class="blockquote blockquote-quotes mt-3">
+              <p class="blockquote-text d-flex justify-content-center">
+                "{{ quote.message }}"
+              </p>
+              <p class="blockquote-text blockquote-cite">
+                {{ quote.cite }}
+              </p>
+            </blockquote>
 
+          <!--Search Bar with dropdown for Category-->
           <form
             class="d-flex"
             method="POST"

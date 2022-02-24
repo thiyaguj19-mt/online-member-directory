@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 
+<div class="empty">
+
+</div>
 <div class="container-fluid">
 
   <div class="row">
@@ -20,6 +23,9 @@
     <div class="col-11 text-center">
       <h3>{{ officer_header }}</h3>
     </div>
+  </div>
+  <div class="empty">
+
   </div>
 
   <div class="row ml-auto">
@@ -44,37 +50,23 @@
           <div class="form-row">
             <div class="form-group col-auto">
               <label class="form-label" for="id_orgrole__name">Orgrole name contains:</label>
-              <input type="text" name="orgrole__name" id="id_orgrole__name" placeholder="Org Role">
+              <select name="orgrole" id="id_orgrole" multiple="">
+                  {% for member_or in member_orgroles %}
+                    <option value="{{member_or.id}}">{{member_or.name}}</option>
+                  {% endfor %}
+              </select>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col mt-3">
               <label class="form-label" for="id_region">Region:</label>
               <select name="region" id="id_region">
-                <option value="" selected="selected">All</option>
-
-                <option value="1">Region 1</option>
-
-                <option value="2">Region 2</option>
-
-                <option value="3">Region 3</option>
-
-                <option value="4">Region 4</option>
-
-                <option value="5">Region 5</option>
-
-                <option value="6">Region 6</option>
-
-                <option value="7">Region 7</option>
-
-                <option value="8">Region 8</option>
-
-                <option value="9">Region 9</option>
-
-                <option value="10">Region 10</option>
-
-                <option value="11">Other</option>
-
+                {% for member_region in member_regions %}
+                  {% if forloop.counter == 1 %}
+                    <option value="" selected>All</option>
+                  {% endif %}
+                  <option value="{{member_region.id}}">{{member_region.name}}</option>
+                {% endfor %}
               </select>
             </div>
           <div class="form-row">
@@ -83,7 +75,7 @@
               <select name="age_group" id="id_age_group">
                 <option value="" selected="selected">All</option>
 
-                <option value="SSE">SSE (4 - 8)</option>
+                <option value="SSE">SSE (4 - 18)</option>
 
                 <option value="YA">YA (18 - 40)</option>
 
@@ -112,27 +104,80 @@
         <button class="btn btn-primary mt-3" type="submit">Apply Filter</button>
       </form>
     </div>
+
+    <!-- Modal -->
+    
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" data-bs-toggle="staticModel" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Edit Member Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped">
+              <tr>
+                <th>First Name</th>
+                <td><input type="text" id="first_name" value=""/></td>
+              </tr>
+              <tr>
+                <th>Last Name</th>
+                <td><input type="text" id="last_name" value=""/></td>
+              </tr>
+              <tr>
+                <th>Email Address</th>
+                <td id="emailaddr"></td>
+              </tr>
+              <tr>
+                <th>Organization Role</th>
+                <td>
+                  <select name="orgrole" id="m_id_orgrole" multiple="">
+                    {% for member_or in member_orgroles %}
+                      <option value="{{member_or.id}}">{{member_or.name}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>Age Group</th>
+                <td>
+                  <select name="age_group" id="m_id_age_group">
+                    <option value="">Not Specified</option>
+                    <option value="SSE">SSE (4 - 18)</option>
+                    <option value="YA">YA (18 - 40)</option>
+                    <option value="Adult">Adult (40 +)</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="saveChanges();">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="col">
       <table class="table">
         <tr>
-          <th scope="col">#</th>
+          <th scope="col"></th>
           <th scope="col">First</th>
           <th scope="col">Last</th>
           <th scope="col">Email-ID</th>
-          <th scope="col">Phone-Num</th>
           <th scope="col">Org-Role</th>
           <th scope="col">App-Role</th>
+          <th scope="col">Member Status</th>
           <th scope="col">Region</th>
           <th scope="col">Center</th>
         </tr>
         {% for officer in officers_data %}
         <tr>
-          <th scope="row">{{ forloop.counter }}</th>
+          <th scope="row"><img src="{% static 'images/editIcon.png' %}" classs="img-fluid" onclick="showEditUI('{{ officer.email }}');" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/></th>
           <td>{{ officer.first_name}}</td>
           <td>{{ officer.last_name }}</td>
           <td>{{ officer.email }}</td>
-          <td>{{ officer.phone }}</td>
-
           <td>
             {% for mem in officer.orgrole.all %}
               {% if forloop.counter == 1 %}
@@ -143,12 +188,26 @@
            {% endfor %}
           </td>
           <td>{{ officer.approle }}</td>
+          {% if officer.member_status == 0 %}
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="setMemberStatus('{{ officer.email }}');">
+                <label class="form-check-label" for="flexSwitchCheckDefault" id="{{ officer.email }}_member_status">Pending_Approval</label>
+              </div>
+            </td>
+          {% else %}
+          <td>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked onclick="setMemberStatus('{{ officer.email }}');">
+              <label class="form-check-label" for="flexSwitchCheckChecked" id="{{ officer.email }}_member_status">Approved</label>
+            </div>
+          </td>
+          {% endif %}
           <td>
             <a href="{% url 'region-page' officer.region_id %}"
               >{{ officer.region}}</a
             >
           </td>
-
           <td>
             <a href="{% url 'center-page' officer.center_id %}"
               >{{ officer.center }}</a
@@ -163,7 +222,7 @@
   <div class="row">
     <div class="col">
       {% if officers_data %}
-        <div class="pagination mt-5">
+        <div class="text-center mb-3">
           <span class="step-links">
               {% if officers_data.has_previous %}
                   <a href="?page=1">&laquo; first</a>
