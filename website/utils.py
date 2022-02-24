@@ -53,13 +53,13 @@ def createMemberData(column):
                     member_status = 1
 
             start_date = None
-            end_date= None
+            end_date = None
 
-            #startdate_str = retrieveFromCache(Member, column[15], "start_date")
-            #dt_obj = datetime.datetime.strptime(startdate_str, '%Y/%m/%d')
-            #formatted_date = datetime.datetime.strftime(dt_obj, "%m/%d/%Y")
-            #start_date = formatted_date
-            #end_date = datetime.datetime.strftime(dt_obj + datetime.timedelta(days=730), "%m/%d/%Y")
+            try:
+                start_date = datetime.datetime.strptime(column[15], "%m/%d/%Y").date()
+                end_date = start_date + datetime.timedelta(days=730)
+            except Exception as err:
+                print(f'Unexpected {err} from createMemberData(), {type(err)}')
 
             created = False
             memobj = None
