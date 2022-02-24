@@ -55,11 +55,15 @@ def createMemberData(column):
             start_date = None
             end_date = None
 
-            try:
+            #read start and end date from input file then assign the same to member data
+            #if user app role is one of an officer role then 2 years will be added
+            #if end_date is not provided
+            if len(column[15]) > 0:
                 start_date = datetime.datetime.strptime(column[15], "%m/%d/%Y").date()
-                end_date = start_date + datetime.timedelta(days=730)
-            except Exception as err:
-                print(f'Unexpected {err} from createMemberData(), {type(err)}')
+                if len(column[16]) > 0:
+                    end_date = datetime.datetime.strptime(column[16], "%m/%d/%Y").date()
+                elif arole.name is not "Member":
+                    end_date = start_date + datetime.timedelta(days=730)
 
             created = False
             memobj = None
