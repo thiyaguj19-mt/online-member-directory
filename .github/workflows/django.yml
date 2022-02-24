@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      local: True
     strategy:
       max-parallel: 4
       matrix:
