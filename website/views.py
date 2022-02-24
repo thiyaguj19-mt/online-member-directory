@@ -25,8 +25,8 @@ def home(request):
     try:
         print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
-            quote_message = Quotes.objects.all()
-            return render(request,'home.html', {'quote_message':quote_message})
+            quote_message = random_quote()
+            return render(request,'home.html', {'quote':quote_message})
             print("request.user--- ", request.user)
             return render(request,'home.html', {})
         if request.method == 'POST':
