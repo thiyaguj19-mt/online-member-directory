@@ -3,6 +3,7 @@ import csv
 from .models import *
 from django.core.cache import cache
 import logging
+import datetime
 from .email import sendemail
 from random import randint
 
@@ -51,8 +52,14 @@ def createMemberData(column):
                 if column[12] == 'Approved':
                     member_status = 1
 
-            start_date=None
-            end_date=None
+            start_date = None
+            end_date= None
+
+            #startdate_str = retrieveFromCache(Member, column[15], "start_date")
+            #dt_obj = datetime.datetime.strptime(startdate_str, '%Y/%m/%d')
+            #formatted_date = datetime.datetime.strftime(dt_obj, "%m/%d/%Y")
+            #start_date = formatted_date
+            #end_date = datetime.datetime.strftime(dt_obj + datetime.timedelta(days=730), "%m/%d/%Y")
 
             created = False
             memobj = None
