@@ -163,8 +163,8 @@ def getAllCenterOfficers(request):
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
                     'filterMembers':filterMembers}
-        context['member_orgroles'] = member_regions
-        context['member_regions'] = member_orgroles
+        context['member_orgroles'] = member_orgroles
+        context['member_regions'] = member_regions
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
