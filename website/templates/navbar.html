@@ -17,8 +17,6 @@
       <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</a>
       <div class="dropdown-menu">
           <a href="{% url 'import-page' %}" class="dropdown-item">Import</a>
-          <div class="dropdown-divider"></div>
-          <a href="{% url 'export-page' %}"class="dropdown-item">Export</a>
       </div>
     </li>
     <li class="nav-item dropdown">
@@ -44,10 +42,6 @@
           >
         {% endif %}
       </div>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="#">About</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'contactus' %}">Contact Us</a>

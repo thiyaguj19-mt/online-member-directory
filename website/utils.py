@@ -6,6 +6,7 @@ import logging
 import datetime
 from .email import sendemail
 from random import randint
+from django.http import HttpResponse
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -53,13 +54,17 @@ def createMemberData(column):
                     member_status = 1
 
             start_date = None
-            end_date= None
+            end_date = None
 
-            #startdate_str = retrieveFromCache(Member, column[15], "start_date")
-            #dt_obj = datetime.datetime.strptime(startdate_str, '%Y/%m/%d')
-            #formatted_date = datetime.datetime.strftime(dt_obj, "%m/%d/%Y")
-            #start_date = formatted_date
-            #end_date = datetime.datetime.strftime(dt_obj + datetime.timedelta(days=730), "%m/%d/%Y")
+            #read start and end date from input file then assign the same to member data
+            #if user app role is one of an officer role then 2 years will be added
+            #if end_date is not provided
+            if len(column[15]) > 0:
+                start_date = datetime.datetime.strptime(column[15], "%m/%d/%Y").date()
+                if len(column[16]) > 0:
+                    end_date = datetime.datetime.strptime(column[16], "%m/%d/%Y").date()
+                elif arole.name is not "Member":
+                    end_date = start_date + datetime.timedelta(days=730)
 
             created = False
             memobj = None
@@ -175,30 +180,29 @@ def getHelp(request):
         metadata = Metadata.objects.filter(key__contains='contact-header-line').first()
         context = {'metadata' : metadata.value}
     elif request.method == 'POST':
-        path = 'contactus.html'
-        msgheader = Metadata.objects.get(key='contact-msg-header')
-        contactaddress = Metadata.objects.get(key='contact-email')
-        messagebody = "".join("<table>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Full Name</td>"
-                    + "<td>" + request.POST.get('fullname') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Email</td>"
-                    + "<td>" + request.POST.get('email') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Phone</td>"
-                    + "<td>" + request.POST.get('phone') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Subject</td>"
-                    + "<td>" + request.POST.get('subject') + "</td>"
-                    + "</tr>"
-                    + "<tr style='background-color: #f2f2f2;'>"
-                    + "<td>Message</td>"
-                    + "<td>" + request.POST.get('message') + "</td>"
-                    + "</tr>"
-                    + "</table>")
-        sendemail(contactaddress.value, msgheader.value, messagebody)
+        if request.POST.keys() >= { 'fullname', 'email', 'subject', 'message' }:
+            path = 'contactus.html'
+            msgheader = Metadata.objects.get(key='contact-msg-header')
+            contactaddress = Metadata.objects.get(key='contact-email')
+            messagebody = "".join("<table>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Full Name</td>"
+                        + "<td>" + request.POST.get('fullname') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Email</td>"
+                        + "<td>" + request.POST.get('email') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Subject</td>"
+                        + "<td>" + request.POST.get('subject') + "</td>"
+                        + "</tr>"
+                        + "<tr style='background-color: #f2f2f2;'>"
+                        + "<td>Message</td>"
+                        + "<td>" + request.POST.get('message') + "</td>"
+                        + "</tr>"
+                        + "</table>")
+            sendemail(contactaddress.value, msgheader.value, messagebody)
+        else:
+            return HttpResponse('Something went wrong. Please try again later.')
     return context
