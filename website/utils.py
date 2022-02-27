@@ -74,7 +74,7 @@ def createMemberData(column):
                 start_date = datetime.datetime.strptime(column[15], "%m/%d/%Y").date()
                 if len(column[16]) > 0:
                     end_date = datetime.datetime.strptime(column[16], "%m/%d/%Y").date()
-                elif arole.name is not "Member":
+                elif arole.name != "Member":
                     end_date = start_date + datetime.timedelta(days=730)
 
             created = False
