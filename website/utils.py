@@ -162,9 +162,10 @@ def random_quote():
         quotes_count = cache.get("quotes_count")
     else:
         quotes_count = Quotes.objects.count()
-        random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
-        cache.set("quotes_count", quotes_count)
-        cache.set("random_quote", random_quote)
+        if quotes_count > 0:
+            random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
+            cache.set("quotes_count", quotes_count)
+            cache.set("random_quote", random_quote)
     return random_quote
 
 def getAllOrgRoles():
