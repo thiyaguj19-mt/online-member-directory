@@ -24,11 +24,11 @@ class AppRoleAdmin(admin.ModelAdmin):
 
 admin.site.register(AppRole, AppRoleAdmin)
 
-class CenterAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'region', 'status', 'center_type')
-    list_filter = ('region', 'status', 'center_type', 'name')
+#class CenterAdmin(admin.ModelAdmin):
+    #list_display = ('id', 'name', 'region', 'status', 'center_type')
+    #list_filter = ('region', 'status', 'center_type', 'name')
 
-admin.site.register(Center, CenterAdmin)
+#admin.site.register(Center, CenterAdmin)
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'region', 'center', 'get_orgrole', 'approle')

@@ -30,32 +30,7 @@ class Region(models.Model):
 
 
 class Center(models.Model):
-
-    # Fields
-    STATUS_CHOICES = [
-        ('Active', 'Active'),
-        ('Inactive', 'Inactive')
-    ]
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, help_text='Center Status', default = 'Active')
-    CENTER_GROUP = [
-        ('Center', 'Center'),
-        ('Group', 'Group')
-    ]
-    center_type = models.CharField(max_length=10, choices=CENTER_GROUP, help_text='Center centerType', default = 'Center')
     name = models.CharField(max_length=100, help_text='Center Name')
-    address = models.CharField(max_length=100, help_text='Center Address', null=True, blank=True)
-    city = models.CharField(max_length=60, help_text='Center City', null=True, blank=True)
-    state = models.CharField(max_length=30, help_text='Center State', null=True,blank=True)
-    zip_code = models.CharField(max_length=10,help_text='Center Zip', null=True, blank=True)
-    country = models.CharField(max_length=30, help_text='Center Country', default = 'USA')
-    phone = models.BigIntegerField(help_text='Center Phone', default=0)
-    website = models.URLField(help_text='Center website', null=True, blank=True)
-    latitude=models.DecimalField(max_digits=30, decimal_places=6,help_text='Center Latitude', default = 0.0)
-    longitude=models.DecimalField(max_digits=30, decimal_places=6,help_text='Center Longitude', default = 0.0)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-    # metadata
-    #ordering = ['name']
 
     # Methods
     def __str__(self):
