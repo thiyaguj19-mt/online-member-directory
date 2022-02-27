@@ -104,6 +104,11 @@ def createMemberData(column):
                     memobj.orgrole.add(orole)
                     return {"column1" : column}
             else:
+                #update region and center_role
+                member.region = region
+                member.center = center
+                member.save()
+                #add orgRole
                 member.orgrole.add(orole)
         except Exception as ex:
             print("error in createMemberData: " , ex)
