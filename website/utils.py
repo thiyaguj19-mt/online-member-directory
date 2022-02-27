@@ -29,7 +29,18 @@ def createRegionData(column):
         if region != None:
             _, created = Center.objects.update_or_create(
                 region=region,
-                name=column[1]
+                name=column[1],
+                address = column[2],
+                city = column[3],
+                state = column[4],
+                zip_code = column[5],
+                country = column[6],
+                phone = column[7],
+                website = column[8],
+                latitude = column[9],
+                longitude = column[10],
+                status=column[11],
+                center_type=column[12]
             )
             if created:
                 newCenter = column[1]
