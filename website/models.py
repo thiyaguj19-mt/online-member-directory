@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 
 class Quotes(models.Model):
     #Fields
