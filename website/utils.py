@@ -27,6 +27,7 @@ def createRegionData(column):
         except Exception as ex:
             print("error in createRegionData: " , ex)
         if region != None:
+            created = False
             try:
                 _, created = Center.objects.update_or_create(
                     region=region,
