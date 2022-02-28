@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.cache import cache
+from random import randint
 
 class Quotes(models.Model):
     #Fields
@@ -7,8 +8,17 @@ class Quotes(models.Model):
     cite = models.CharField(max_length=100, default= "Citation")
 
     def __str__(self):
-
         return f'{self.message}, {self.cite}'
+
+        #override save Method
+    def save(self, *args, **kwargs):
+        if cache.get("member_regions"):
+            quotes_count = Quotes.objects.count()
+            if quotes_count > 0:
+                random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
+                cache.set("quotes_count", quotes_count)
+                cache.set("random_quote", random_quote)
+        super(Quotes, self).save(*args, **kwargs)
 
 class Region(models.Model):
 
