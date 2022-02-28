@@ -18,10 +18,12 @@ def createRegionData(column):
             newCenter = None
             newRegion = None
             region = retrieveFromCache(Region, regionval, "name")
+            print("region-val-", region)
             if region == None:
                 region = Region(name=column[0])
                 region.save()
                 newRegion = column[0]
+                print("region-name-", region.name)
             else:
                 newRegion = region.name
         except Exception as ex:

@@ -26,8 +26,10 @@ class Region(models.Model):
 
     #override save Method
     def save(self, *args, **kwargs):
-        mem_regions = Region.objects.all()
-        cache.set("member_regions", mem_regions)
+        if cache.get("member_regions"):
+            mem_regions = Region.objects.all()
+            cache.set("member_regions", mem_regions)
+        super(Region, self).save(*args, **kwargs)
 
 
 class Center(models.Model):
@@ -81,6 +83,7 @@ class OrgRole(models.Model):
     def save(self, *args, **kwargs):
         mem_roles = OrgRole.objects.all()
         cache.set("member_orgroles", mem_roles)
+        super(OrgRole, self).save(*args, **kwargs)
 
 
 class AppRole(models.Model):
