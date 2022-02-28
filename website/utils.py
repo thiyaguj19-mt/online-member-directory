@@ -1,5 +1,6 @@
 import io
 import csv
+from pydoc import describe
 from .models import *
 from django.core.cache import cache
 import logging
@@ -18,30 +19,37 @@ def createRegionData(column):
             newCenter = None
             newRegion = None
             region = retrieveFromCache(Region, regionval, "name")
+            print("region-val-", region)
             if region == None:
                 region = Region(name=column[0])
                 region.save()
                 newRegion = column[0]
+                print("region-name-", region.name)
             else:
                 newRegion = region.name
         except Exception as ex:
             print("error in createRegionData: " , ex)
         if region != None:
-            _, created = Center.objects.update_or_create(
-                region=region,
-                name=column[1],
-                address = column[2],
-                city = column[3],
-                state = column[4],
-                zip_code = column[5],
-                country = column[6],
-                phone = column[7],
-                website = column[8],
-                latitude = column[9],
-                longitude = column[10],
-                status=column[11],
-                center_type=column[12]
-            )
+            created = False
+            try:
+                _, created = Center.objects.update_or_create(
+                    region=region,
+                    name=column[1],
+                    address = column[2],
+                    city = column[3],
+                    state = column[4],
+                    zip_code = column[5],
+                    country = column[6],
+                    phone = column[7],
+                    website = column[8],
+                    latitude = column[9],
+                    longitude = column[10],
+                    status=column[11],
+                    center_type=column[12]
+                )
+            except Exception as err:
+                print(f'Unexpected {err} from createRegionData(), {type(err)}')
+
             if created:
                 newCenter = column[1]
                 return {"column2" : newCenter, "column1": newRegion}
@@ -115,6 +123,20 @@ def createMemberData(column):
             return {"column1" : "something went wrong- " + str(ex)}
         return None
 
+def createOrgRole(column):
+    if len(column) > 0:
+        orgRole = OrgRole(name=column[1], description=column[2])
+        orgRole.save()
+        return {"column1" : column}
+    return None
+
+def createQuotes(column):
+    if len(column) > 0:
+        quotes = Quotes(message=column[1], cite=column[2])
+        quotes.save()
+        return {"column1" : column}
+    return None
+
 def uploadCSVFile(csv_file, type):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
@@ -135,6 +157,14 @@ def uploadCSVFile(csv_file, type):
                 #print (member_data)
                 if member_data not in context:
                     context.append(member_data)
+        elif type == "orgRole":
+            orgrole_data = createOrgRole(column)
+            if orgrole_data != None:
+              context.append(orgrole_data)
+        elif type == "quotes":
+                quotes_data = createQuotes(column)
+                if quotes_data != None:
+                    context.append(quotes_data)   
     return context
 
 def retrieveFromCache(obj, columnval, field):

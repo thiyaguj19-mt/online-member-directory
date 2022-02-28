@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.cache import cache
+from random import randint
 
 class Quotes(models.Model):
     #Fields
@@ -6,8 +8,17 @@ class Quotes(models.Model):
     cite = models.CharField(max_length=100, default= "Citation")
 
     def __str__(self):
+        return f'{self.message} || {self.cite}'
 
-        return f'{self.message}, {self.cite}'
+        #override save Method
+    def save(self, *args, **kwargs):
+        if cache.get("random_quote"):
+            quotes_count = Quotes.objects.count()
+            if quotes_count > 0:
+                random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
+                cache.set("quotes_count", quotes_count)
+                cache.set("random_quote", random_quote)
+        super(Quotes, self).save(*args, **kwargs)
 
 class Region(models.Model):
 
@@ -25,8 +36,10 @@ class Region(models.Model):
 
     #override save Method
     def save(self, *args, **kwargs):
-        mem_regions = Region.objects.all()
-        cache.set("member_regions", mem_regions)
+        if cache.get("member_regions"):
+            mem_regions = Region.objects.all()
+            cache.set("member_regions", mem_regions)
+        super(Region, self).save(*args, **kwargs)
 
 
 class Center(models.Model):
@@ -80,6 +93,7 @@ class OrgRole(models.Model):
     def save(self, *args, **kwargs):
         mem_roles = OrgRole.objects.all()
         cache.set("member_orgroles", mem_roles)
+        super(OrgRole, self).save(*args, **kwargs)
 
 
 class AppRole(models.Model):
