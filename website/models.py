@@ -12,7 +12,7 @@ class Quotes(models.Model):
 
         #override save Method
     def save(self, *args, **kwargs):
-        if cache.get("member_regions"):
+        if cache.get("random_quote"):
             quotes_count = Quotes.objects.count()
             if quotes_count > 0:
                 random_quote = Quotes.objects.all()[randint(0, quotes_count - 1)]
