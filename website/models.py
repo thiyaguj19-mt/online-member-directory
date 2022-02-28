@@ -8,7 +8,7 @@ class Quotes(models.Model):
     cite = models.CharField(max_length=100, default= "Citation")
 
     def __str__(self):
-        return f'{self.message}, {self.cite}'
+        return f'{self.message} || {self.cite}'
 
         #override save Method
     def save(self, *args, **kwargs):
