@@ -11,7 +11,7 @@
       <th scope="col">First</th>
       <th scope="col">Last</th>
       <th scope="col">Email-ID</th>
-      <th scope="col">Phone-Num</th>
+      <!-- <th scope="col">Phone-Num</th> -->
       <th scope="col">Org-Role</th>
       <th scope="col">App-Role</th>
       <th scope="col">Region</th>
@@ -23,7 +23,7 @@
       <td>{{ member.first_name }}</td>
       <td>{{ member.last_name }}</td>
       <td>{{ member.email }}</td>
-      <td>{{ member.phone }}</td>
+      <!-- <td>{{ member.phone }}</td> -->
       <td>
         {% for mem in member.orgrole.all %}
           {% if forloop.counter == 1 %}

@@ -8,7 +8,7 @@
     </nav>
 
     {% if regionOfficers %}
-      <div class="row mt-3">        
+      <div class="row mt-3">
         <div class="region-center-box">
           <!-- <div class="container">
             <div class="region-center-intro">
@@ -18,7 +18,7 @@
           <div style="background: url('../../static/images/region-{{ regionId }}.jpg'); background-position:center; background-repeat: no-repeat;" class="jumbotron bg-cover text-white">
             <div class="container py-5 text-center">
                 <h1 class="display-4 font-weight-bold">Officers of Region {{ regionId }}</h1>
-                <p class="font-italic mb-0"></p>                                
+                <p class="font-italic mb-0"></p>
             </div>
           </div>
 
@@ -36,20 +36,20 @@
                             <img src="https://www.gravatar.com/avatar/94d093eda664addd6e450d7e9881bcad?s=32&d=identicon&r=PG" alt="profile-image" class="profile"/>
                         </div>
                         <div class="card-content">
-                            <h2>{{ regOff.first_name }} {{regOff.last_name}}<small>                  
+                            <h2>{{ regOff.first_name }} {{regOff.last_name}}<small>
                               {% for mem in regOff.orgrole.all %}
                                   {% if forloop.counter == 1 %}
                                     {{ mem }}
                                   {% else %}
                                     | {{ mem }}
                                   {% endif %}
-                              {% endfor %}                  
-                            </small></h3>                    
-                            <p class="officer-details">Email: {{regOff.email}}</p> 
-                            <p class="officer-details">Phone #: {{regOff.phone}}</p>                          
+                              {% endfor %}
+                            </small></h3>
+                            <p class="officer-details">Email: {{regOff.email}}</p>
+                            <!-- <p class="officer-details">Phone #: {{regOff.phone}}</p>                           -->
                         </div>
-                    </div>              
-                  </div> 
+                    </div>
+                  </div>
                 {% endfor %}
               </div>
            </div>
@@ -58,7 +58,7 @@
           <!-- <div class="row officers">
             {% for regOff in regionOfficers %}
               <div class="col-md-6 col-lg-4 item">
-                <div class="box">                  
+                <div class="box">
                   <h3 class="name">{{ regOff.first_name }} {{regOff.last_name}}</h3>
                   <p class="officer-org-role">
                     {% for mem in regOff.orgrole.all %}
@@ -69,14 +69,14 @@
                         {% endif %}
                     {% endfor %}
                   </p>
-                  <p class="officer-detials">Email: {{regOff.email}}</p>                                
+                  <p class="officer-detials">Email: {{regOff.email}}</p>
                   <p class="officer-details">Phone #: {{regOff.phone}}</p>
                   <p class="officer-details">Address: {{regOff.city}}, {{regOff.state}}</p>
                 </div>
               </div>
-            {% endfor %}       
+            {% endfor %}
           </div> -->
-        </div>                
+        </div>
       <div>
 
       {% else %}
@@ -85,7 +85,7 @@
             <div style="background: url('../../static/images/region-{{ regionId }}.jpg'); background-position:center; background-repeat: no-repeat;" class="jumbotron bg-cover text-white">
               <div class="container py-5 text-center">
                   <h1 class="display-4 font-weight-bold">No Officers for Region {{ regionId }} Available</h1>
-                  <p class="font-italic mb-0"></p>                                
+                  <p class="font-italic mb-0"></p>
               </div>
             </div>
           </div>
