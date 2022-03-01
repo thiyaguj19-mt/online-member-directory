@@ -44,9 +44,9 @@
       <!--Start Center Members Card-Profile-->
       <!-- Display As Table -->
       {% for member in centerOfficers%}
-      
+
       {% if forloop.first %}
-      <div class="row mx-auto"> 
+      <div class="row mx-auto">
         {% endif %}
         <div class="col-lg-4 col-md-4 col-12">
           <div class="card" style="width: 21rem;">
@@ -55,7 +55,7 @@
                 <br>
                   <h5 class="card-title">{{ member.approle }}</h5>
                   <p class="card-text">
-                      
+
                       <table class="card-table table">
                         <tbody>
                             <tr>
@@ -66,29 +66,29 @@
                             <th>Last Name</th>
                             <td>{{ member.last_name }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                             <th>Phone</th>
                             <td>{{ member.phone }}</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                             <th>Email</th>
                             <td>{{ member.email }}</td>
                             </tr>
+                            <tr>
                             <th>Center</th>
                             <td>{{ member.center }}</td>
                             </tr>
                         </tbody>
                     </table>
                   </p>
-              </div>  
+              </div>
            </div>
           </div>
           {% if forloop.counter|divisibleby:3 %}
         </div>  <div class="row mx-auto mt-2">{% endif %}{% if forloop.last %} </div> {% endif %}
           {% endfor %}
       </div>
-    </div> 
+    </div>
   </div>
   {% endblock content %}
 </center>
-

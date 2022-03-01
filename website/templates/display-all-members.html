@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 	<nav class="nav nav-pills nav-fill">
 		<!-- <a class="nav-link" href="{% url 'region-centers' centerId %}">Show Centers</a> -->
@@ -19,7 +19,7 @@
 				  <th scope="col">First Name</th>
 				  <th scope="col">Last Name</th>
 				  <th scope="col">Email-ID</th>
-				  <th scope="col">Phone-Num</th>
+				  <!-- <th scope="col">Phone-Num</th> -->
 				  <th scope="col">Org-Role</th>
 				  <th scope="col">App-Role</th>
 				  <th scope="col">Region</th>
@@ -31,7 +31,7 @@
 				  <td>{{ member.first_name }}</td>
 				  <td>{{ member.last_name }}</td>
 				  <td>{{ member.email }}</td>
-				  <td>{{ member.phone }}</td>
+				  <!-- <td>{{ member.phone }}</td> -->
 				  <td>
 					{% for mem in member.orgrole.all %}
 					  {% if forloop.counter == 1 %}
@@ -42,7 +42,7 @@
 				   {% endfor %}
 				  </td>
 				  <td>{{ member.approle }}</td>
-			
+
 				  <td>
 					<a href="{% url 'region-page' member.region_id %}"
 					  >{{ member.region}}</a

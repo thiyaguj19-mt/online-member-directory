@@ -40,7 +40,7 @@ h6 {
 .blockquote-text {
   font-family: 'Gelasio', serif;
   font-style: italic;
-  font-size: 1em;
+  font-size: 1.2em;
   color: #b38600;
   line-height: 1.2;
   letter-spacing: 0.02px;
@@ -231,6 +231,7 @@ kbd {
   color: white;
 }
 
+/* START Not sure if the followin 2 classes are being used? */
 .footer {
   text-align: center;
   border: none;
@@ -242,7 +243,83 @@ kbd {
   background: #0d2d3d;
   padding: 20px 0px 20px 0px;
 }
+/* END Above two classes are not being used */
 
+/*Adding styles for Multi-Column Footer */
+.container {
+  flex: 1;
+  display: flex;
+  min-height: 10vh;
+  flex-direction: column;
+}
+
+.ftr-col-style {
+  list-style: none;
+  padding-left: 0;
+}
+
+footer {
+  /* background-color: #13435A; */
+  background-color: #0D447C;
+  /* color: #bbb; */
+  /* padding: 20px 0px 20px 0px; */
+  line-height: 1.5;
+}
+
+footer a {
+  color: #fff;
+  /* color: #eee; */
+}
+
+a:hover {
+  color: #fff;
+}
+
+
+.ftr-title {
+  color: #e67e17;
+  font-family: 'Merriweather', serif;
+  font-family: 'Source Serif Pro', serif;
+  font-size: 1.375rem;
+  padding-bottom: 0.625rem;
+}
+
+.ftr-main {
+  padding: 1.25rem 1.875rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ftr-menu-item {
+  padding: 1.25rem;
+  min-width: 12.5rem;
+}
+
+.footer-copyright {
+  padding: 0.9375rem 1.875rem;
+  background-color: #0D2D3D;
+  color: #fff;
+}
+
+.hr-dot-line {
+
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   font-style: italic;
+   color: #e67e17;
+   padding: 10px;
+   width:30%;
+  height:50px;
+  margin-top:0px;
+  /* border-top:2px dashed red;
+  border-bottom:2px dashed red; */
+
+}
+
+/* End Multi-column Footer styles */
 .breadcrumb {
   background-color: #0d2d3d;
 }
