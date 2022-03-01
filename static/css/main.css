@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Lobster&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -256,31 +258,32 @@ kbd {
 .ftr-col-style {
   list-style: none;
   padding-left: 0;
+  font-size: 14px;
 }
 
 footer {
-  /* background-color: #13435A; */
-  background-color: #0D447C;
-  /* color: #bbb; */
-  /* padding: 20px 0px 20px 0px; */
+  background-color: #d8d8d8;
   line-height: 1.5;
 }
 
 footer a {
-  color: #fff;
+  color: #333;
   /* color: #eee; */
 }
 
-a:hover {
-  color: #fff;
+footer disabled a:hover {
+  color: #333;
 }
 
 
+
 .ftr-title {
-  color: #e67e17;
-  font-family: 'Merriweather', serif;
-  font-family: 'Source Serif Pro', serif;
-  font-size: 1.375rem;
+  color: #288ABB;
+  font-family: 'Lobster', cursive;
+  /* font-family: 'Amatic SC', cursive; */
+
+  font-size: 1.3rem;
+  font-weight: bold;
   padding-bottom: 0.625rem;
 }
 
@@ -298,8 +301,8 @@ a:hover {
 }
 
 .footer-copyright {
-  padding: 0.9375rem 1.875rem;
-  background-color: #0D2D3D;
+  padding: 3px;
+  background-color: #0D447C;
   color: #fff;
 }
 
@@ -307,15 +310,13 @@ a:hover {
 
    display: flex;
    flex-direction: row;
-   justify-content: space-between;
+   justify-content: center;
    font-style: italic;
    color: #e67e17;
    padding: 10px;
    width:30%;
   height:50px;
   margin-top:0px;
-  /* border-top:2px dashed red;
-  border-bottom:2px dashed red; */
 
 }
 
@@ -333,7 +334,8 @@ a:hover {
   font-weight: bold;
   margin-bottom: 40px;
   padding-top: 40px;
-  color: inherit;
+  color: #333;
+  /* color: inherit; */
 }
 
 .region-center-box region-center-intro {

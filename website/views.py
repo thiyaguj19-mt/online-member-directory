@@ -173,14 +173,20 @@ def getAllCenterOfficers(request):
 def getRegionOfficers(request, regionId):
     regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
     logging.debug('regionOfficers: ' + str(regionOfficers))
-    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId})
+    regionName = ''
+    if len(regionOfficers) >0:
+        regionName = regionOfficers[0].region.name
+    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId, 'regionName': regionName})
 
 
 #Get center officers for specific center
 def getCenterOfficers(request, centerId):
     centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
     logging.debug('centerOfficers: ' + str(centerOfficers))
-    return render(request, 'display-center.html', {'centerId': centerId, 'centerOfficers': centerOfficers})
+    regionName = ''
+    if len(centerOfficers) >0 :
+        regionName = centerOfficers[0].region.name
+    return render(request, 'display-center.html', {'centerId': centerId, 'centerOfficers': centerOfficers, 'regionName': regionName})
 
 #Get all centers of a region
 def getRegionalCenters(request, regionId):
@@ -243,7 +249,10 @@ def uploadFile(request):
 def displayRegionCenters(request, regionId):
     centersByRegionId = Center.objects.filter(region_id=regionId)
     logging.debug('centersByRegionId' + str(centersByRegionId))
-    return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId})
+    regionName = ''
+    if len(centersByRegionId) > 0 :
+        regionName = centersByRegionId[0].region.name
+    return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId,'regionName':regionName })
 
 def contactus(request):
     context = {}
@@ -279,7 +288,7 @@ def updateMemberProfile(request):
         age_group = data['agegroup']
         if emailid is not None:
             member = Member.objects.filter(email=emailid)
-            member.update(first_name=first_name, 
+            member.update(first_name=first_name,
                             last_name=last_name,
                             age_group=age_group)
             if len(orglist) > 0:
