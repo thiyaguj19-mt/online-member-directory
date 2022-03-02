@@ -205,6 +205,15 @@ def random_quote():
             cache.set("random_quote", random_quote)
     return random_quote
 
+def getAllAppRoles():
+    mem_appRoles = None
+    if cache.get("mem_appRoles"):
+        mem_appRoles = cache.get("mem_appRoles")
+    else:
+        mem_appRoles = AppRole.objects.all()
+        cache.set("mem_appRoles", mem_appRoles)
+    return mem_appRoles
+
 def getAllOrgRoles():
     mem_roles = None
     if cache.get("member_orgroles"):

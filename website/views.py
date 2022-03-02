@@ -85,6 +85,8 @@ def getAllRegionalOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
@@ -96,6 +98,7 @@ def getAllRegionalOfficers(request):
                     'filterMembers':filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -117,6 +120,8 @@ def getAllNationalOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
@@ -128,6 +133,7 @@ def getAllNationalOfficers(request):
                     'filterMembers':filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -153,6 +159,8 @@ def getAllCenterOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
@@ -164,6 +172,7 @@ def getAllCenterOfficers(request):
                     'filterMembers':filterMembers}
         context['member_orgroles'] = member_orgroles
         context['member_regions'] = member_regions
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -275,12 +284,13 @@ def updateMemberProfile(request):
         first_name = data['first_name']
         last_name = data['last_name']
         orglist = data['orgrole']
-        age_group = data['agegroup']
+        #age_group = data['agegroup']
+        approle = data['approle']
         if emailid is not None:
             member = Member.objects.filter(email=emailid)
             member.update(first_name=first_name,
                             last_name=last_name,
-                            age_group=age_group)
+                            approle=approle)
             if len(orglist) > 0:
                 member = member.first()
                 allroles = OrgRole.objects.all()
