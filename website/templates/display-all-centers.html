@@ -21,7 +21,6 @@
 				<th scope="col">State</th>
 				<th scope="col">Zipcode</th>
 				<th scope="col">Website</th>
-				<th scope="col">Region</th>
 				</tr>
 				{% for center in centersByRegionId %}
 				<tr>
@@ -53,11 +52,6 @@
 				<td>
 					<a href="{% url 'center-page' center.id %}"
 					><a href="{{ center.website }}">{{ center.website }}</a></a
-					>
-				</td>
-				<td>
-					<a href="{% url 'region-page' center.region.id %}"
-					>{{ center.region.name }}</a
 					>
 				</td>
 				</tr>
