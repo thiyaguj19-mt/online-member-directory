@@ -24,35 +24,13 @@
 				</tr>
 				{% for center in centersByRegionId %}
 				<tr>
+				<td><a href="{% url 'center-page' center.id %}">{{ center.name}}</a></td>
+				<td>{{ center.center_type}}</td>
+				<td>{{ center.city}}</td>
+				<td>{{ center.state}}</td>
+				<td>{{ center.zip_code}}</td>
 				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.name}}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.center_type }}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.city }}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.state }}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.zip_code }}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'center-page' center.id %}"
-					><a href="{{ center.website }}">{{ center.website }}</a></a
-					>
+					<a href="{{ center.website }}">{{ center.website }}</a>
 				</td>
 				</tr>
 				{% endfor %}
