@@ -145,6 +145,9 @@ def getAllCenterOfficers(request):
         user = User.objects.filter(username=request.user).first()
         if user.has_perm('website.is_national_officer'):
             officers_data = Member.objects.filter(approle__name='Center Officer')
+        elif user.has_perm('website.is_national_officer'):
+            member = Member.objects.filter(email=request.user).first()
+            officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region)
         else:
             member = Member.objects.filter(email=request.user).first()
             officers_data = Member.objects.filter(approle__name='Center Officer', center=member.center)
