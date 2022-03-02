@@ -74,7 +74,7 @@ def getAllRegionalOfficers(request):
             officers_data = Member.objects.filter(approle__name='Regional Officer')
         else:
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(approle__name='Regional Officer',region=member.region)
+            officers_data = Member.objects.filter(approle__name='Regional Officer',region=member.region, center__status='Active')
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
         page_obj = Paginator(officers_data, 12)
@@ -107,7 +107,7 @@ def getAllRegionalOfficers(request):
 def getAllNationalOfficers(request):
     if request.user.is_authenticated:
         gridcheckflag = request.GET.get('gridcheckflag')
-        officers_data = Member.objects.filter(approle__name='National Officer')
+        officers_data = Member.objects.filter(approle__name='National Officer', center__status='Active')
         logging.debug('allNationalOfficers: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -144,13 +144,13 @@ def getAllCenterOfficers(request):
         gridcheckflag = request.GET.get('gridcheckflag')
         user = User.objects.filter(username=request.user).first()
         if user.has_perm('website.is_national_officer'):
-            officers_data = Member.objects.filter(approle__name='Center Officer')
+            officers_data = Member.objects.filter(approle__name='Center Officer', center__status='Active')
         elif user.has_perm('website.is_regional_officer'):
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region)
+            officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region, center__status='Active')
         else:
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(approle__name='Center Officer', center=member.center)
+            officers_data = Member.objects.filter(approle__name='Center Officer', center=member.center, center__status='Active')
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -182,7 +182,7 @@ def getAllCenterOfficers(request):
 
 #Get regional officers for specific region
 def getRegionOfficers(request, regionId):
-    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId)
+    regionOfficers = Member.objects.filter(approle__name='Regional Officer', region_id=regionId, center__status='Active')
     logging.debug('regionOfficers: ' + str(regionOfficers))
     regionName = ''
     if len(regionOfficers) >0:
@@ -192,7 +192,7 @@ def getRegionOfficers(request, regionId):
 
 #Get center officers for specific center
 def getCenterOfficers(request, centerId):
-    centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId)
+    centerOfficers = Member.objects.filter(approle__name='Center Officer', center_id=centerId, center__status='Active')
     logging.debug('centerOfficers: ' + str(centerOfficers))
     regionName = ''
     if len(centerOfficers) >0 :
@@ -201,7 +201,7 @@ def getCenterOfficers(request, centerId):
 
 #Get all centers of a region
 def getRegionalCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)
+    centersByRegionId = Center.objects.filter(region_id=regionId, status='Active')
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
 
 # Search By Member-Names
@@ -249,7 +249,7 @@ def uploadFile(request):
         return render(request,'auth.html',{})
 
 def displayRegionCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)
+    centersByRegionId = Center.objects.filter(region_id=regionId, status='Active')
     logging.debug('centersByRegionId' + str(centersByRegionId))
     regionName = ''
     if len(centersByRegionId) > 0 :
