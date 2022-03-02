@@ -17,8 +17,7 @@ const showEditUI = (emailid) => {
 	const last_name = document.getElementById("last_name");
 	const emailaddr = document.getElementById("emailaddr");
 	const orgrole = document.getElementById('m_id_orgrole');
-	const agegroup = document.getElementById('m_id_age_group');
-	console.log("orgrole" + orgrole.selectedIndex);
+	const approle = document.getElementById('m_id_approle');
 	var url = 'getMemberData/';
 	fetch(url, {
 		method:'GET',
@@ -32,7 +31,7 @@ const showEditUI = (emailid) => {
 		return response.json();
 	 })
 	 .then((jsondata) => {
-		console.log(jsondata)
+		//console.log(jsondata)
 		memberdata = JSON.parse(jsondata);
 		memberfields = memberdata[0].fields;
 		first_name.value = `${memberfields.first_name}`;
@@ -40,8 +39,7 @@ const showEditUI = (emailid) => {
 		emailaddr.innerHTML	= `${emailid}`;
 		selectedval = memberfields.orgrole.filter((val) => val);
 		$("#m_id_orgrole").val(selectedval);
-		console.log("age_group.... " + `${memberfields.age_group}`);
-		agegroup.value = `${memberfields.age_group}`;
+		approle.value = `${memberfields.approle}`;
 	 })
 }
 
@@ -50,10 +48,7 @@ const saveChanges = () => {
 	const first_name = document.getElementById("first_name");
 	const last_name = document.getElementById("last_name");
 	const emailaddr = document.getElementById("emailaddr");
-	const agegroup = document.getElementById("m_id_age_group");
-	console.log("first_name " + first_name.value);
-	console.log("last_name " + last_name.value);
-	console.log("emailaddr " + emailaddr.innerHTML);
+	const approle = document.getElementById('m_id_approle');
 
 	var url = 'updateMemberProfile/';
 	fetch(url, {
@@ -61,13 +56,13 @@ const saveChanges = () => {
 		headers:{
 			'Content-Type':'application/json',
 			'X-CSRFToken':csrftoken,
-		}, 
+		},
 		body:JSON.stringify({
-			'first_name': first_name.value, 
+			'first_name': first_name.value,
 			'last_name': last_name.value,
 			'emailaddr': emailaddr.innerHTML,
 			'orgrole': $('#m_id_orgrole').val(),
-			'agegroup': agegroup.value,
+			'approle': approle.value,
 		})
 	})
 	.then((response) => {
@@ -87,7 +82,7 @@ const updateMemberStatus = (emailId, val, message, bodymessage) => {
 		headers:{
 			'Content-Type':'application/json',
 			'X-CSRFToken':csrftoken,
-		}, 
+		},
 		body:JSON.stringify(bodymessage)
 	})
 	.then((response) => {

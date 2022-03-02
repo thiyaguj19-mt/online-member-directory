@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from website import email
 from .filters import MemberFilter
 from .utils import *
-from django.db.models import Q
 from django.core.cache import cache
 import logging
 from .auth import *
@@ -86,6 +85,8 @@ def getAllRegionalOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Regional Officers',
@@ -97,6 +98,7 @@ def getAllRegionalOfficers(request):
                     'filterMembers':filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -118,6 +120,8 @@ def getAllNationalOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'National Officers',
@@ -129,6 +133,7 @@ def getAllNationalOfficers(request):
                     'filterMembers':filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -140,9 +145,12 @@ def getAllCenterOfficers(request):
         user = User.objects.filter(username=request.user).first()
         if user.has_perm('website.is_national_officer'):
             officers_data = Member.objects.filter(approle__name='Center Officer')
-        else:
+        elif user.has_perm('website.is_national_officer'):
             member = Member.objects.filter(email=request.user).first()
             officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region)
+        else:
+            member = Member.objects.filter(email=request.user).first()
+            officers_data = Member.objects.filter(approle__name='Center Officer', center=member.center)
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -154,6 +162,8 @@ def getAllCenterOfficers(request):
         member_regions = getAllRegions()
         #get organization roles
         member_orgroles = getAllOrgRoles()
+        #get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data':officers_data,
                     'officer_header':'Center Officers',
@@ -165,6 +175,7 @@ def getAllCenterOfficers(request):
                     'filterMembers':filterMembers}
         context['member_orgroles'] = member_orgroles
         context['member_regions'] = member_regions
+        context['member_approles'] = member_approles
         return render(request,'show-officers.html', context)
     else:
         return render(request,'auth.html',{})
@@ -199,16 +210,7 @@ def search_members(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             searched =  request.POST['searched']
-
-            members = Member.objects.filter(
-                Q(first_name__contains=searched)
-                | Q(last_name__contains=searched)
-                | Q(region__name__contains=searched)
-                | Q(orgrole__name__contains=searched)
-                | Q(approle__name__contains=searched)).distinct()
-            # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
-            # Asset.objects.filter( project__name__contains="Foo" )
-            # members = MemberInfo.objects.filter(firstName__contains=searched)
+            members = filtered_search_data(request, searched)
             logging.debug('members: ' + str(members))
             return render(request, 'search-members.html', {'searched':searched, 'members': members})
         else:
@@ -285,12 +287,13 @@ def updateMemberProfile(request):
         first_name = data['first_name']
         last_name = data['last_name']
         orglist = data['orgrole']
-        age_group = data['agegroup']
+        #age_group = data['agegroup']
+        approle = data['approle']
         if emailid is not None:
             member = Member.objects.filter(email=emailid)
             member.update(first_name=first_name,
                             last_name=last_name,
-                            age_group=age_group)
+                            approle=approle)
             if len(orglist) > 0:
                 member = member.first()
                 allroles = OrgRole.objects.all()
