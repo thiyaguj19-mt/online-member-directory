@@ -8,6 +8,8 @@ import datetime
 from .email import sendemail
 from random import randint
 from django.http import HttpResponse
+from django.db.models import Q
+from django.contrib.auth.models import Permission, User
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -164,7 +166,7 @@ def uploadCSVFile(csv_file, type):
         elif type == "quotes":
                 quotes_data = createQuotes(column)
                 if quotes_data != None:
-                    context.append(quotes_data)   
+                    context.append(quotes_data)
     return context
 
 def retrieveFromCache(obj, columnval, field):
@@ -253,3 +255,42 @@ def getHelp(request):
         else:
             return HttpResponse('Something went wrong. Please try again later.')
     return context
+
+def filtered_search_data(request, searched):
+    members = None
+    try:
+        user = User.objects.filter(username=request.user).first()
+        print("who is that? ", user)
+        member = Member.objects.filter(email=request.user).first()
+        regionId = member.region.id
+        centerId = member.center.id
+        print("centerId----", centerId)
+        if user.has_perm('website.is_national_officer') == True:
+            print("is_national_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)).distinct()
+        elif user.has_perm('website.is_regional_officer') == True:
+            print("is_regional_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)
+                , region=regionId).distinct()
+        elif user.has_perm('website.is_central_officer') == True:
+            print("is_central_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)
+                , center=centerId).distinct()
+    except Exception as err:
+        print("error in filtered_search_data---", err)
+    return members
