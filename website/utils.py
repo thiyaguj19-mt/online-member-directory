@@ -144,11 +144,7 @@ def uploadCSVFile(csv_file, type):
     io_string = io.StringIO(data_set)
     next(io_string)
     context = []
-    loopindex = 0
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        if loopindex == 0:
-            loopindex += 1
-            continue
         if type == "region":
             region_data = createRegionData(column)
             if region_data != None:
