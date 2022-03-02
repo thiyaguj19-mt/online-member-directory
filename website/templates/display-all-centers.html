@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 	<nav class="nav nav-pills nav-fill">
 		<a class="nav-link" aria-current="page" href="{% url 'region-page' regionId %}">Regional Officers</a>
@@ -8,27 +8,29 @@
 	<div class="mt-3">
 		<div class="container">
 			<div class="region-center-intro">
-			<h1 class="text-center officers-page-title">Centers from Region {{ regionId }} </h1>
+			<h1 class="text-center officers-page-title">Centers from {{ regionName}} </h1>
 			</div>
 		</div>
 
 		<center>
 			<table class="table">
-				<tr>			  
+				<tr>
 				<th scope="col">Center Name</th>
-				<th scope="col">Region</th>
+				<th scope="col">Center Type</th>
+				<th scope="col">City</th>
+				<th scope="col">State</th>
+				<th scope="col">Zipcode</th>
+				<th scope="col">Website</th>
 				</tr>
 				{% for center in centersByRegionId %}
-				<tr>			  
+				<tr>
+				<td><a href="{% url 'center-page' center.id %}">{{ center.name}}</a></td>
+				<td>{{ center.center_type}}</td>
+				<td>{{ center.city}}</td>
+				<td>{{ center.state}}</td>
+				<td>{{ center.zip_code}}</td>
 				<td>
-					<a href="{% url 'center-page' center.id %}"
-					>{{ center.name}}</a
-					>
-				</td>
-				<td>
-					<a href="{% url 'region-page' center.region.id %}"
-					>{{ center.region.name }}</a
-					>
+					<a href="{{ center.website }}">{{ center.website }}</a>
 				</td>
 				</tr>
 				{% endfor %}

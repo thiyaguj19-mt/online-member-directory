@@ -8,6 +8,8 @@ import datetime
 from .email import sendemail
 from random import randint
 from django.http import HttpResponse
+from django.db.models import Q
+from django.contrib.auth.models import Permission, User
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -142,11 +144,7 @@ def uploadCSVFile(csv_file, type):
     io_string = io.StringIO(data_set)
     next(io_string)
     context = []
-    loopindex = 0
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-        if loopindex == 0:
-            loopindex += 1
-            continue
         if type == "region":
             region_data = createRegionData(column)
             if region_data != None:
@@ -164,7 +162,7 @@ def uploadCSVFile(csv_file, type):
         elif type == "quotes":
                 quotes_data = createQuotes(column)
                 if quotes_data != None:
-                    context.append(quotes_data)   
+                    context.append(quotes_data)
     return context
 
 def retrieveFromCache(obj, columnval, field):
@@ -202,6 +200,15 @@ def random_quote():
             cache.set("quotes_count", quotes_count)
             cache.set("random_quote", random_quote)
     return random_quote
+
+def getAllAppRoles():
+    mem_appRoles = None
+    if cache.get("mem_appRoles"):
+        mem_appRoles = cache.get("mem_appRoles")
+    else:
+        mem_appRoles = AppRole.objects.all()
+        cache.set("mem_appRoles", mem_appRoles)
+    return mem_appRoles
 
 def getAllOrgRoles():
     mem_roles = None
@@ -253,3 +260,44 @@ def getHelp(request):
         else:
             return HttpResponse('Something went wrong. Please try again later.')
     return context
+
+def filtered_search_data(request, searched):
+    members = None
+    try:
+        user = User.objects.filter(username=request.user).first()
+        print("who is that? ", user)
+        member = Member.objects.filter(email=request.user).first()
+        print("user.is_staff----", user.is_staff)
+        if user.is_staff == False:
+            regionId = member.region.id
+            centerId = member.center.id
+        if user.is_staff or user.has_perm('website.is_national_officer') == True:
+            print("is_national_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched),
+                center__status='Active').distinct()
+        elif user.has_perm('website.is_regional_officer') == True:
+            print("is_regional_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)
+                , center__status='Active', region=regionId).distinct()
+        elif user.has_perm('website.is_central_officer') == True:
+            print("is_central_officer----")
+            members = Member.objects.filter(
+                Q(first_name__contains=searched)
+                | Q(last_name__contains=searched)
+                | Q(region__name__contains=searched)
+                | Q(orgrole__name__contains=searched)
+                | Q(approle__name__contains=searched)
+                , center__status='Active', center=centerId).distinct()
+    except Exception as err:
+        print("error in filtered_search_data---", err)
+    return members

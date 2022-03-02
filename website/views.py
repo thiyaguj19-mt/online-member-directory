@@ -7,7 +7,6 @@ from django.http import JsonResponse
 from website import email
 from .filters import MemberFilter
 from .utils import *
-from django.db.models import Q
 from django.core.cache import cache
 import logging
 from .auth import *
@@ -85,7 +84,7 @@ def getAllRegionalOfficers(request):
         else:
             member = Member.objects.filter(email=request.user).first()
             officers_data = Member.objects.filter(
-                approle__name='Regional Officer', region=member.region)
+                approle__name='Regional Officer', region=member.region, center__status='Active')
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
         page_obj = Paginator(officers_data, 12)
@@ -96,6 +95,8 @@ def getAllRegionalOfficers(request):
         member_regions = getAllRegions()
         # get organization roles
         member_orgroles = getAllOrgRoles()
+        # get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data': officers_data,
                        'officer_header': 'Regional Officers',
@@ -107,6 +108,7 @@ def getAllRegionalOfficers(request):
                        'filterMembers': filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request, 'show-officers.html', context)
     else:
         return render(request, 'auth.html', {})
@@ -117,7 +119,8 @@ def getAllRegionalOfficers(request):
 def getAllNationalOfficers(request):
     if request.user.is_authenticated:
         gridcheckflag = request.GET.get('gridcheckflag')
-        officers_data = Member.objects.filter(approle__name='National Officer')
+        officers_data = Member.objects.filter(
+            approle__name='National Officer', center__status='Active')
         logging.debug('allNationalOfficers: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -130,6 +133,8 @@ def getAllNationalOfficers(request):
         member_regions = getAllRegions()
         # get organization roles
         member_orgroles = getAllOrgRoles()
+        # get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data': officers_data,
                        'officer_header': 'National Officers',
@@ -141,6 +146,7 @@ def getAllNationalOfficers(request):
                        'filterMembers': filterMembers}
         context['member_regions'] = member_regions
         context['member_orgroles'] = member_orgroles
+        context['member_approles'] = member_approles
         return render(request, 'show-officers.html', context)
     else:
         return render(request, 'auth.html', {})
@@ -154,11 +160,15 @@ def getAllCenterOfficers(request):
         user = User.objects.filter(username=request.user).first()
         if user.has_perm('website.is_national_officer'):
             officers_data = Member.objects.filter(
-                approle__name='Center Officer')
+                approle__name='Center Officer', center__status='Active')
+        elif user.has_perm('website.is_regional_officer'):
+            member = Member.objects.filter(email=request.user).first()
+            officers_data = Member.objects.filter(
+                approle__name='Center Officer', region=member.region, center__status='Active')
         else:
             member = Member.objects.filter(email=request.user).first()
             officers_data = Member.objects.filter(
-                approle__name='Center Officer', region=member.region)
+                approle__name='Center Officer', center=member.center, center__status='Active')
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -170,6 +180,8 @@ def getAllCenterOfficers(request):
         member_regions = getAllRegions()
         # get organization roles
         member_orgroles = getAllOrgRoles()
+        # get app_roles
+        member_approles = getAllAppRoles()
         if gridcheckflag is not None:
             context = {'officers_data': officers_data,
                        'officer_header': 'Center Officers',
@@ -181,6 +193,7 @@ def getAllCenterOfficers(request):
                        'filterMembers': filterMembers}
         context['member_orgroles'] = member_orgroles
         context['member_regions'] = member_regions
+        context['member_approles'] = member_approles
         return render(request, 'show-officers.html', context)
     else:
         return render(request, 'auth.html', {})
@@ -190,23 +203,30 @@ def getAllCenterOfficers(request):
 
 def getRegionOfficers(request, regionId):
     regionOfficers = Member.objects.filter(
-        approle__name='Regional Officer', region_id=regionId)
+        approle__name='Regional Officer', region_id=regionId, center__status='Active')
     logging.debug('regionOfficers: ' + str(regionOfficers))
-    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId})
+    regionName = ''
+    if len(regionOfficers) > 0:
+        regionName = regionOfficers[0].region.name
+    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId, 'regionName': regionName})
 
 
 # Get center officers for specific center
 def getCenterOfficers(request, centerId):
     centerOfficers = Member.objects.filter(
-        approle__name='Center Officer', center_id=centerId)
+        approle__name='Center Officer', center_id=centerId, center__status='Active')
     logging.debug('centerOfficers: ' + str(centerOfficers))
-    return render(request, 'display-center.html', {'centerId': centerId, 'centerOfficers': centerOfficers})
+    regionName = ''
+    if len(centerOfficers) > 0:
+        regionName = centerOfficers[0].region.name
+    return render(request, 'display-center.html', {'centerId': centerId, 'centerOfficers': centerOfficers, 'regionName': regionName})
 
 # Get all centers of a region
 
 
 def getRegionalCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)
+    centersByRegionId = Center.objects.filter(
+        region_id=regionId, status='Active')
     logging.debug('centersByRegionId: ' + str(centersByRegionId))
 
 # Search By Member-Names
@@ -217,16 +237,7 @@ def search_members(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             searched = request.POST['searched']
-
-            members = Member.objects.filter(
-                Q(first_name__contains=searched)
-                | Q(last_name__contains=searched)
-                | Q(region__name__contains=searched)
-                | Q(orgrole__name__contains=searched)
-                | Q(approle__name__contains=searched)).distinct()
-            # role_info = MemberInfo.objects.filter(Q(roleDesc__description__icontains =searched))
-            # Asset.objects.filter( project__name__contains="Foo" )
-            # members = MemberInfo.objects.filter(firstName__contains=searched)
+            members = filtered_search_data(request, searched)
             logging.debug('members: ' + str(members))
             return render(request, 'search-members.html', {'searched': searched, 'members': members})
         else:
@@ -349,9 +360,13 @@ def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
 
 
 def displayRegionCenters(request, regionId):
-    centersByRegionId = Center.objects.filter(region_id=regionId)
+    centersByRegionId = Center.objects.filter(
+        region_id=regionId, status='Active')
     logging.debug('centersByRegionId' + str(centersByRegionId))
-    return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId})
+    regionName = ''
+    if len(centersByRegionId) > 0:
+        regionName = centersByRegionId[0].region.name
+    return render(request, 'display-all-centers.html', {'regionId': regionId, 'centersByRegionId': centersByRegionId, 'regionName': regionName})
 
 
 def contactus(request):
@@ -388,12 +403,13 @@ def updateMemberProfile(request):
         first_name = data['first_name']
         last_name = data['last_name']
         orglist = data['orgrole']
-        age_group = data['agegroup']
+        #age_group = data['agegroup']
+        approle = data['approle']
         if emailid is not None:
             member = Member.objects.filter(email=emailid)
             member.update(first_name=first_name,
                           last_name=last_name,
-                          age_group=age_group)
+                          approle=approle)
             if len(orglist) > 0:
                 member = member.first()
                 allroles = OrgRole.objects.all()
