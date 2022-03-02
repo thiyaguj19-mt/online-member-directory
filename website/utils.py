@@ -262,10 +262,11 @@ def filtered_search_data(request, searched):
         user = User.objects.filter(username=request.user).first()
         print("who is that? ", user)
         member = Member.objects.filter(email=request.user).first()
-        regionId = member.region.id
-        centerId = member.center.id
-        print("centerId----", centerId)
-        if user.has_perm('website.is_national_officer') == True:
+        print("user.is_staff----", user.is_staff)
+        if user.is_staff == False:
+            regionId = member.region.id
+            centerId = member.center.id
+        if user.is_staff or user.has_perm('website.is_national_officer') == True:
             print("is_national_officer----")
             members = Member.objects.filter(
                 Q(first_name__contains=searched)
