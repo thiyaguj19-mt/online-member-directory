@@ -278,7 +278,8 @@ def filtered_search_data(request, searched):
                 | Q(last_name__contains=searched)
                 | Q(region__name__contains=searched)
                 | Q(orgrole__name__contains=searched)
-                | Q(approle__name__contains=searched)).distinct()
+                | Q(approle__name__contains=searched),
+                center__status='Active').distinct()
         elif user.has_perm('website.is_regional_officer') == True:
             print("is_regional_officer----")
             members = Member.objects.filter(
@@ -287,7 +288,7 @@ def filtered_search_data(request, searched):
                 | Q(region__name__contains=searched)
                 | Q(orgrole__name__contains=searched)
                 | Q(approle__name__contains=searched)
-                , region=regionId).distinct()
+                , center__status='Active', region=regionId).distinct()
         elif user.has_perm('website.is_central_officer') == True:
             print("is_central_officer----")
             members = Member.objects.filter(
@@ -296,7 +297,7 @@ def filtered_search_data(request, searched):
                 | Q(region__name__contains=searched)
                 | Q(orgrole__name__contains=searched)
                 | Q(approle__name__contains=searched)
-                , center=centerId).distinct()
+                , center__status='Active', center=centerId).distinct()
     except Exception as err:
         print("error in filtered_search_data---", err)
     return members
