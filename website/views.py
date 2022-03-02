@@ -147,7 +147,7 @@ def getAllCenterOfficers(request):
             officers_data = Member.objects.filter(approle__name='Center Officer')
         else:
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(approle__name='Center Officer', region=member.region)
+            officers_data = Member.objects.filter(approle__name='Center Officer', center=member.center)
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
