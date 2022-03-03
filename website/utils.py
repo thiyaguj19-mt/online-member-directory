@@ -87,6 +87,15 @@ def createMemberData(column):
                 elif arole.name != "Member":
                     end_date = start_date + datetime.timedelta(days=730)
 
+            #Get city from center if not available
+            city = None
+            if len(column[7]) > 0:
+                city = column[7]
+            else:
+                if len(column[18]) > 0:
+                    res = column[18].split("of")
+                    city = res[-1]
+
             created = False
             memobj = None
             if member == None:
@@ -98,7 +107,7 @@ def createMemberData(column):
                     phone=column[4],
                     address_1=column[5],
                     address_2=column[6],
-                    city=column[7],
+                    city=city,
                     state=column[8],
                     zip_code=column[9],
                     country=column[10],
