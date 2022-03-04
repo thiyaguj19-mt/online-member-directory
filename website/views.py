@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Member, AppRole, OrgRole, Center, Region, Quotes
+from .models import Member, AppRole, OrgRole, Center, Region, Quotes, Metadata
 from django.core import serializers
 from django.http import JsonResponse
 from website import email
@@ -267,66 +267,73 @@ def uploadFile(request):
                 loadeddata = ""
                 loadeddata = uploadCSVFile(csv_file, importType)
 
-                if importType == "member":
-                    # Querying member Table to get all Unique Regions Ids
-                    uniqueRegionsQuerySet = Member.objects.values(
-                        'region_id').distinct()
+            emailOfficersForApprovalMetaData = Metadata.objects.get(
+                key='email-officers-for-approval')
+            if emailOfficersForApprovalMetaData.value:
+                emailOfficersForApproval(importType)
 
-                    uniqueCentersQuerySet = Member.objects.values(
-                        'center_id').distinct()
-
-                    uniqueRegionIds, uniqueCenterIds = set([]), set([])
-                    for regionObject in uniqueRegionsQuerySet:
-                        if regionObject['region_id']:
-                            uniqueRegionIds.add(regionObject['region_id'])
-
-                    for centerObject in uniqueCentersQuerySet:
-                        if centerObject['center_id']:
-                            uniqueCenterIds.add(centerObject['center_id'])
-
-                    officers = Member.objects.filter(
-                        region_id__in=list(uniqueRegionIds)).exclude(approle__name='member')
-
-                    officers_list, regionOfficers, centerOfficersInRegion = [], {}, {}
-                    for officer in officers:
-                        officerObj = {
-                            "first_name":  officer.first_name,
-                            "last_name": officer.last_name,
-                            "email": officer.email,
-                            "appRole": officer.approle.name,
-                            "region_id": officer.region_id,
-                            "center_id": officer.center_id,
-                            "member_status": officer.member_status,
-                            "region": officer.region,
-                            "center": officer.center
-                        }
-                        officers_list.append(officerObj)
-
-                        if officerObj["region_id"] not in regionOfficers:
-                            regionOfficers[officerObj["region_id"]] = []
-                        if officerObj["region_id"] not in centerOfficersInRegion:
-                            centerOfficersInRegion[officerObj["region_id"]] = [
-                            ]
-
-                        if officerObj["appRole"] == "Regional Officer":
-                            regionOfficers[officerObj["region_id"]].append(
-                                officerObj)
-                        if officerObj["appRole"] == "Center Officer":
-                            centerOfficersInRegion[officerObj["region_id"]].append(
-                                officerObj)
-
-                    emailUnApprovedCenterOfficers(
-                        regionOfficers, centerOfficersInRegion)
-
-                # print(loadeddata, "loadeddata")
-                if len(loadeddata) == 0:
-                    return render(request, 'import-page.html', {"message": message})
-                else:
-                    return render(request, 'import-page.html', {"loadeddata": loadeddata})
+            # print(loadeddata, "loadeddata")
+            if len(loadeddata) == 0:
+                return render(request, 'import-page.html', {"message": message})
+            else:
+                return render(request, 'import-page.html', {"loadeddata": loadeddata})
         else:
             return render(request, 'import-page.html', {})
     else:
         return render(request, 'auth.html', {})
+
+
+def emailOfficersForApproval(importType):
+    if importType == "member":
+        # Querying member Table to get all Unique Regions Ids
+        uniqueRegionsQuerySet = Member.objects.values(
+            'region_id').distinct()
+
+        uniqueCentersQuerySet = Member.objects.values(
+            'center_id').distinct()
+
+        uniqueRegionIds, uniqueCenterIds = set([]), set([])
+        for regionObject in uniqueRegionsQuerySet:
+            if regionObject['region_id']:
+                uniqueRegionIds.add(regionObject['region_id'])
+
+        for centerObject in uniqueCentersQuerySet:
+            if centerObject['center_id']:
+                uniqueCenterIds.add(centerObject['center_id'])
+
+        officers = Member.objects.filter(
+            region_id__in=list(uniqueRegionIds)).exclude(approle__name='member')
+
+        officers_list, regionOfficers, centerOfficersInRegion = [], {}, {}
+        for officer in officers:
+            officerObj = {
+                "first_name":  officer.first_name,
+                "last_name": officer.last_name,
+                "email": officer.email,
+                "appRole": officer.approle.name,
+                "region_id": officer.region_id,
+                "center_id": officer.center_id,
+                "member_status": officer.member_status,
+                "region": officer.region,
+                "center": officer.center
+            }
+            officers_list.append(officerObj)
+
+            if officerObj["region_id"] not in regionOfficers:
+                regionOfficers[officerObj["region_id"]] = []
+            if officerObj["region_id"] not in centerOfficersInRegion:
+                centerOfficersInRegion[officerObj["region_id"]] = [
+                ]
+
+            if officerObj["appRole"] == "Regional Officer":
+                regionOfficers[officerObj["region_id"]].append(
+                    officerObj)
+            if officerObj["appRole"] == "Center Officer":
+                centerOfficersInRegion[officerObj["region_id"]].append(
+                    officerObj)
+
+        emailUnApprovedCenterOfficers(
+            regionOfficers, centerOfficersInRegion)
 
 
 def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
