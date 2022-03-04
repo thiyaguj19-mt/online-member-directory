@@ -340,10 +340,16 @@ def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
             if len(regionOfficers[regionId]) > 0 and len(unApprovedCenterofficersByRegion) > 0:
                 regionalOfficerEmails = []
                 for regionalOfficer in regionOfficers[regionId]:
-                    if regionalOfficer["email"] not in regionalOfficerEmails:
-                        regionalOfficerEmails.append(regionalOfficer["email"])
+                    if regionalOfficer["member_status"] == 1 and regionalOfficer["email"] not in regionalOfficerEmails:
+                        regionalOfficerEmails.append(
+                            regionalOfficer["email"])
 
-                html_header = '''<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><h2>Dear Regional Officer(s),\n Following Center Officers have been imported in Officers App. Could you verify their details and set their status to Approved.\n Thank You,\n From SSSIO IT Team</h2>'''
+                html_header = '''<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><h2>
+                \n Dear Regional Officer(s),
+                \n Following Center Officers have been imported in Officers App. Could you verify their details and set their status to Approved.
+                \n Thank You,
+                \n From SSSIO IT Team</h2>'''
+
                 header = "<table><tr><th>Name</th><th>Email</th><th>Role</th></tr>"
 
                 tableData = ""
@@ -353,8 +359,9 @@ def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
 
                 body = html_header + header + tableData + end
 
-                sendemail(regionalOfficerEmails,
-                          "List of Unapproved Center Officers", body)
+                if len(regionalOfficerEmails) > 0:
+                    sendemail(regionalOfficerEmails,
+                              "List of Unapproved Center Officers", body)
     except:
         logging.error("Error while Sending email to Officers")
 
