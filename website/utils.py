@@ -338,7 +338,7 @@ def emailOfficersForApproval(importType):
         uniqueCentersQuerySet = Member.objects.values(
             'center_id').distinct()
 
-        uniqueRegionIds, uniqueCenterIds = set([]), set([])
+        uniqueRegionIds, uniqueCenterIds = set(), set()
         for regionObject in uniqueRegionsQuerySet:
             if regionObject['region_id']:
                 uniqueRegionIds.add(regionObject['region_id'])
