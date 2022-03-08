@@ -68,9 +68,9 @@ def exportFile(request):
     else:
         return render(request, 'auth.html', {})
 
-# #Show All Cards of Region Officers
-# def show_regions(request):
-#     return render(request, 'show-region.html',{})
+#Show the USA-Regions Map
+def getUSARegionsMap(request):
+    return render(request, 'region-map.html', {}) 
 
 
 # Get all regional officers

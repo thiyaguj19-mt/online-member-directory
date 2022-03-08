@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('import', views.importFile, name = 'import-page'),
     path('export', views.exportFile, name = 'export-page'),
+    path('usa_regionsmap', views.getUSARegionsMap, name='usa_regionsmap'),
     path('national-officers', views.getAllNationalOfficers, name = 'national-officers-page'),
     path('regional-officers', views.getAllRegionalOfficers, name = 'regional-officers-page'),
     path('center-officers', views.getAllCenterOfficers, name = 'center-officers-page'),

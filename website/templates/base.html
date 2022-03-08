@@ -17,6 +17,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap" rel="stylesheet">
+
+    <!--For USA Regions Map tooltips -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.5/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-borderless.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/tooltipster@4.2.5/dist/css/tooltipster.bundle.min.css"
+    />
+
     <title>SSIO-Member-Portal</title>
     <!-- Custome CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
@@ -55,7 +68,14 @@
 
     <script>
       var csrftoken = '{{ csrf_token }}';
-    </script> 
+    </script>
+
+    <!-- This is for USARegions Map -->
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tooltipster@4.2.5/dist/js/tooltipster.bundle.min.js"></script>
+
+    <script src="{% static 'js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
   </body>
 </html>
