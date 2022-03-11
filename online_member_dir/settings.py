@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+import urllib.parse as urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,12 +112,16 @@ else:
 
 
 #Redis Cache
+
+
+redis_url = urlparse.urlparse(config('REDIS_URL'))
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": config('REDIS_URL'),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+            'OPTIONS': {
+                'PASSWORD': redis_url.password,
+                'DB': 0,
         }
     }
 }
