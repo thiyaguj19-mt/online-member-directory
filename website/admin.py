@@ -40,3 +40,5 @@ class MetadataAdmin(admin.ModelAdmin):
     list_display = ('key', 'value')
 
 admin.site.register(Metadata, MetadataAdmin)
+
+admin.site.site_header = 'Officers Portal'
