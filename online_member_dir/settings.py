@@ -14,6 +14,7 @@ from pathlib import Path
 from decouple import config
 import os
 import urllib.parse as urlparse
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'swingtime',
 ]
 
 PROJECT_APPS = [
@@ -80,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'swingtime.context_processors.current_datetime',
             ],
         },
     },
@@ -155,7 +158,7 @@ TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

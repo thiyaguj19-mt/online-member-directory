@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.conf.urls import url, include
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -21,4 +22,8 @@ urlpatterns = [
     path('getMemberData/', views.getMemberData, name='memberData'),
     path('updateMemberProfile/', views.updateMemberProfile, name='updateMemberProfile'),
     path('updateMemberStatus/', views.updateMemberStatus, name='updateMemberStatus'),
+]
+
+urlpatterns += [
+    url(r'^swingtime/', include('swingtime.urls')),
 ]
