@@ -4,8 +4,14 @@
     <div class="ftr-menu-item">
       <h2 class="ftr-title">Events & Activities</h2>
       <ul class="ftr-col-style">
-        <li><a href="#">Calendar 2022</a></li>
-        <li><a href="#">SSSIO-Events</a></li>
+        <li>
+          {% if current_datetime %}
+            <a href="{% url 'swingtime-monthly-view' current_datetime.year current_datetime.month %}">
+              Calendar 2022
+            </a>
+          {% endif %}
+        </li>
+        <li><a href="{% url 'swingtime-events' %}">SSSIO-Events</a></li>
       </ul>
     </div>
     <div class="ftr-menu-item">
