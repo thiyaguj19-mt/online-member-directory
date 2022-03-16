@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            et = swingtime.EventType.objects.create(abbr='General', label='General')
+            et = swingtime.EventType.objects.create(abbr='even', label='SSIO event')
         except Exception as err:
             self.stdout.write(self.style.ERROR('.....'))
             print("err-message-", err)
