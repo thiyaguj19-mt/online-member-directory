@@ -267,8 +267,7 @@ def uploadFile(request):
                 loadeddata = ""
                 loadeddata = uploadCSVFile(csv_file, importType)
 
-            emailOfficersForApprovalMetaData = Metadata.objects.get(
-                key='email-officers-for-approval')
+            emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
             if emailOfficersForApprovalMetaData.value:
                 emailOfficersForApproval(importType)
 
