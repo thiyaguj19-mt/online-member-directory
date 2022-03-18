@@ -8,6 +8,7 @@ from .models import Member, Metadata
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Permission, User
+from decouple import config
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 today = datetime.now().strftime("%d%m%y")
@@ -31,10 +32,14 @@ def setupAppPermissions(request, emailaddress):
                 permission = Permission.objects.filter(codename='is_national_officer').first()
                 if user.has_perm('website.is_national_officer') != True:
                     user.user_permissions.add(permission)
-            user = authenticate(request, username=member.email, password=member.email)
-            login(request, user)
+            logging.debug("before authenticate")
+            #user = authenticate(request, username=member.email, password=member.email)
+            logging.debug("before login..")
+            if request.user.is_authenticated != True:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            logging.debug("after login")
     except Exception as err:
-        print(f'Unexpected {err} from generateAuthCode(), {type(err)}')
+        print(f'Unexpected {err} from setupAppPermissions(), {type(err)}')
         raise
 
 def getAuthCodeFromCache(emailaddress):
@@ -58,7 +63,9 @@ def generateAuthCode(request, emailaddress):
                 #logging.debug('auth_code: ' + str(auth_code))
                 user_key = emailaddress + "_" + today
                 cache.set(user_key, auth_code)
-            logging.debug('auth_code--- ' + str(auth_code))
+            if config("local", False):
+                logging.debug('auth_code--- ' + str(auth_code))
+            logging.debug('call a make to mailuser()')
             mailuser(recipient=emailaddress,
                 header='Your "Auth Code" from SSSIO Officers Portal',
                 authcode=auth_code)
