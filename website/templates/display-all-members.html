@@ -44,9 +44,13 @@
 				  <td>{{ member.approle }}</td>
 
 				  <td>
-					<a href="{% url 'region-page' member.region_id %}"
-					  >{{ member.region}}</a
-					>
+					{% if perms.website.is_national_officer or perms.website.is_regional_officer %}
+						<a href="{% url 'region-page' member.region_id %}">
+							{{ member.region}}
+						</a>
+					{% else %}
+						{{ member.region}}
+					{% endif %}
 				  </td>
 				  <td>
 					<a href="{% url 'center-page' member.center_id %}"

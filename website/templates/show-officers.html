@@ -204,9 +204,13 @@
           </td>
           {% endif %}
           <td>
-            <a href="{% url 'region-page' officer.region_id %}"
-              >{{ officer.region}}</a
-            >
+            {% if perms.website.is_central_officer %}
+              {{ officer.region}}
+            {% else %}
+            <a href="{% url 'region-page' officer.region_id %}">
+              {{ officer.region}}
+            </a>
+            {% endif %}
           </td>
           <td>
             <a href="{% url 'center-page' officer.center_id %}"
