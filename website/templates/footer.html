@@ -7,11 +7,11 @@
         <li>
           {% if current_datetime %}
             <a href="{% url 'swingtime-monthly-view' current_datetime.year current_datetime.month %}">
-              Calendar 2022
+              Calendar {{current_datetime.year}}
             </a>
           {% endif %}
         </li>
-        <li><a href="{% url 'swingtime-events' %}">SSSIO-Events</a></li>
+        <li><a href="{% url 'swingtime-events' %}">Event Listing</a></li>
       </ul>
     </div>
     <div class="ftr-menu-item">
@@ -19,8 +19,8 @@
       <ul class="ftr-col-style">
         <li><a href="https://sathyasai.us/find-sai-centers" target="_blank">Find Sai Centers</a></li>
         <li><a href="{% url 'usa_regionsmap'  %}" target ="_blank" >SSSIO-USA Region Map</a></li>
-        <li><a href="https://www.sathyasai.org/about-us/organisation/guidelines">SSSIO-Organization Guidelines</a></li>
-        <li><a href="https://www.youtube.com/channel/UCeQxQBU1jXv4R_zwznmFJBg">SSSIO-Youtube Channel</a></li>
+        <li><a href="https://www.sathyasai.org/about-us/organisation/guidelines" target="_blank">SSSIO-Organization Guidelines</a></li>
+        <li><a href="https://www.youtube.com/channel/UCeQxQBU1jXv4R_zwznmFJBg" target="_blank">SSSIO-Youtube Channel</a></li>
       </ul>
     </div>
 
@@ -28,14 +28,6 @@
       <h2 class="ftr-title">Reports</h2>
       <ul class="ftr-col-style">
         <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-      </ul>
-    </div>
-    <div class="ftr-menu-item">
-      <h2 class="ftr-title">ContactUs</h2>
-      <ul class="ftr-col-style">
-        <li class="text-wrap" style="width: 9rem;">Submit your feedback <a href="{% url 'contactus' %}">here</a></li>
       </ul>
     </div>
   </section>
@@ -52,6 +44,5 @@
       </div>
     </div>
   </section>
-
 
 </footer>
