@@ -201,7 +201,7 @@ def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
             regionval = column[17]
             if (membercenter == centerval and memberregion == regionval) or allowall is True:
                 member_data = createMemberData(column)
-                if member_data != None:
+                if member_data is not None:
                     #print (member_data)
                     if member_data not in context:
                         context.append(member_data)
