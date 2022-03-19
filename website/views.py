@@ -264,23 +264,52 @@ def uploadFile(request):
                 message = 'Please upload a CSV file'
                 return render(request, 'import-page.html', {"message": message})
             else:
-                loadeddata = ""
-                loadeddata = uploadCSVFile(csv_file, importType)
+                member = Member.objects.filter(email=request.user).first()
+                membercenter = member.center
+                memberregion = member.region
+                canupload = False
+                allowall = False
+                print(membercenter)
+                print(memberregion)
+                if importType == "region":
+                    if request.user.has_perm('website.is_regional_officer') is not True and\
+                       request.user.has_perm('website.is_national_officer') is not True:
+                        message = 'Only Regional or National officers have permissions to upload region data.'
+                        return render(request, 'import-results.html', {"message": message})
+                    else:
+                        canupload = True
+                elif importType == "member":
+                    if request.user.has_perm('website.is_regional_officer') is not True and \
+                       request.user.has_perm('website.is_central_officer') is not True and \
+                       request.user.has_perm('website.is_national_officer') is not True:
+                        message = 'Only Center, Regional or National officers have permissions to upload member data.'
+                        return render(request, 'import-results.html', {"message": message})
+                    else:
+                        canupload = True
+
+            loadeddata = ""
+            allowall = request.user.has_perm('website.is_national_officer')
+
+            if canupload is True:
+                loadeddata = uploadCSVFile(csv_file, importType,membercenter,memberregion,allowall)
 
             emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
             if emailOfficersForApprovalMetaData.value:
                 emailOfficersForApproval(importType)
 
-            # print(loadeddata, "loadeddata")
+            #print(loadeddata, "loadeddata")
             if len(loadeddata) == 0:
-                return render(request, 'import-page.html', {"message": message})
+                return render(request, 'import-results.html', {"message": message})
             else:
-                return render(request, 'import-page.html', {"loadeddata": loadeddata})
+                if loadeddata.__contains__("Error"):
+                    message = 'The file you are trying to upload is not valid for the selected option - ' + importType
+                    return render(request, 'import-results.html', {"message": message})
+                else:
+                    return render(request, 'import-results.html', {"loadeddata": loadeddata})
         else:
             return render(request, 'import-page.html', {})
     else:
         return render(request, 'auth.html', {})
-
 
 def displayRegionCenters(request, regionId):
     centersByRegionId = Center.objects.filter(

@@ -531,6 +531,18 @@ footer disabled a:hover {
   opacity: 1;
 }
 
+.space-bottom {
+  margin-bottom: 10px;
+}
+
+.set-minheight {
+ min-height: 250px;
+}
+
+.set-bgcolor {
+background-color:#0a58ca0a
+}
+
 .tooltip {
   position: absolute;
   z-index: 1070;

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}{% block content %}
+<div class="row set-minheight">
+  <div class="col-md-8 offset-md-2">
+    {% if message %}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ message }}</h5>
+        </div>
+      </div>
+    {% else %}
+      {% if loadeddata %}
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-primary">File Import Result</h5>
+            <p class="card-text">
+            {% for data in loadeddata %}
+              <p>{{data.column1}} {% if data.column2 %} | {{data.column2}} {% endif %}</p>
+            {% endfor %}
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+    <br>
+     <a href="{% url 'import-page' %}">
+       <button type="submit" class="btn btn-primary"> Go Back </button>
+     </a>
+  </div>
+</div>
+{% endblock %}
