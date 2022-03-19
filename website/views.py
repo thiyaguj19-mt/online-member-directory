@@ -273,7 +273,7 @@ def uploadFile(request):
                 print(memberregion)
                 if importType == "region":
                     if request.user.has_perm('website.is_regional_officer') is not True and\
-                       request.user.has_perm('website.is_national_officer') != True:
+                       request.user.has_perm('website.is_national_officer') is not True:
                         message = 'Only Regional or National officers have permissions to upload region data.'
                         return render(request, 'import-results.html', {"message": message})
                     else:
