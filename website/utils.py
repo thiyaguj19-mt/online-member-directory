@@ -199,7 +199,7 @@ def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
         elif type == "member":
             centerval = column[18]
             regionval = column[17]
-            if (membercenter == centerval and memberregion == regionval) or allowall == True:
+            if (membercenter == centerval and memberregion == regionval) or allowall is True:
                 member_data = createMemberData(column)
                 if member_data != None:
                     #print (member_data)
