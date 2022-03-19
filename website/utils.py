@@ -190,7 +190,7 @@ def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
         if type == "region":
             regionval = column[0]
             centerval = column[1]
-            if str(memberregion).upper() == str(regionval).upper() or allowall == True:
+            if str(memberregion).upper() == str(regionval).upper() or allowall is True:
                 region_data = createRegionData(column)
                 if region_data != None:
                     context.append(region_data)
