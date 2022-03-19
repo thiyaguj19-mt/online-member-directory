@@ -290,7 +290,7 @@ def uploadFile(request):
             loadeddata = ""
             allowall = request.user.has_perm('website.is_national_officer')
 
-            if canupload == True:
+            if canupload is True:
                 loadeddata = uploadCSVFile(csv_file, importType,membercenter,memberregion,allowall)
 
             emailOfficersForApprovalMetaData = Metadata.objects.get(
