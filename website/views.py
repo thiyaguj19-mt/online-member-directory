@@ -70,7 +70,7 @@ def exportFile(request):
 
 #Show the USA-Regions Map
 def getUSARegionsMap(request):
-    return render(request, 'region-map.html', {}) 
+    return render(request, 'region-map.html', {})
 
 
 # Get all regional officers
@@ -252,6 +252,8 @@ def uploadFile(request):
         csv_file = None
         message = "All are up to date"
         importType = None
+        membercenter = None
+        memberregion = None
         if request.method == "POST":
             importType = request.POST.get('importType')
             try:
@@ -265,8 +267,9 @@ def uploadFile(request):
                 return render(request, 'import-page.html', {"message": message})
             else:
                 member = Member.objects.filter(email=request.user).first()
-                membercenter = member.center
-                memberregion = member.region
+                if member is not None:
+                    membercenter = member.center
+                    memberregion = member.region
                 canupload = False
                 allowall = False
                 print(membercenter)
