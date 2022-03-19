@@ -280,7 +280,7 @@ def uploadFile(request):
                         canupload = True
                 elif importType == "member":
                     if request.user.has_perm('website.is_regional_officer') is not True and \
-                       request.user.has_perm('website.is_central_officer') != True and \
+                       request.user.has_perm('website.is_central_officer') is not True and \
                        request.user.has_perm('website.is_national_officer') != True:
                         message = 'Only Center, Regional or National officers have permissions to upload member data.'
                         return render(request, 'import-results.html', {"message": message})
