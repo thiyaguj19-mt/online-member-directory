@@ -192,7 +192,7 @@ def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
             centerval = column[1]
             if str(memberregion).upper() == str(regionval).upper() or allowall is True:
                 region_data = createRegionData(column)
-                if region_data != None:
+                if region_data is not None:
                     context.append(region_data)
             else:
                 context2.append({"column2": centerval, "column1": regionval})
