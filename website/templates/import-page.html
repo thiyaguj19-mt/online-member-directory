@@ -2,38 +2,37 @@
 <center><h1>Import Your File</h1></center>
 
 <div class="row">
-  <div class="col-md-5">
-    <div class="card">
+  <div class="col-md-12" >
+    <div class="card align-items-center">
       <div class="card-body">
-        <h5 class="card-title text-primary">Import Data</h5>
-
-        <p class="card-text">Import Region/Organization Roles/Members data</p>
+        <h5 class="card-title text-primary">Import Region/Organization Roles/Members/Quotes data</h5>
+        <br>
 
         <form action="{% url 'uploadFile' %}" method="POST" enctype="multipart/form-data">
 
           {% csrf_token %}
 
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="importType" id="regionImport" value="region">
+          <div class="form-check space-bottom">
+            <input class="form-check-input"  type="radio" name="importType" id="regionImport" value="region">
             <label class="form-check-label" for="regionImport">
               Region/Center Data  (You can download the template file
               <a href='"../../static/file_templates/RegionTemplate.csv' download="RegionTemplate.csv">here</a>)
             </label>
           </div>
-          <div class="form-check">
+          <div class="form-check  space-bottom">
             <input class="form-check-input" type="radio" name="importType" id="memberImport" value="member">
             <label class="form-check-label" for="memberImport">
               Members Data  (You can download the template file
               <a href='"../../static/file_templates/MemberTemplate.csv' download="MemberTemplate.csv">here</a>)
             </label>
           </div>
-          <div class="form-check">
+          <div class="form-check  space-bottom">
             <input class="form-check-input" type="radio" name="importType" id="orgRoleImport" value="orgRole">
             <label class="form-check-label" for="orgRoleImport">
               Organization Roles
             </label>
           </div>
-          <div class="form-check">
+          <div class="form-check  space-bottom">
             <input class="form-check-input" type="radio" name="importType" id="quotes" value="quotes">
             <label class="form-check-label" for="quotes">
               Swami's Quotes
@@ -46,26 +45,6 @@
         </form>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    {% if message %}
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-primary">{{ message }}</h5>
-        </div>
-      </div>
-    {% else %}
-      {% if loadeddata %}
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title text-primary">File Import Result</h5>
-            <p class="card-text">
-            {% for data in loadeddata %}
-              <p>{{data.column1}} {% if data.column2 %} | {{data.column2}} {% endif %}</p>
-            {% endfor %}
-            </p>
-      {% endif %}
-    {% endif %}
   </div>
 </div>
 {% endblock %}

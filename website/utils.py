@@ -154,23 +154,59 @@ def createQuotes(column):
         return {"column1": column}
     return None
 
+def checkCSVFile(io_string,type):
+    valid = 'false'
 
-def uploadCSVFile(csv_file, type):
+    for row in csv.reader(io_string, delimiter=',', quotechar="|"):
+        if valid == 'true':
+            break
+        if type == "region":
+            if str(row).upper().__contains__('LATITUDE'):
+                valid = 'true'
+        elif type == "member":
+            if str(row).upper().__contains__('GENDER'):
+                valid = 'true'
+        elif type == "orgRole":
+            if str(row).upper().__contains__('DESCRIPTION'):
+                valid = 'true'
+        elif type == "quotes":
+            if str(row).upper().__contains__('CITE'):
+                valid = 'true'
+
+    return valid
+
+def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
-    next(io_string)
+
     context = []
+    context2 = []
+
+    if checkCSVFile(io_string, type) == 'false':
+        context.append('Error')
+        return context
+    next(io_string)
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
         if type == "region":
-            region_data = createRegionData(column)
-            if region_data != None:
-                context.append(region_data)
+            regionval = column[0]
+            centerval = column[1]
+            if str(memberregion).upper() == str(regionval).upper() or allowall == True:
+                region_data = createRegionData(column)
+                if region_data != None:
+                    context.append(region_data)
+            else:
+                context2.append({"column2": centerval, "column1": regionval})
         elif type == "member":
-            member_data = createMemberData(column)
-            if member_data != None:
-                #print (member_data)
-                if member_data not in context:
-                    context.append(member_data)
+            centerval = column[18]
+            regionval = column[17]
+            if (membercenter == centerval and memberregion == regionval) or allowall == True:
+                member_data = createMemberData(column)
+                if member_data != None:
+                    #print (member_data)
+                    if member_data not in context:
+                        context.append(member_data)
+            else:
+                context2.append({"column1": column})
         elif type == "orgRole":
             orgrole_data = createOrgRole(column)
             if orgrole_data != None:
@@ -179,6 +215,12 @@ def uploadCSVFile(csv_file, type):
             quotes_data = createQuotes(column)
             if quotes_data != None:
                 context.append(quotes_data)
+    if len(context2) > 0:
+        context.append({"column1": 'YOU DO NOT HAVE THE PRIVILEGES TO UPDATE OTHER CENTER/REGION DATA.'})
+        context.append({"column1": 'THE FOLLOWING ROWS HAVE NOT BEEN ADDED/UPDATED.'})
+        for x in context2:
+            context.append(x)
+
     return context
 
 
