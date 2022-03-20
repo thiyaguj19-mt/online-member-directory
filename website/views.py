@@ -25,8 +25,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 def home(request):
 
     try:
-        print("request.user.is_authenticated--- ",
-              request.user.is_authenticated)
+        print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
             quote_message = random_quote()
             return render(request, 'home.html', {'quote': quote_message})
@@ -158,17 +157,20 @@ def getAllCenterOfficers(request):
     if request.user.is_authenticated:
         gridcheckflag = request.GET.get('gridcheckflag')
         user = User.objects.filter(username=request.user).first()
+        officers_data = None
         if user.has_perm('website.is_national_officer'):
             officers_data = Member.objects.filter(
                 approle__name='Center Officer', center__status='Active')
         elif user.has_perm('website.is_regional_officer'):
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(
-                approle__name='Center Officer', region=member.region, center__status='Active')
+            if member is not None:
+                officers_data = Member.objects.filter(
+                    approle__name='Center Officer', region=member.region, center__status='Active')
         else:
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(
-                approle__name='Center Officer', center=member.center, center__status='Active')
+            if member is not None:
+                officers_data = Member.objects.filter(
+                    approle__name='Center Officer', center=member.center, center__status='Active')
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -275,7 +277,7 @@ def uploadFile(request):
                 print(membercenter)
                 print(memberregion)
                 if importType == "region":
-                    if request.user.has_perm('website.is_regional_officer') is not True and\
+                    if request.user.has_perm('website.is_regional_officer') is not True and \
                        request.user.has_perm('website.is_national_officer') is not True:
                         message = 'Only Regional or National officers have permissions to upload region data.'
                         return render(request, 'import-results.html', {"message": message})
