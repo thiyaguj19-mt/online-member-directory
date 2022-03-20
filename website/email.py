@@ -16,8 +16,9 @@ def sendemail(to, subject, body):
     if len(EMAIL_PORT) > 0 and len(EMAIL_HOST_NAME) > 0 \
         and len(EMAIL_HOST_USER) > 0 and len(EMAIL_HOST_PASSWORD) > 0:
         try:
-            #if you are working in local environment then set is_local = True to test email feature
             is_local = config("local", False)
+            #if you are working in local environment then set is_local = False to test email feature
+            #is_local = False
             if is_local:
                 logging.info('email feature is turned off in local environment')
             else:
