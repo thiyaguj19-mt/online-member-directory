@@ -274,8 +274,8 @@ def uploadFile(request):
                     memberregion = member.region
                 canupload = False
                 allowall = False
-                print(membercenter)
-                print(memberregion)
+                print('center data ', membercenter)
+                print('region data ', memberregion)
                 if importType == "region":
                     if request.user.has_perm('website.is_regional_officer') is not True and \
                        request.user.has_perm('website.is_national_officer') is not True:
@@ -293,10 +293,9 @@ def uploadFile(request):
                         canupload = True
 
             loadeddata = ""
-            allowall = request.user.has_perm('website.is_national_officer')
 
             if canupload is True:
-                loadeddata = uploadCSVFile(csv_file, importType,membercenter,memberregion,allowall)
+                loadeddata = uploadCSVFile(request.user, csv_file, importType,membercenter,memberregion)
 
             emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
             if emailOfficersForApprovalMetaData.value:

@@ -16,8 +16,10 @@ def sendemail(to, subject, body):
     if len(EMAIL_PORT) > 0 and len(EMAIL_HOST_NAME) > 0 \
         and len(EMAIL_HOST_USER) > 0 and len(EMAIL_HOST_PASSWORD) > 0:
         try:
-            if config("local", False):
-                logging.info('check console for auth code')
+            #if you are working in local environment then set is_local = True to test email feature
+            is_local = config("local", False)
+            if is_local:
+                logging.info('email feature is turned off in local environment')
             else:
                 smtp_server = smtplib.SMTP_SSL(EMAIL_HOST_NAME, EMAIL_PORT)
                 smtp_server.ehlo()

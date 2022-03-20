@@ -31,7 +31,7 @@ if local:
     ALLOWED_HOSTS = []
 
 else:
-    ALLOWED_HOSTS = ['online-member-directory.herokuapp.com']
+    ALLOWED_HOSTS = ['officers.sathyasai.us', 'online-member-directory.herokuapp.com']
 
 DEBUG = config("DJANGO_DEBUG", False)
 
