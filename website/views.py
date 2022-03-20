@@ -25,8 +25,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 def home(request):
 
     try:
-        print("request.user.is_authenticated--- ",
-              request.user.is_authenticated)
+        print("request.user.is_authenticated--- ", request.user.is_authenticated)
         if request.user.is_authenticated:
             quote_message = random_quote()
             return render(request, 'home.html', {'quote': quote_message})
@@ -70,7 +69,7 @@ def exportFile(request):
 
 #Show the USA-Regions Map
 def getUSARegionsMap(request):
-    return render(request, 'region-map.html', {}) 
+    return render(request, 'region-map.html', {})
 
 
 # Get all regional officers
@@ -158,17 +157,20 @@ def getAllCenterOfficers(request):
     if request.user.is_authenticated:
         gridcheckflag = request.GET.get('gridcheckflag')
         user = User.objects.filter(username=request.user).first()
+        officers_data = None
         if user.has_perm('website.is_national_officer'):
             officers_data = Member.objects.filter(
                 approle__name='Center Officer', center__status='Active')
         elif user.has_perm('website.is_regional_officer'):
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(
-                approle__name='Center Officer', region=member.region, center__status='Active')
+            if member is not None:
+                officers_data = Member.objects.filter(
+                    approle__name='Center Officer', region=member.region, center__status='Active')
         else:
             member = Member.objects.filter(email=request.user).first()
-            officers_data = Member.objects.filter(
-                approle__name='Center Officer', center=member.center, center__status='Active')
+            if member is not None:
+                officers_data = Member.objects.filter(
+                    approle__name='Center Officer', center=member.center, center__status='Active')
         logging.debug('officers_data: ' + str(officers_data))
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
@@ -252,6 +254,8 @@ def uploadFile(request):
         csv_file = None
         message = "All are up to date"
         importType = None
+        membercenter = None
+        memberregion = None
         if request.method == "POST":
             importType = request.POST.get('importType')
             try:
@@ -265,14 +269,15 @@ def uploadFile(request):
                 return render(request, 'import-page.html', {"message": message})
             else:
                 member = Member.objects.filter(email=request.user).first()
-                membercenter = member.center
-                memberregion = member.region
+                if member is not None:
+                    membercenter = member.center
+                    memberregion = member.region
                 canupload = False
                 allowall = False
-                print(membercenter)
-                print(memberregion)
+                print('center data ', membercenter)
+                print('region data ', memberregion)
                 if importType == "region":
-                    if request.user.has_perm('website.is_regional_officer') is not True and\
+                    if request.user.has_perm('website.is_regional_officer') is not True and \
                        request.user.has_perm('website.is_national_officer') is not True:
                         message = 'Only Regional or National officers have permissions to upload region data.'
                         return render(request, 'import-results.html', {"message": message})
@@ -288,10 +293,9 @@ def uploadFile(request):
                         canupload = True
 
             loadeddata = ""
-            allowall = request.user.has_perm('website.is_national_officer')
 
             if canupload is True:
-                loadeddata = uploadCSVFile(csv_file, importType,membercenter,memberregion,allowall)
+                loadeddata = uploadCSVFile(request.user, csv_file, importType,membercenter,memberregion)
 
             emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
             if emailOfficersForApprovalMetaData.value:

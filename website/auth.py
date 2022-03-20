@@ -9,9 +9,32 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Permission, User
 from decouple import config
+from django.contrib.contenttypes.models import ContentType
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 today = datetime.now().strftime("%d%m%y")
+
+def checkAndAssignPerm(user, codename):
+    website_permissions = cache.get('website_permissions')
+    if website_permissions is None:
+        content_type = ContentType.objects.get_for_model(Member)
+        website_permissions = Permission.objects.filter(content_type=content_type)
+        cache.set('website_permissions', website_permissions)
+    logging.debug('website_permissions ' + str(website_permissions))
+    permissions = [ 'is_central_officer', 'is_regional_officer', 'is_national_officer' ]
+    logging.debug('permissions ' + str(permissions))
+    permissions.remove(codename)
+    logging.debug('permissions ' + str(permissions))
+    for perm in website_permissions:
+        logging.debug('perm.codename == codename ' + str(perm.codename == codename))
+        if perm.codename == codename:
+            if user.has_perm('website.' + perm.codename) is not True:
+                user.user_permissions.add(perm)
+                print('added permission', perm.codename)
+            logging.debug(' perm.codename in permissions ' + str( perm.codename in permissions))
+        if perm.codename in permissions:
+            user.user_permissions.remove(perm)
+            print('removed permission', perm.codename)
 
 def setupAppPermissions(request, emailaddress):
     try:
@@ -19,25 +42,13 @@ def setupAppPermissions(request, emailaddress):
         member = Member.objects.filter(email=emailaddress).first()
         if user is not None:
             if member.approle.name == 'Center Officer':
-                permission = Permission.objects.filter(codename='is_central_officer').first()
-                print("permission-- ", permission)
-                if user.has_perm('website.is_central_officer') != True:
-                    user.user_permissions.add(permission)
-                    print("added permission-- ")
+                checkAndAssignPerm(user, 'is_central_officer')
             elif member.approle.name == 'Regional Officer':
-                permission = Permission.objects.filter(codename='is_regional_officer').first()
-                if user.has_perm('website.is_regional_officer') != True:
-                    user.user_permissions.add(permission)
+                checkAndAssignPerm(user, 'is_regional_officer')
             elif member.approle.name == 'National Officer':
-                permission = Permission.objects.filter(codename='is_national_officer').first()
-                if user.has_perm('website.is_national_officer') != True:
-                    user.user_permissions.add(permission)
-            logging.debug("before authenticate")
-            #user = authenticate(request, username=member.email, password=member.email)
-            logging.debug("before login..")
+                checkAndAssignPerm(user, 'is_national_officer')
             if request.user.is_authenticated != True:
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            logging.debug("after login")
     except Exception as err:
         print(f'Unexpected {err} from setupAppPermissions(), {type(err)}')
         raise

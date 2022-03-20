@@ -1,0 +1,12 @@
+FIRST_NAME,LAST_NAME,GENDER,EMAIL,PHONE,ADDRESS_1,ADDRESS_2,CITY,STATE,ZIP_CODE,COUNTRY,AGE_GROUP,MEMBER_STATUS,ORG_TITLE,APP_ROLE,START_DATE,END_DATE,REGION,CENTER
+Ramakanth,Velagala,M,user7@yahoo.com,1234567890,,,Fremont,California,94536,USA,Adult,Pending_Approved,Vice President,Center Officer,5/10/2022,,Region 6,Sri Sathya Sai Group of Denver
+Sairam,Tadigadapa,M,user8@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,5/11/2022,,Region 7,Sri Sathya Sai Center of Champaign-Urbana
+Anjali,Suresh,M,user9@yahoo.com,1234567890,,,Santa Clara,California,94538,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,5/12/2022,,Region 8,Sri Sathya Sai Center of Arcadia
+anotheruser7,lname7,M,testuser7@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Vice President,Center Officer,5/21/2022,,Region 6,Sri Sathya Sai Group of Denver
+anotheruser8,lname8,M,testuser8@yahoo.com,1234567890,,,San Jose,California,94304,USA,YA,Pending_Approved,Devotional Coordinator,Center Officer,5/22/2022,,Region 7,Sri Sathya Sai Center of Champaign-Urbana
+anotheruser9,lname9,M,testuser9@yahoo.com,1234567890,,,Palo Alto,California,94304,USA,YA,Pending_Approved,Service Coordinator,Center Officer,5/23/2022,,Region 8,Sri Sathya Sai Center of Arcadia
+user7,lastname7,M,testuser18@yahoo.com,1234567890,,,San Francisco,California,91103,USA,Adult,Pending_Approved,Vice President,Center Officer,6/1/2022,,Region 6,Sri Sathya Sai Group of Denver
+user8,lastname8,M,testuser19@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,6/2/2022,,Region 7,Sri Sathya Sai Center of Champaign-Urbana
+user9,lastname9,M,testuser20@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Service Coordinator,Center Officer,6/3/2022,,Region 8,Sri Sathya Sai Center of Arcadia
+user10,lastname10,M,testuser21@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Educational Coordinator,Center Officer,6/4/2022,,Region 9,Sri Sathya Sai Center of Phoenix
+user8,lastname8,M,dontknowme@yahoo.com,1234567890,,,San Francisco,California,93000,USA,Adult,Pending_Approved,Devotional Coordinator,Center Officer,6/2/2022,,Region 7,Sri Sathya Sai Center of Phoenix

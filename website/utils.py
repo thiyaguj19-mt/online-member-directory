@@ -175,13 +175,14 @@ def checkCSVFile(io_string,type):
 
     return valid
 
-def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
+def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
-
     context = []
     context2 = []
-
+    centerofficer = user.has_perm('website.is_central_officer')
+    regionofficer = user.has_perm('website.is_regional_officer')
+    nationalofficer = user.has_perm('website.is_national_officer')
     if checkCSVFile(io_string, type) == 'false':
         context.append('Error')
         return context
@@ -199,7 +200,14 @@ def uploadCSVFile(csv_file, type, membercenter, memberregion,allowall):
         elif type == "member":
             centerval = column[18]
             regionval = column[17]
-            if (membercenter == centerval and memberregion == regionval) or allowall is True:
+            uploadMemberData = False
+            if regionofficer:
+                uploadMemberData = (memberregion.name == regionval)
+            elif centerofficer:
+                uploadMemberData = (membercenter.name == centerval and memberregion.name == regionval)
+            elif nationalofficer:
+                uploadMemberData = True
+            if uploadMemberData is True:
                 member_data = createMemberData(column)
                 if member_data is not None:
                     #print (member_data)

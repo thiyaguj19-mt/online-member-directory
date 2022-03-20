@@ -16,19 +16,24 @@ def sendemail(to, subject, body):
     if len(EMAIL_PORT) > 0 and len(EMAIL_HOST_NAME) > 0 \
         and len(EMAIL_HOST_USER) > 0 and len(EMAIL_HOST_PASSWORD) > 0:
         try:
-            smtp_server = smtplib.SMTP_SSL(EMAIL_HOST_NAME, EMAIL_PORT)
-            smtp_server.ehlo()
-            smtp_server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-            msg = EmailMessage()
-            msg.set_content(body, subtype='html')
-            msg['Subject'] = subject
-            #msg['From'] = self.FROM_ADDRESS
-            meta = Metadata.objects.get(key='smtp-from-email')
-            msg['From'] = meta.value
-            #print("from_address" , msg['From'])
-            msg['To'] = to
-            smtp_server.send_message(msg)
-            smtp_server.close()
+            #if you are working in local environment then set is_local = True to test email feature
+            is_local = config("local", False)
+            if is_local:
+                logging.info('email feature is turned off in local environment')
+            else:
+                smtp_server = smtplib.SMTP_SSL(EMAIL_HOST_NAME, EMAIL_PORT)
+                smtp_server.ehlo()
+                smtp_server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+                msg = EmailMessage()
+                msg.set_content(body, subtype='html')
+                msg['Subject'] = subject
+                #msg['From'] = self.FROM_ADDRESS
+                meta = Metadata.objects.get(key='smtp-from-email')
+                msg['From'] = meta.value
+                #print("from_address" , msg['From'])
+                msg['To'] = to
+                smtp_server.send_message(msg)
+                smtp_server.close()
         except Exception as ex:
             print ("Something went wrong.",ex)
     else:
