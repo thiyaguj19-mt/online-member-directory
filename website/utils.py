@@ -447,23 +447,45 @@ def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
                         regionalOfficerEmails.append(
                             regionalOfficer["email"])
 
-                html_header = '''<!DOCTYPE html><html><head><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style></head><body><h2>
-                \n Dear Regional Officer(s),
-                \n Following Center Officers have been imported in Officers App. Could you verify their details and set their status to Approved.
-                \n Thank You,
-                \n From SSSIO IT Team</h2>'''
+        html_header = '''<!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                table {
+                    font-family: arial, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+                }
+                tr:nth-child(even) {
+                background-color: #dddddd;
+                }
+            </style>
+        </head>
+        <body>
+        Dear Officer(s),<br>
+        <br> Following members have been added into Officers App recently. Could you verify their detail and mark their profile verified in the application.<br><br>
+        '''
 
-                header = "<table><tr><th>Name</th><th>Email</th><th>Role</th></tr>"
+        header = "<table><tr><th>Name</th><th>Email</th><th>Role</th></tr>"
 
-                tableData = ""
-                for officer in unApprovedCenterofficersByRegion:
-                    tableData += f"<tr><td>{officer['first_name'] + ' ' +officer['last_name']}</td><td>{officer['email']}</td><td>{officer['appRole']}</td></tr>"
-                end = "</table>"
+        tableData = ""
+        for officer in unApprovedCenterofficersByRegion:
+            tableData += f"<tr><td>{officer['first_name'] + ' ' +officer['last_name']}</td><td>{officer['email']}</td><td>{officer['appRole']}</td></tr>"
+        end = "</table>"
+        end += '''<br>Thank You,<br>From SSSIO IT Team</h2>'''
 
-                body = html_header + header + tableData + end
+        body = html_header + header + tableData + end
 
-                if len(regionalOfficerEmails) > 0:
-                    sendemail(regionalOfficerEmails,
-                              "List of Unapproved Center Officers", body)
+        print ("body---- \n ", body)
+        print ("regionalOfficerEmails -- ", regionalOfficerEmails)
+        print ("len(regionalOfficerEmails) -- ", str(len(regionalOfficerEmails)))
+        if len(regionalOfficerEmails) > 0:
+            sendemail(regionalOfficerEmails,
+                      "New member(s) added to the Officers Portal", body)
     except:
         logging.error("Error while Sending email to Officers")
