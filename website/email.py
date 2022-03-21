@@ -20,7 +20,7 @@ def sendemail(to, subject, body):
             print(ssl.OPENSSL_VERSION)
             is_local = config("local", False)
             #if you are working in local environment then set is_local = False to test email feature
-            is_local = False
+            #is_local = False
             if is_local:
                 logging.info('email feature is turned off in local environment')
             else:
