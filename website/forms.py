@@ -15,7 +15,6 @@ class UserProfileForm(ModelForm):
             'address_1': None,
             'city': None,
             'state': None,
-            'email': None,
             'zip_code': None,
             'age_group': None
         }
@@ -63,7 +62,6 @@ class UserProfileForm(ModelForm):
                 }),
             'email':EmailInput(attrs={
                 'class': "form-control",
-                'style': 'max-width: 300px;'
-                'disabled': True
-
-                })  
+                'style': 'max-width: 300px; display: none',
+                })
+            }
