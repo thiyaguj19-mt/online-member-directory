@@ -1,6 +1,8 @@
-{% extends 'base.html' %}{% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 <div class="row set-minheight">
-  <div class="col-md-8 offset-md-2">
+  <div class="col-md-10 offset-md-1">
     {% if message %}
       <div class="card">
         <div class="card-body">
@@ -13,9 +15,73 @@
           <div class="card-body">
             <h5 class="card-title text-primary">File Import Result</h5>
             <p class="card-text">
+
+            <table class="table table-sm">
+            {% if importType == "region" %}
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Region</th>
+                  <th scope="col">Center</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+            {% elif importType == "member" %}
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Org Role</th>
+                  <th scope="col">App Role</th>
+                  <th scope="col">Region</th>
+                  <th scope="col">Center</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+            {% endif %}
+            <tbody>
             {% for data in loadeddata %}
-              <p>{{data.column1}} {% if data.column2 %} | {{data.column2}} {% endif %}</p>
+              {% if importType == "region" %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{data.column1}}</td>
+                    <td>{{data.column2}}</td>
+                      <td>
+                        {% if data.status == "created" %}
+                          <img class="img-fluid w-6" src="{% static 'images/success.png' %}" /> <em> {{data.status}} </em>
+                        {% elif data.status == "skipped"  %}
+                          <img class="img-fluid w-6" style="height:30px;" src="{% static 'images/skip.png' %}" /> <em> {{data.status}} </em>
+                        {% else  %}
+                            <img class="img-fluid w-6" src="{% static 'images/denied.png' %}" /> <em> {{data.status}} </em>
+                        {% endif %}
+                      </td>
+                  </tr>
+              {% elif importType == "member" %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{data.first_name}}</td>
+                    <td>{{data.last_name}}</td>
+                    <td>{{data.email}}</td>
+                    <td>{{data.orole}}</td>
+                    <td>{{data.approle}}</td>
+                    <td>{{data.region}}</td>
+                    <td>{{data.center}}</td>
+                    <td>
+                      {% if data.status == "Created" %}
+                        <img class="img-fluid w-6" src="{% static 'images/success.png' %}" /> {{data.status}}
+                      {% elif data.status == "Skipped"  %}
+                        <img class="img-fluid w-6" style="height:30px;" src="{% static 'images/skip.png' %}" /> {{data.status}}
+                      {% else  %}
+                          <img class="img-fluid w-6" src="{% static 'images/denied.png' %}" /> {{data.status}}
+                      {% endif %}
+                    </td>
+                </tr>
+              {% endif %}
             {% endfor %}
+              </tbody>
+            </table>
             </p>
           </div>
         </div>

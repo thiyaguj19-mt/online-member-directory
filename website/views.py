@@ -302,14 +302,16 @@ def uploadFile(request):
                 canupload = False
                 print('importType ', importType)
                 if importType == "region":
-                    if request.user.has_perm('website.is_regional_officer') is not True and \
-                       request.user.has_perm('website.is_national_officer') is not True:
-                        message = 'Only Regional or National officers have permissions to upload region data.'
-                        return render(request, 'import-results.html', {"message": message})
+                    if (memberregion is None and request.user.is_superuser is not True) or \
+                        request.user.has_perm('website.is_regional_officer') is not True and \
+                        request.user.has_perm('website.is_national_officer') is not True:
+                            message = 'Only Regional or National officers have permissions to upload region data.'
+                            return render(request, 'import-results.html', {"message": message})
                     else:
                         canupload = True
                 elif importType == "member":
-                    if request.user.has_perm('website.is_regional_officer') is not True and \
+                    if (memberregion is None and request.user.is_superuser is not True) or \
+                       request.user.has_perm('website.is_regional_officer') is not True and \
                        request.user.has_perm('website.is_central_officer') is not True and \
                        request.user.has_perm('website.is_national_officer') is not True:
                         message = 'Only Center, Regional or National officers have permissions to upload member data.'
@@ -320,7 +322,8 @@ def uploadFile(request):
                     canupload = True
 
             loadeddata = ""
-
+            print('membercenter ', membercenter)
+            print('memberregion ', memberregion)
             if canupload is True:
                 print('canupload ', canupload)
                 loadeddata = uploadCSVFile(request.user, csv_file, importType, membercenter, memberregion)
@@ -337,7 +340,7 @@ def uploadFile(request):
                     message = 'The file you are trying to upload is not valid for the selected option - ' + importType
                     return render(request, 'import-results.html', {"message": message})
                 else:
-                    return render(request, 'import-results.html', {"loadeddata": loadeddata})
+                    return render(request, 'import-results.html', {"loadeddata": loadeddata, "importType" : importType})
         else:
             return render(request, 'import-page.html', {})
     else:
