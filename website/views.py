@@ -67,6 +67,26 @@ def exportFile(request):
     else:
         return render(request, 'auth.html', {})
 
+# Show and Edit User Profile - for logged in user
+def showUserProfile(request):
+
+    if request.user.is_authenticated:
+
+        if request.method == 'POST':
+
+            form = UserProfileForm(request.POST)
+            if form.is_valid():
+
+                form.save()
+                messages.success(request,f'Profile Updated successfully!')
+                return redirect('user-page')
+            else:
+                return render(request,'user.html',{'form':form})
+
+    form = UserProfileForm(instance=request.user)
+    return render(request,'user.html', {'form':form})
+
+
 #Show the USA-Regions Map
 def getUSARegionsMap(request):
     return render(request, 'region-map.html', {})
