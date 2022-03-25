@@ -22,12 +22,12 @@ def createRegionData(column):
             newCenter = None
             newRegion = None
             region = retrieveFromCache(Region, regionval, "name")
-            print("region-val-", region)
+            logging.debug(region)
             if region == None:
                 region = Region(name=column[0])
                 region.save()
                 newRegion = column[0]
-                print("region-name-", region.name)
+                logging.debug(newRegion)
             else:
                 newRegion = region.name
         except Exception as ex:
@@ -35,37 +35,50 @@ def createRegionData(column):
         if region != None:
             created = False
             try:
-                _, created = Center.objects.update_or_create(
-                    region=region,
-                    name=column[1],
-                    address=column[2],
-                    city=column[3],
-                    state=column[4],
-                    zip_code=column[5],
-                    country=column[6],
-                    phone=column[7],
-                    website=column[8],
-                    latitude=column[9],
-                    longitude=column[10],
-                    status=column[11],
-                    center_type=column[12]
-                )
+                center = Center.objects.filter(name=column[1]).first()
+                if center == None:
+                    _, created = Center.objects.update_or_create(
+                        region=region,
+                        name=column[1],
+                        address=column[2],
+                        city=column[3],
+                        state=column[4],
+                        zip_code=column[5],
+                        country=column[6],
+                        phone=column[7],
+                        website=column[8],
+                        latitude=column[9],
+                        longitude=column[10],
+                        status=column[11],
+                        center_type=column[12]
+                    )
+
             except Exception as err:
                 print(f'Unexpected {err} from createRegionData(), {type(err)}')
 
+            newRegion = column[0]
+            newCenter = column[1]
             if created:
-                newCenter = column[1]
-                return {"column2": newCenter, "column1": newRegion}
+                return {"column2": newCenter, "column1": newRegion, "status" : 'Created' }
             else:
-                return None
+                return {"column2": newCenter, "column1": newRegion, "status" : 'Skipped' }
 
 
 def createMemberData(column):
     if len(column) > 0:
-        #print ("column--", column)
+
+        member = None
+        orole  = None
+        arole  = None
+        region = None
+        center = None
+        city = None
+
         try:
 
-            member = retrieveFromCache(Member, column[3], "email")
+            logging.debug("column--<>>>>>>-\n " + str(column))
+
+            #member = retrieveFromCache(Member, column[3], "email")
             orole = retrieveFromCache(OrgRole, column[13], "name")
             arole = retrieveFromCache(AppRole, column[14], "name")
             region = retrieveFromCache(Region, column[17], "name")
@@ -92,7 +105,6 @@ def createMemberData(column):
                     end_date = start_date + datetime.timedelta(days=730)
 
             # Get city from center if not available
-            city = None
             if len(column[7]) > 0:
                 city = column[7]
             else:
@@ -125,7 +137,12 @@ def createMemberData(column):
                 )
                 if created:
                     memobj.orgrole.add(orole)
-                    return {"column1": column}
+                    return {
+                        "first_name": column[0], "last_name": column[0], "gender": column[2],
+                        "email": column[3], "phone": column[4], "city":city,
+                        "state": column[8], "age_group":column[11], "approle" : arole,
+                        "region": region, "center": center, "orole": orole, "status" : "Created"
+                    }
             else:
                 # update region and center_role
                 member.region = region
@@ -133,9 +150,27 @@ def createMemberData(column):
                 member.save()
                 # add orgRole
                 member.orgrole.add(orole)
+                logging.debug("column--<>>>>>>-\n " + str({
+                    "first_name": column[0], "last_name": column[1], "gender": column[2],
+                    "email": column[3], "phone": column[4], "city":city,
+                    "state": column[8], "age_group":column[11], "approle" : arole,
+                    "region": region, "center": center, "orole": orole, "status" : "Skipped"
+                }))
+                return {
+                    "first_name": column[0], "last_name": column[1], "gender": column[2],
+                    "email": column[3], "phone": column[4], "city":city,
+                    "state": column[8], "age_group":column[11], "approle" : arole,
+                    "region": region, "center": center, "orole": orole, "status" : "Skipped"
+                }
         except Exception as ex:
             print("error in createMemberData: ", ex)
-            return {"column1": "something went wrong- " + str(ex)}
+            logging.debug("column---\n " + str(column))
+            return {
+                "first_name": column[0], "last_name": column[1], "gender": column[2],
+                "email": column[3], "phone": column[4], "city":city,
+                "state": column[8], "age_group":column[11], "approle" : arole,
+                "region": region, "center": center, "orole": orole, "status" : "Failed"
+            }
         return None
 
 
@@ -187,7 +222,7 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
         context.append('Error')
         return context
     next(io_string)
-    logging.debug("type " + type)
+    logging.debug("type " + type + " user " + str(user))
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
         if type == "region":
             regionval = column[0]
@@ -197,7 +232,7 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
                 if region_data is not None:
                     context.append(region_data)
             else:
-                context2.append({"column2": centerval, "column1": regionval})
+                context.append({"column2": centerval, "column1": regionval, "status": 'Access Denied'})
         elif type == "member":
             centerval = column[18]
             regionval = column[17]
@@ -215,7 +250,19 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
                     if member_data not in context:
                         context.append(member_data)
             else:
-                context2.append({"column1": column})
+                city = None
+                if len(column[7]) > 0:
+                    city = column[7]
+                else:
+                    if len(column[18]) > 0:
+                        res = column[18].split("of")
+                        city = res[-1]
+                context.append({
+                    "first_name": column[0], "last_name": column[1], "gender": column[2],
+                    "email": column[3], "phone": column[4], "city":city,
+                    "state": column[8], "age_group":column[11], "approle" : column[14],
+                    "region": column[17], "center": column[18], "orole": column[13], "status" : "Access Denied"
+                })
         elif type == "orgRole":
             orgrole_data = createOrgRole(column)
             if orgrole_data != None:
@@ -234,12 +281,11 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
 
 
 def retrieveFromCache(obj, columnval, field):
-
     result = None
     try:
         logging.debug('columnval: ' + columnval)
-        if cache.get(columnval):
-            result = cache.get(columnval)
+        result = cache.get(columnval)
+        if result:
             logging.debug('result from cache: ' + str(columnval))
         else:
             logging.debug('field: ' + field)
