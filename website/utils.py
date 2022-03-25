@@ -36,7 +36,7 @@ def createRegionData(column):
             created = False
             try:
                 center = Center.objects.filter(name=column[1]).first()
-                if center == None:
+                if center is None:
                     _, created = Center.objects.update_or_create(
                         region=region,
                         name=column[1],
