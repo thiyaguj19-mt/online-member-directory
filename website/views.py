@@ -14,6 +14,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404
+from .forms import UserProfileForm
 
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
@@ -66,6 +67,32 @@ def exportFile(request):
         return render(request, 'export-page.html', {})
     else:
         return render(request, 'auth.html', {})
+
+# Show and Edit User Profile - for logged in user
+def showUserProfile(request):
+
+    print('..... request.method ...... ', request.method)
+
+    if request.user.is_authenticated:
+
+        instance = get_object_or_404(Member, email=request.user)
+        form = UserProfileForm(request.POST or None,  instance=instance)
+
+        if request.method == 'POST':
+
+            #print('..... form.is_valid() ...... ', form.is_valid())
+            if form.is_valid():
+                form.save()
+                #messages.success(request,f'Profile Updated successfully!')
+                #return redirect(request, 'user-page')
+                return render(request,'user.html', {'form':form})
+            else:
+                return render(request,'user.html',{'form':form})
+
+        return render(request,'user.html', {'form':form})
+
+    return render(request, 'auth.html', {})
+
 
 #Show the USA-Regions Map
 def getUSARegionsMap(request):
