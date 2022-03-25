@@ -187,11 +187,12 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
         context.append('Error')
         return context
     next(io_string)
+    logging.debug("type " + type)
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
         if type == "region":
             regionval = column[0]
             centerval = column[1]
-            if str(memberregion).upper() == str(regionval).upper() or allowall is True:
+            if str(memberregion).upper() == str(regionval).upper() or user.is_superuser:
                 region_data = createRegionData(column)
                 if region_data is not None:
                     context.append(region_data)
@@ -302,11 +303,7 @@ def getAllRegions():
 
 def getHelp(request):
     context = {}
-    if request.method == 'GET':
-        metadata = Metadata.objects.filter(
-            key__contains='contact-header-line').first()
-        context = {'metadata': metadata.value}
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if request.POST.keys() >= {'fullname', 'email', 'subject', 'message'}:
             path = 'contactus.html'
             msgheader = Metadata.objects.get(key='contact-msg-header')
