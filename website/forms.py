@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm,TextInput, EmailInput,NumberInput
+from django.forms import ModelForm,TextInput, EmailInput,NumberInput,HiddenInput
 from .models import Member
 
 # creating a form
@@ -16,6 +16,7 @@ class UserProfileForm(ModelForm):
             'city': None,
             'state': None,
             'zip_code': None,
+            'email': None,
             'age_group': None
         }
 
@@ -60,7 +61,7 @@ class UserProfileForm(ModelForm):
                 'style': 'max-width: 300px;',
                 'placeholder': 'Enter your ZipCode'
                 }),
-            'email':EmailInput(attrs={
+            'email':HiddenInput(attrs={
                 'class': "form-control",
                 'style': 'max-width: 300px; display: none',
                 })
