@@ -14,6 +14,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 from .forms import UserProfileForm
 
 
@@ -83,13 +84,15 @@ def showUserProfile(request):
             #print('..... form.is_valid() ...... ', form.is_valid())
             if form.is_valid():
                 form.save()
-                #messages.success(request,f'Profile Updated successfully!')
-                #return redirect(request, 'user-page')
-                return render(request,'user.html', {'form':form})
+                email = form['email'].value()
+                messages.success(request,f'Profile Updated successfully!')
+                return render(request,'user.html', {'form':form,'email':email})
             else:
                 return render(request,'user.html',{'form':form})
-
-        return render(request,'user.html', {'form':form})
+        fName = form['first_name'].value()
+        lName = form['last_name'].value()
+        email = form['email'].value()
+        return render(request,'user.html', {'form':form, 'fName':fName, 'lName':lName, 'email': email})
 
     return render(request, 'auth.html', {})
 

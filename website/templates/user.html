@@ -3,13 +3,13 @@
   <h1>User Profile Page</h1>
 
   {{ form.errors }}
-  
+
   <section>
     <div class="container">
       <div class="row mx-n5">
         <div class="col px-5 mt-5">
           {% if messages %} {% for message in messages %}
-          <div class="alert alert- {{message.tags}}">{{ message }}</div>
+          <div class="alert alert-success {{message.tags}}">{{ message }}</div>
           {% endfor %} {% endif%}
           <div class="card officers-card">
             <div class="background-block">
@@ -28,9 +28,9 @@
             </div>
             <div class="card-content">
               <h3>
-                <small> {{ form.first_name }} {{ form.last_name }}</small>
+                <small> {{ fName }} {{ lName }}</small>
               </h3>
-              <p class="officer-details">Email:{{ form.email }}</p>
+              <p class="officer-details">Email:{{ email }}</p>
             </div>
           </div>
         </div>
