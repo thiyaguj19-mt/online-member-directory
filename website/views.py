@@ -377,6 +377,9 @@ def contactus(request):
 
 def getMembersForCenter(request, centerId):
     membersForCenter = Member.objects.filter(center_id=centerId)
+    page_obj = Paginator(membersForCenter, 12)
+    page = request.GET.get('page')
+    membersForCenter = page_obj.get_page(page)
     logging.debug('membersForCenter' + str(membersForCenter))
     return render(request, 'display-all-members.html', {'centerId': centerId, 'membersForCenter': membersForCenter})
 
