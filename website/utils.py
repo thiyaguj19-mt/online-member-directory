@@ -114,6 +114,7 @@ def createMemberData(column):
 
             created = False
             memobj = None
+            member = Member.objects.filter(email=column[3]).first()
             if member == None:
                 memobj, created = Member.objects.update_or_create(
                     first_name=column[0],
@@ -223,6 +224,7 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
         return context
     next(io_string)
     logging.debug("type " + type + " user " + str(user))
+
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
         if type == "region":
             regionval = column[0]
@@ -246,7 +248,6 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
             if uploadMemberData is True:
                 member_data = createMemberData(column)
                 if member_data is not None:
-                    #print (member_data)
                     if member_data not in context:
                         context.append(member_data)
             else:

@@ -24,6 +24,7 @@ class Region(models.Model):
 
     # Fields
     name = models.CharField(max_length=20, help_text='Region Name')
+    notification = models.BooleanField(default=False)
 
     # Metadata
     # this metadata is to control the default ordering of records returned when you query the model type

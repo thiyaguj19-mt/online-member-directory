@@ -102,3 +102,21 @@ const setMemberStatus = (emailId) => {
 		updateMemberStatus(emailId, 1, 'Approved', {"member_status": "1", 'emailaddr': emailId});
 	}
 }
+
+const enableNotification = () => {
+	const emailofficer = document.getElementById("emailofficer");
+	var url = 'enableNotification/';
+	fetch(url, {
+		method:'POST',
+		headers: {
+			'Content-Type':'application/json',
+			'X-CSRFToken':csrftoken,
+		},
+		body:JSON.stringify({
+			'notification': emailofficer.checked,
+			'regionid' : emailofficer.dataset.regionid,
+		})
+	}).then(response => {
+		console.log(response);
+	})
+}
