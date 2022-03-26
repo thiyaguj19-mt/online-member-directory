@@ -54,8 +54,14 @@ def home(request):
 
 
 def importFile(request):
+    context = {}
     if request.user.is_authenticated:
-        return render(request, 'import-page.html', {})
+        member = Member.objects.filter(email=request.user).first()
+        if member is not None:
+            notification = member.region.notification
+            context = {"notification" : notification, 'regionid' : member.region.id}
+        print("member.region.id...", member.region.id)
+        return render(request, 'import-page.html', context)
     else:
         return render(request, 'auth.html', {})
 
@@ -328,9 +334,9 @@ def uploadFile(request):
                 print('canupload ', canupload)
                 loadeddata = uploadCSVFile(request.user, csv_file, importType, membercenter, memberregion)
 
-            emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
-            if emailOfficersForApprovalMetaData.value:
-                emailOfficersForApproval(importType)
+            #emailOfficersForApprovalMetaData = get_object_or_404(Metadata, key='email-officers-for-approval')
+            #if emailOfficersForApprovalMetaData.value:
+            #    emailOfficersForApproval(importType)
 
             #print(loadeddata, "loadeddata")
             if len(loadeddata) == 0:
@@ -419,3 +425,14 @@ def updateMemberStatus(request):
             memberdata = Member.objects.filter(
                 email=emailid).update(member_status=member_status)
         return JsonResponse({"message": "Record successfully updated."}, safe=False)
+
+
+def enableNotification(request):
+    data = json.loads(request.body)
+    print(data)
+    if len(data) > 0 :
+        notification = data['notification']
+        regionid = data['regionid']
+        region = Region.objects.filter(id=int(regionid))
+        region.update(notification=notification)
+    return JsonResponse({"message": "Record successfully updated."}, safe=False)

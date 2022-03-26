@@ -23,6 +23,7 @@ urlpatterns = [
     path('getMemberData/', views.getMemberData, name='memberData'),
     path('updateMemberProfile/', views.updateMemberProfile, name='updateMemberProfile'),
     path('updateMemberStatus/', views.updateMemberStatus, name='updateMemberStatus'),
+    path('enableNotification/', views.enableNotification, name='enableNotification'),
 ]
 
 urlpatterns += [
