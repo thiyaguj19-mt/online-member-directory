@@ -26,7 +26,7 @@
               <a href='"../../static/file_templates/MemberTemplate.csv' download="MemberTemplate.csv">here</a>)
             </label>
             {% if notification == True %}
-              <p class="text-info mt-1"><em><input type="checkbox" id="emailofficer" name="emailofficer" data-regionId={{regionid}} checked onclick="enableNotification();"> enable this option to email officers after member import. <br>
+              <p class="text-info mt-1"><em><input type="checkbox" id="emailofficer" name="emailofficer" data-regionId={{regionid}} checked onclick="enableNotification();"> email notification is enabled. <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;notification will be triggered next time when batch program runs </em></p>
             {% else %}
               <p class="text-info mt-1"><em><input type="checkbox" id="emailofficer" name="emailofficer" data-regionId={{regionid}} onclick="enableNotification();"> enable this option to email officers after member import. <br>
