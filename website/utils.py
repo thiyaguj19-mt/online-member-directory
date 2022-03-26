@@ -216,9 +216,14 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
     io_string = io.StringIO(data_set)
     context = []
     context2 = []
-    centerofficer = user.has_perm('website.is_central_officer')
-    regionofficer = user.has_perm('website.is_regional_officer')
-    nationalofficer = user.has_perm('website.is_national_officer')
+    centerofficer = None
+    regionofficer = None
+    nationalofficer = None
+    uploadMemberData = user.is_superuser
+    if uploadMemberData is False:
+        centerofficer = user.has_perm('website.is_central_officer')
+        regionofficer = user.has_perm('website.is_regional_officer')
+        nationalofficer = user.has_perm('website.is_national_officer')
     if checkCSVFile(io_string, type) == 'false':
         context.append('Error')
         return context
@@ -238,7 +243,6 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
         elif type == "member":
             centerval = column[18]
             regionval = column[17]
-            uploadMemberData = False
             if regionofficer:
                 uploadMemberData = (memberregion.name == regionval)
             elif centerofficer:

@@ -61,7 +61,6 @@ def importFile(request):
         if member is not None:
             notification = member.region.notification
             context = {"notification" : notification, 'regionid' : member.region.id}
-        print("member.region.id...", member.region.id)
         return render(request, 'import-page.html', context)
     else:
         return render(request, 'auth.html', {})
