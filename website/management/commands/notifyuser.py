@@ -16,9 +16,20 @@ class Command(BaseCommand):
     def getApprovedOfficersByRegion(self, region):
         a_member = cache.get("getApprovedOfficersByRegion_" + str(region.id))
         if a_member is None:
-            a_member = Member.objects.filter(member_status=1, region__name=region.name).exclude(approle__name='member')
+            a_member = Member.objects.filter(member_status=1, region__name=region.name).exclude(approle__name='Member')
             cache.set("getApprovedOfficersByRegion_" + str(region.id), a_member)
         if a_member.count() > 0:
+            return True
+        else:
+            return False
+
+
+    def getUnApprovedAllRegionalOfficer(self):
+        u_member = cache.get("getUnApprovedAllRegionalOfficer")
+        if u_member is None:
+            u_member = Member.objects.filter(member_status=0, approle__name='Regional Officer')
+            cache.set("getUnApprovedAllRegionalOfficer", u_member)
+        if u_member.count() > 0:
             return True
         else:
             return False
@@ -40,7 +51,7 @@ class Command(BaseCommand):
             cache.set('app_role_batch', app_role)
         return app_role
 
-    def processdata(self, approvers, members):
+    def processdata(self, region, approvers, members):
         for approver in approvers:
             memberbycenter = []
             approverbycenter = []
@@ -50,10 +61,10 @@ class Command(BaseCommand):
                     if approver not in approverbycenter:
                         approverbycenter.append(approver)
             if len(memberbycenter) > 0:
-                self.sendNotificationToTheUser(approverbycenter, memberbycenter)
+                self.sendNotificationToTheUser(region, approverbycenter, memberbycenter)
 
 
-    def sendNotificationToTheUser(self, approvers, members):
+    def sendNotificationToTheUser(self, region, approvers, members):
         try:
             html_header = '''<!DOCTYPE html>
             <html>
@@ -98,6 +109,8 @@ class Command(BaseCommand):
             if len(officer_emailAddress) > 0:
                 sendemail(officer_emailAddress,
                         "New member(s) added to the Officers Portal", body)
+                region.notification=False
+                region.save()
         except Exception as err:
             self.stdout.write(self.style.ERROR('sendNotificationToTheUser() throwed an error'))
             print("err-message-", err)
@@ -109,13 +122,14 @@ class Command(BaseCommand):
                 #query region and find out which region which we need to send notification
                 region = Region.objects.filter(notification=True)
                 app_role = self.getAppRole()
-                turnOffNotification = False
+                index = 1
                 for reg in region:
                     for ar in app_role:
                         #check if there is any approved members in the region
                         if self.getApprovedOfficersByRegion(reg):
                             approver = None
                             v_member = None
+                            print ("ar.name--> ", ar.name)
                             if ar.name == 'Center Officer':
                                 logging.debug("look for unapproved members in " + reg.name)
                                 approver = cache.get('getApprovedOfficersByRegion_' + str(reg.id)).filter(approle__name='Center Officer')
@@ -128,19 +142,19 @@ class Command(BaseCommand):
                                 if approver.count() > 0:
                                     if self.getUnApprovedMembersByRegion(reg):
                                         v_member = cache.get('getUnApprovedMembersByRegion_' + str(reg.id)).filter(approle__name='Center Officer')
-                            elif ar.name == 'National Officer':
-                                logging.debug("look for unapproved region officers in " + reg.name)
-                                approver = cache.get('getApprovedOfficersByRegion_' + str(reg.id)).filter(approle__name='National Officer')
+                            elif index == 1 and ar.name == 'National Officer':
+                                index = index + 1
+                                logging.debug("look for unapproved region officers ")
+                                #approver = cache.get('getApprovedOfficersByRegion_' + str(reg.id)).filter(approle__name='National Officer')
+                                approver = Member.objects.filter(member_status=1, approle__name='National Officer')
                                 if approver.count() > 0:
-                                    if self.getUnApprovedMembersByRegion(reg):
-                                        v_member = cache.get('getUnApprovedMembersByRegion_' + str(reg.id)).filter(approle__name='Regional Officer')
+                                    if self.getUnApprovedAllRegionalOfficer():
+                                        v_member = cache.get('getUnApprovedAllRegionalOfficer')
                             if v_member is not None and v_member.count() > 0:
                                 if ar.name == 'Center Officer':
-                                    self.processdata(approver, v_member)
+                                    self.processdata(reg, approver, v_member)
                                 else:
-                                    self.sendNotificationToTheUser(approver, v_member)
-                            else:
-                                turnOffNotification = True
+                                    self.sendNotificationToTheUser(reg, approver, v_member)
                         else:
                             #email admins that there no approved officers found
                             logging.debug("No admins found for " + reg.name)
