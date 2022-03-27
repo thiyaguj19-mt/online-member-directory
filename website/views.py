@@ -381,7 +381,17 @@ def getMembersForCenter(request, centerId):
     page = request.GET.get('page')
     membersForCenter = page_obj.get_page(page)
     logging.debug('membersForCenter' + str(membersForCenter))
-    return render(request, 'display-all-members.html', {'centerId': centerId, 'membersForCenter': membersForCenter})
+    # get organization roles
+    member_orgroles = getAllOrgRoles()
+    # get app_roles
+    member_approles = getAllAppRoles()
+    return render(
+            request, 'display-all-members.html', {
+                'centerId': centerId, 
+                'membersForCenter': membersForCenter,
+                'member_orgroles': member_orgroles,
+                'member_approles' : member_approles
+        })
 
 
 def getMemberData(request):

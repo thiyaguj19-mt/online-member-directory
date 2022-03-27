@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 	<nav class="nav nav-pills nav-fill">
 		<!-- <a class="nav-link" href="{% url 'region-centers' centerId %}">Show Centers</a> -->
@@ -15,7 +16,7 @@
 		<center>
 			<table class="table">
 				<tr>
-				  <!-- <th scope="col">#</th> -->
+				  <th scope="col"></th>
 				  <th scope="col">First Name</th>
 				  <th scope="col">Last Name</th>
 				  <th scope="col">Email-ID</th>
@@ -27,7 +28,7 @@
 				</tr>
 				{% for member in membersForCenter %}
 				<tr>
-				  <!-- <th scope="row">1</th> -->
+				  <th scope="row"><img src="{% static 'images/editIcon.png' %}" classs="img-fluid" onclick="showEditUI('{{ member.email }}');" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/></th>
 				  <td>{{ member.first_name }}</td>
 				  <td>{{ member.last_name }}</td>
 				  <td>{{ member.email }}</td>
@@ -85,6 +86,62 @@
 			  {% endif %}
 			</div>
 		</div>
+
+		<!-- Modal -->
+
+		<div class="modal fade" id="staticBackdrop" 
+				data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+				data-bs-toggle="staticModel" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="staticBackdropLabel">Edit Member Profile</h5>
+				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+				  <table class="table table-striped">
+					<tr>
+					  <th>First Name</th>
+					  <td><input type="text" id="first_name" value=""/></td>
+					</tr>
+					<tr>
+					  <th>Last Name</th>
+					  <td><input type="text" id="last_name" value=""/></td>
+					</tr>
+					<tr>
+					  <th>Email Address</th>
+					  <td id="emailaddr"></td>
+					</tr>
+					<tr>
+					  <th>Organization Role</th>
+					  <td>
+						<select name="orgrole" id="m_id_orgrole" multiple="">
+						  {% for member_or in member_orgroles %}
+							<option value="{{member_or.id}}">{{member_or.name}}</option>
+						  {% endfor %}
+						</select>
+					  </td>
+					</tr>
+	  
+					<tr>
+					  <th>App Role</th>
+					  <td>
+						<select name="approle" id="m_id_approle">
+						  {% for member_ar in member_approles %}
+							<option value="{{member_ar.id}}">{{member_ar.name}}</option>
+						  {% endfor %}
+						</select>
+					  </td>
+					</tr>
+				  </table>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary" onclick="saveChanges();">Save Changes</button>
+				</div>
+			  </div>
+			</div>
+		  </div>
 		
 	</div>
 {% endblock %}

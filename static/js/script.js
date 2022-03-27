@@ -18,7 +18,7 @@ const showEditUI = (emailid) => {
 	const emailaddr = document.getElementById("emailaddr");
 	const orgrole = document.getElementById('m_id_orgrole');
 	const approle = document.getElementById('m_id_approle');
-	var url = 'getMemberData/';
+	var url = '/getMemberData/';
 	fetch(url, {
 		method:'GET',
 		headers:{
@@ -50,7 +50,7 @@ const saveChanges = () => {
 	const emailaddr = document.getElementById("emailaddr");
 	const approle = document.getElementById('m_id_approle');
 
-	var url = 'updateMemberProfile/';
+	var url = '/updateMemberProfile/';
 	fetch(url, {
 		method:'POST',
 		headers:{
