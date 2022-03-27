@@ -28,7 +28,13 @@
 				</tr>
 				{% for member in membersForCenter %}
 				<tr>
-				  <th scope="row"><img src="{% static 'images/editIcon.png' %}" classs="img-fluid" onclick="showEditUI('{{ member.email }}');" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/></th>
+				  <th scope="row">
+						{% if perms.website.is_national_officer or perms.website.is_regional_officer or perms.website.is_central_officer %}
+					  		<img src="{% static 'images/editIcon.png' %}" classs="img-fluid" onclick="showEditUI('{{ member.email }}');" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+						{% else %}
+							<img src="{% static 'images/editIcon.png' %}" classs="img-fluid" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+						{% endif %}
+				  </th>
 				  <td>{{ member.first_name }}</td>
 				  <td>{{ member.last_name }}</td>
 				  <td>{{ member.email }}</td>
