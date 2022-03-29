@@ -90,8 +90,10 @@ def showUserProfile(request):
             if form.is_valid():
                 form.save()
                 email = form['email'].value()
+                fName = form['first_name'].value()
+                lName = form['last_name'].value()
                 messages.success(request,f'Profile Updated successfully!')
-                return render(request,'user.html', {'form':form,'email':email})
+                return render(request,'user.html', {'form':form, 'fName':fName, 'lName':lName, 'email':email, })
             else:
                 return render(request,'user.html',{'form':form})
         fName = form['first_name'].value()
@@ -101,6 +103,8 @@ def showUserProfile(request):
 
     return render(request, 'auth.html', {})
 
+def testFooter(request):
+    return render(request, 'test.html', {})
 
 #Show the USA-Regions Map
 def getUSARegionsMap(request):

@@ -11,6 +11,7 @@ body {
   background-color: hsl(0, 0%, 98%);
 }
 
+
 h1,
 h2,
 h3,
@@ -248,7 +249,7 @@ kbd {
 /* END Above two classes are not being used */
 
 /*Adding styles for Multi-Column Footer */
-.container {
+.container{
   flex: 1;
   display: flex;
   min-height: 10vh;
@@ -262,6 +263,7 @@ kbd {
 }
 
 footer {
+
   background-color: #d8d8d8;
   line-height: 1.5;
 }
