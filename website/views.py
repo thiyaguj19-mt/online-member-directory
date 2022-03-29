@@ -103,8 +103,7 @@ def showUserProfile(request):
 
     return render(request, 'auth.html', {})
 
-def testFooter(request):
-    return render(request, 'test.html', {})
+
 
 #Show the USA-Regions Map
 def getUSARegionsMap(request):
