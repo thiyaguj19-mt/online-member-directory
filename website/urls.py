@@ -8,7 +8,6 @@ urlpatterns = [
     path('export', views.exportFile, name = 'export-page'),
     path('usa_regionsmap', views.getUSARegionsMap, name ='usa_regionsmap'),
     path('user', views.showUserProfile, name = 'user-page'),
-    path('test', views.testFooter, name = 'test-page'),
     path('national-officers', views.getAllNationalOfficers, name = 'national-officers-page'),
     path('regional-officers', views.getAllRegionalOfficers, name = 'regional-officers-page'),
     path('center-officers', views.getAllCenterOfficers, name = 'center-officers-page'),
