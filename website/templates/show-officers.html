@@ -187,7 +187,7 @@
           </td>
           {% endif %}
           <td>
-            {% if perms.website.is_central_officer %}
+            {% if perms.website.is_central_officer and request.user.is_staff is False %}
               {{ officer.region}}
             {% else %}
             <a href="{% url 'region-page' officer.region_id %}">
