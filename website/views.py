@@ -119,9 +119,9 @@ def getAllRegionalOfficers(request):
             officers_data = Member.objects.filter(
                 approle__name='Regional Officer')
         else:
-            member = Member.objects.filter(email=request.user).first()
+            #member = Member.objects.filter(email=request.user).first()
             officers_data = Member.objects.filter(
-                approle__name='Regional Officer', region=member.region, center__status='Active')
+                approle__name='Regional Officer', email=request.user, center__status='Active')
         filterMembers = MemberFilter(request.GET, queryset=officers_data)
         officers_data = filterMembers.qs
         page_obj = Paginator(officers_data, 12)
@@ -246,9 +246,15 @@ def getRegionOfficers(request, regionId):
         approle__name='Regional Officer', region_id=regionId, center__status='Active')
     logging.debug('regionOfficers: ' + str(regionOfficers))
     regionName = ''
+    region_img_name = ''
     if len(regionOfficers) > 0:
         regionName = regionOfficers[0].region.name
-    return render(request, 'display-region.html', {'regionOfficers': regionOfficers, 'regionId': regionId, 'regionName': regionName})
+        region_img_name = regionName.lower().replace(" ", "-")
+    print ('region_img_name... ', region_img_name)
+    return render(request, 'display-region.html', {
+        'regionOfficers': regionOfficers, 'regionId': regionId, 'regionName': regionName,
+        'region_img_name': region_img_name
+    })
 
 
 # Get center officers for specific center
