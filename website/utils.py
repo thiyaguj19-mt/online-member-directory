@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import Permission, User
 
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
 def createRegionData(column):
@@ -115,7 +115,7 @@ def createMemberData(column):
             created = False
             memobj = None
             member = Member.objects.filter(email=column[3]).first()
-            if member == None:
+            if member == None and center is not None:
                 memobj, created = Member.objects.update_or_create(
                     first_name=column[0],
                     last_name=column[1],
@@ -166,6 +166,8 @@ def createMemberData(column):
         except Exception as ex:
             print("error in createMemberData: ", ex)
             logging.debug("column---\n " + str(column))
+            if center is None:
+                center = 'center could be inactive or do not exist in database'
             return {
                 "first_name": column[0], "last_name": column[1], "gender": column[2],
                 "email": column[3], "phone": column[4], "city":city,
@@ -224,9 +226,9 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
         centerofficer = user.has_perm('website.is_central_officer')
         regionofficer = user.has_perm('website.is_regional_officer')
         nationalofficer = user.has_perm('website.is_national_officer')
-    if checkCSVFile(io_string, type) == 'false':
-        context.append('Error')
-        return context
+    #if checkCSVFile(io_string, type) == 'false':
+    #    context.append('Error')
+    #    return context
     next(io_string)
     logging.debug("type " + type + " user " + str(user))
 
@@ -295,7 +297,11 @@ def retrieveFromCache(obj, columnval, field):
         else:
             logging.debug('field: ' + field)
             if field == "name":
-                result = obj.objects.filter(name=columnval).first()
+                print("columnval ", columnval)
+                if obj == Center:
+                    result = obj.objects.filter(name=columnval, status='Active').first()
+                else:
+                    result = obj.objects.filter(name=columnval).first()
             else:
                 result = obj.objects.filter(email=columnval).first()
                 logging.debug('result from database: ' + str(result))
@@ -516,7 +522,7 @@ def emailUnApprovedCenterOfficers(regionOfficers, centerOfficersInRegion):
         </head>
         <body>
         Dear Officer(s),<br>
-        <br> Following members have been added into Officers App recently. Could you verify their detail and mark their profile verified in the application.<br><br>
+        <br> Following members have been added into <a href='https://officers.sathyasai.us/' target='_blank'>SSSIO Officers App</a>. Could you verify their detail and mark their profile verified in the application.<br><br>
         '''
 
         header = "<table><tr><th>Name</th><th>Email</th><th>Role</th></tr>"

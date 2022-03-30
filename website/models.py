@@ -128,21 +128,21 @@ class Member(models.Model):
     first_name = models.CharField(
         max_length=100, help_text='Member First Name')
     last_name = models.CharField(max_length=100, help_text='Member Last Name')
-    GENGERCHOICES = [
+    GENDERCHOICES = [
         ('m', 'Male'),
         ('f', 'Female'),
         ('', 'Not Specified'),
     ]
-    gender = models.CharField(max_length=1, choices=GENGERCHOICES,
+    gender = models.CharField(max_length=1, choices=GENDERCHOICES,
                               default='', help_text='Member Gender', blank=True)
     email = models.EmailField(
         max_length=30, help_text='Member Email', primary_key=True, null=False)
-    phone = models.BigIntegerField(help_text='Member Phone')
+    phone = models.CharField(max_length=15, help_text='Member Phone', blank=True)
     address_1 = models.CharField(
         max_length=150, help_text='Member Address_1', null=True, blank=True)
     address_2 = models.CharField(
         max_length=150, help_text='Member Address_2', null=True, blank=True)
-    city = models.CharField(max_length=60, help_text='Member City')
+    city = models.CharField(max_length=60, help_text='Member City', blank=True)
     zip_code = models.CharField(
         max_length=10, help_text='Member zip_code', null=True, blank=True)
     state = models.CharField(max_length=30, help_text='Member state')

@@ -46,4 +46,4 @@ def sendemail(to, subject, body):
         except Exception as ex:
             print ("Something went wrong.",ex)
     else:
-        logger.critical('email env variables are not configured. Unable to send email at this time.')
+        logging.critical('email env variables are not configured. Unable to send email at this time.')
