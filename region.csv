@@ -22,21 +22,6 @@ Region 1,Sri Sathya Sai Center of Wappinger Falls,59 Saddle Ridge Dr,Hopewell Ju
 Region 1,Sri Sathya Sai Group of Ithaca,319 North Tioga Street,Ithaca,NY,14850,US,1234567890,http://www.nesaicenters.org/,44.04575,-77.74055,Active,Group
 Region 1,Sri Sathya Sai Group of Cumberland,25 Apple Ridge Rd,Cumberland,RI,2864,US,1234567890,http://www.nesaicenters.org/,41.95056,-71.38529,Active,Group
 Region 1,Sri Sathya Sai Center of Burlington,30 Jackson Heights,Essex Junction,VT,5452,US,1234567890,http://www.nesaicenters.org/,44.50508,-73.1278,Active,Center
-Region 10,Sri Sathya Sai Center of Little Rock,2 Talais Dr,Little Rock,AR,72223,US,1234567890,https://sairegion10.org/,34.781934,-92.462617,Active,Center
-Region 10,Sri Sathya Sai Group of New Orleans,NA,New Orleans,LA,70124,US,1234567890,https://sairegion10.org/,29.959599,-89.997669,Active,Group
-Region 10,Sri Sathya Sai Center of Oklahoma City,7200 N Coltrane Rd,Oklahoma City,OK,73083,US,1234567890,https://sairegion10.org/,35.5446,-97.441735,Active,Center
-Region 10,Sri Sathya Sai Group of Tulsa,8523 South 70th Ave,Tulsa,OK,74133,US,1234567890,https://sairegion10.org/,36.040399,-95.898058,Active,Group
-Region 10,Sri Sathya Sai Center of El Paso,801 N. El Paso Street Ste 150,El Paso,TX,79902,US,1234567890,https://sairegion10.org/,31.762193,-106.49312,Active,Center
-Region 10,Sri Sathya Sai Center of Austin,4110 Guadalupe St,Austin,TX,78751,US,1234567890,https://sairegion10.org/,30.307009,-97.735531,Active,Center
-Region 10,Sri Sathya Sai Center of Dallas,2875 E. Parker Road,Plano,TX,75074,US,1234567890,https://sairegion10.org/,33.044987,-96.674451,Active,Center
-Region 10,Sri Sathya Sai Center of Long View,1205 Windsong Lane,Long View,TX,75604,US,1234567890,https://sairegion10.org/,32.526261,-94.773003,Active,Center
-Region 10,Sri Sathya Sai Center of North Houston,Lakewood Montessori School 12127 Malcomson Rd,Houston,TX,77070,US,1234567890,https://sairegion10.org/,29.995968,-95.605731,Active,Center
-Region 10,Sri Sathya Sai Center of San Antonio,6387 De Zavala Road,San Antonio,TX,78249,US,1234567890,https://sairegion10.org/,29.56352665,-98.61193133,Active,Center
-Region 10,Sri Sathya Sai Center of South Houston,246 Fluor Daniel Drive,Sugar Land,TX,77479,US,1234567890,https://sairegion10.org/,29.600232,-95.632693,Active,Center
-Region 10,Sri Sathya Sai Group of Rio Grande,613 East Ridgeland Ave,Mcallen,TX,78503,US,1234567890,https://sairegion10.org/,26.171863,-98.218415,Inactive,Group
-Region 10,Sri Sathya Sai Group of Beaumont,NA,Beaumont,TX,77701,US,1234567890,https://sairegion10.org/,0,0,Active,Group
-Region 10,Sri Sathya Sai Center of Irving,8635 Lohr Valley Road,Irving,TX,75063,US,1234567890,https://sairegion10.org/,0,0,Active,Center
-Region 10,Sri Sathya Sai Group of Northwest Arkansas,2402 SW Cadwell Avenue,Bentonville,AR,72713,US,1234567890,https://sairegion10.org/,0,0,Active,Group
 Region 2,Sri Sathya Sai Center of Hockessin,NA,Hockessin,DE,19707,US,1234567890,http://www.sairegion2usa.org/,39.78384,-75.6816,Inactive,Center
 Region 2,Sri Sathya Sai Center of Baltimore,Owen Brown Village Center 7246 Cradlerock Way,Columbia,MD,21045,US,1234567890,http://www.sairegion2usa.org/,39.186733,-76.8425,Inactive,Center
 Region 2,Sri Sathya Sai Center of South Bethesda,NA,Bethesda,MD,20810,US,1234567890,http://www.sairegion2usa.org/,38.98,-77.1,Inactive,Center
@@ -220,3 +205,18 @@ Region 9,Sri Sathya Sai Group of Denver,Virtual,Denver,CO,80222,US,1234567890,Co
 Region 9,Sri Sathya Sai Group of Albuquerque,Virtual,Albuquerque,NM,87110,US,1234567890,Construction,35.099603,-106.591141,Active,Group
 Region 9,Sri Sathya Sai Group of Santa Fe,Virtual,Santa Fe,NM,87507,US,5056600283,Construction,35.62279,-106.06194,Active,Group
 Region 9,Sri Sathya Sai Group of Salt Lake City,Virtual,Salt Lake City,UT,84108,US,1234567890,Construction,40.738256,-111.828376,Active,Group
+Region 10,Sri Sathya Sai Center of Little Rock,2 Talais Dr,Little Rock,AR,72223,US,1234567890,https://sairegion10.org/,34.781934,-92.462617,Active,Center
+Region 10,Sri Sathya Sai Group of New Orleans,NA,New Orleans,LA,70124,US,1234567890,https://sairegion10.org/,29.959599,-89.997669,Active,Group
+Region 10,Sri Sathya Sai Center of Oklahoma City,7200 N Coltrane Rd,Oklahoma City,OK,73083,US,1234567890,https://sairegion10.org/,35.5446,-97.441735,Active,Center
+Region 10,Sri Sathya Sai Group of Tulsa,8523 South 70th Ave,Tulsa,OK,74133,US,1234567890,https://sairegion10.org/,36.040399,-95.898058,Active,Group
+Region 10,Sri Sathya Sai Center of El Paso,801 N. El Paso Street Ste 150,El Paso,TX,79902,US,1234567890,https://sairegion10.org/,31.762193,-106.49312,Active,Center
+Region 10,Sri Sathya Sai Center of Austin,4110 Guadalupe St,Austin,TX,78751,US,1234567890,https://sairegion10.org/,30.307009,-97.735531,Active,Center
+Region 10,Sri Sathya Sai Center of Dallas,2875 E. Parker Road,Plano,TX,75074,US,1234567890,https://sairegion10.org/,33.044987,-96.674451,Active,Center
+Region 10,Sri Sathya Sai Center of Long View,1205 Windsong Lane,Long View,TX,75604,US,1234567890,https://sairegion10.org/,32.526261,-94.773003,Active,Center
+Region 10,Sri Sathya Sai Center of North Houston,Lakewood Montessori School 12127 Malcomson Rd,Houston,TX,77070,US,1234567890,https://sairegion10.org/,29.995968,-95.605731,Active,Center
+Region 10,Sri Sathya Sai Center of San Antonio,6387 De Zavala Road,San Antonio,TX,78249,US,1234567890,https://sairegion10.org/,29.56352665,-98.61193133,Active,Center
+Region 10,Sri Sathya Sai Center of South Houston,246 Fluor Daniel Drive,Sugar Land,TX,77479,US,1234567890,https://sairegion10.org/,29.600232,-95.632693,Active,Center
+Region 10,Sri Sathya Sai Group of Rio Grande,613 East Ridgeland Ave,Mcallen,TX,78503,US,1234567890,https://sairegion10.org/,26.171863,-98.218415,Inactive,Group
+Region 10,Sri Sathya Sai Group of Beaumont,NA,Beaumont,TX,77701,US,1234567890,https://sairegion10.org/,0,0,Active,Group
+Region 10,Sri Sathya Sai Center of Irving,8635 Lohr Valley Road,Irving,TX,75063,US,1234567890,https://sairegion10.org/,0,0,Active,Center
+Region 10,Sri Sathya Sai Group of Northwest Arkansas,2402 SW Cadwell Avenue,Bentonville,AR,72713,US,1234567890,https://sairegion10.org/,0,0,Active,Group

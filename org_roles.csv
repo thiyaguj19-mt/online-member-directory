@@ -1,15 +1,16 @@
 id,name,description
-1,President,""
-2,Vice President,""
-3,Service Coordinator,""
-4,Group Leader,""
-5,Educational Coordinator,""
-6,Devotional Coordinator,Devotional Coordinator
-7,Media Coordinator,"Media Coordinators for Nation, Region and Center"
-8,IT Coordinator,"IT Coordinator for Nation, Region and Center"
-9,Young Adult Male Coordinator,YA Male Rep
-10,Young Adult Female Coordinator,Young Adult Female Coordinator
-11,Young Adult Female Advisor,Young Adult Female Advisor
-12,Young Adult Male Advisor,Young Adult Male Advisor
-13,Envirocare Coordinator,Envirocare Coordinator
-14,Women's Coordinator,Women's Coordinator
+1,Devotional Coordinator,Devotional Coordinator
+2,Educational Coordinator,Educational Coordinator
+3,Envirocare Coordinator,Envirocare Coordinator
+4,Female YA Advisor,Female YA Advisor
+5,Female YA Rep,Female YA Rep
+6,Group Leader,Group Leader
+7,IT Coordinator,IT Coordinator
+8,Male YA Advisor,Male YA Advisor
+9,Male YA Rep,Male YA Rep
+10,Media Coordinator,Media Coordinator
+11,Member,Member
+12,President,President
+13,Service Coordinator,Service Coordinator
+14,Vice President,Vice President
+15,Women's Coordinator,Women's Coordinator
