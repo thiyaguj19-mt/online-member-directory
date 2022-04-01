@@ -56,6 +56,30 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS('successfully added ' + key +' key in metadata'))
 
 
+            key = 'email-officer-salution'
+            value = config('email-officers-salution', 'Officer of Sri Sathya Sai International Organization, USA,')
+            metadata = Metadata.objects.filter(key=key).first()
+            if metadata is None:
+                Metadata.objects.create(key=key, value=value)
+                self.stdout.write(self.style.SUCCESS('successfully added ' + key +' key in metadata'))
+
+            key = 'email-officer-msgbody'
+            value = config('email-officer-msgbody', '''Following members have been added into the Officers Portal  recently. 
+                            We request you to you verify their detail and mark their profile verified in the application. 
+                            Here is a short video of how this can be done''')
+            metadata = Metadata.objects.filter(key=key).first()
+            if metadata is None:
+                Metadata.objects.create(key=key, value=value)
+                self.stdout.write(self.style.SUCCESS('successfully added ' + key +' key in metadata'))
+
+
+            key = 'video-link'
+            value = config('video-link', 'https://officers.sathyasai.us/')
+            metadata = Metadata.objects.filter(key=key).first()
+            if metadata is None:
+                Metadata.objects.create(key=key, value=value)
+                self.stdout.write(self.style.SUCCESS('successfully added ' + key +' key in metadata'))
+
             self.stdout.write(self.style.WARNING('create superuser...'))
             admin_name = config("ADMIN_NAME", "admin")
             admin_password = config("ADMIN_PASS", None)

@@ -66,6 +66,8 @@ class Command(BaseCommand):
 
     def sendNotificationToTheUser(self, region, approvers, members):
         try:
+            saluation = Metadata.objects.filter(key='email-officer-salution').first().value
+            print('saluation---', saluation)
             html_header = '''<!DOCTYPE html>
             <html>
             <head>
@@ -86,9 +88,12 @@ class Command(BaseCommand):
                 </style>
             </head>
             <body>
-            Dear Officer(s),<br>
-            <br> Following members have been added into Officers App recently. Could you verify their detail and mark their profile verified in the application.<br><br>
             '''
+
+            html_header = html_header + 'Dear ' + saluation + '<br><br>'
+            msg_body = Metadata.objects.filter(key='email-officer-msgbody').first().value
+            video_link = Metadata.objects.filter(key='video-link').first().value
+            html_header = html_header + msg_body + ' <a href="' + video_link + '" target="_blank" />Click Here</a>' + '<br><br>'
 
             header = "<table><tr><th>Name</th><th>Email</th><th>Role</th></tr>"
 
@@ -102,6 +107,8 @@ class Command(BaseCommand):
 
             body = html_header + header + tableData + end
 
+            print('body....', body)
+
             officer_emailAddress = []
             for approver in approvers:
                 officer_emailAddress.append(approver.email)
@@ -109,8 +116,11 @@ class Command(BaseCommand):
             if len(officer_emailAddress) > 0:
                 sendemail(officer_emailAddress,
                         "New member(s) added to the Officers Portal", body)
-                region.notification=False
-                region.save()
+                if config("local", False):
+                    print('region notification will remain True since its local env')
+                else:
+                    region.notification=False
+                    region.save()
         except Exception as err:
             self.stdout.write(self.style.ERROR('sendNotificationToTheUser() throwed an error'))
             print("err-message-", err)
