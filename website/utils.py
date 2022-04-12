@@ -139,7 +139,7 @@ def createMemberData(column):
                 if created:
                     memobj.orgrole.add(orole)
                     isnotificationenabled = region.notification
-                    if isnotificationenabled == False:
+                    if isnotificationenabled is False:
                         region.notification=True
                         region.save()
                     return {
