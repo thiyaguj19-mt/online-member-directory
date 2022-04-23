@@ -76,13 +76,12 @@ def createMemberData(column):
 
         try:
 
-            logging.debug("column--<>>>>>>-\n " + str(column))
+            #logging.debug("column--<>>>>>>-\n " + str(column))
 
             #member = retrieveFromCache(Member, column[3], "email")
             orole = retrieveFromCache(OrgRole, column[13], "name")
             arole = retrieveFromCache(AppRole, column[14], "name")
             region = retrieveFromCache(Region, column[17], "name")
-            center = retrieveFromCache(Center, column[18], "name")
 
             member_status = 0
             if len(column[12]) > 0:
@@ -247,8 +246,10 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
             else:
                 context.append({"column2": centerval, "column1": regionval, "status": 'Access Denied'})
         elif type == "member":
-            centerval = column[18]
-            regionval = column[17]
+            if len(column) > 19:
+                centerval = column[18]
+            if len(column) > 18:
+                regionval = column[17]
             if regionofficer:
                 uploadMemberData = (memberregion.name == regionval)
             elif centerofficer:
