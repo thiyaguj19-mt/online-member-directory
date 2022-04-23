@@ -75,9 +75,6 @@ def createMemberData(column):
         city = None
 
         try:
-
-            #logging.debug("column--<>>>>>>-\n " + str(column))
-
             #member = retrieveFromCache(Member, column[3], "email")
             orole = retrieveFromCache(OrgRole, column[13], "name")
             arole = retrieveFromCache(AppRole, column[14], "name")
