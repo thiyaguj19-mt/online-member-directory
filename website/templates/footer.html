@@ -6,13 +6,15 @@
       <ul class="ftr-col-style">
         <li>
           {% if current_datetime %}
-          <a href="{% url 'swingtime-monthly-view' current_datetime.year current_datetime.month %}">
+          <a href="https://sathyasai.us/calendar" target="_blank">
             Calendar {{current_datetime.year}}
           </a>
           {% endif %}
         </li>
-        <li><a href="{% url 'swingtime-events' %}">Event Listing</a></li>
-      </ul>
+        {% if perms.website.is_national_officer or perms.website.is_regional_officer %}
+          <li><a href="https://www.cognitoforms.com/SSSIOUSA/addanevent" target="_blank">Add SSSIO Event</a></li>
+        {% endif %}
+        </ul>
     </div>
     <div class="ftr-menu-item">
       <h2 class="ftr-title">Resources</h2>
