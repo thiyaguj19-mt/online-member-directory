@@ -1,0 +1,10 @@
+FIRST_NAME(M),LAST_NAME(M),GENDER(M),EMAIL(M),PHONE(O),ADDRESS_1(O),ADDRESS_2(O),CITY(M),STATE(M),ZIP_CODE(M),COUNTRY(O),AGE_GROUP(O),MEMBER_STATUS(NR),ORG_TITLE(M),APP_ROLE(M),START_DATE(O),END_DATE(O),REGION(M),CENTER(M)
+Siva,Paturi,Male,spaturi@sathyasai.us,1234567890,,,Fremont,California,48795,USA,Adult (40 +),,Service Coordinator,National Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Usha,Narayan,Female,unarayan@sathyasai.us,1234567890,,,Warm Springs,California,48795,USA,SSE (4 - 18),,President,Regional Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Ritesh,Reddy,M,rreddy@sathyasai.us,1234567891,,,Warm Springs,California,48795,USA,SSE (4 - 18),,Devotional Coordinator,Center Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Bimal,Nanda,M,bnanda@sathyasai.us,1234567892,,,Warm Springs,California,48795,USA,Adult,,Member,Member,,,Region 7,Sri Sathya Sai Center of Fremont
+Thiyagarajan,Mohan,M,thiyaguj19@gmail.com,1234567893,,,Warm Springs,California,48795,USA,YA,,Male YA Rep,National Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Radhika,Mukund,F,4radmuk@gmail.com,1234567894,,,Warm Springs,California,48795,USA,Adult,,Female YA Advisor,Regional Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Uma,Sivakumar,F,umasiva23@hotmail.com,1234567895,,,Warm Springs,California,48795,USA,Adult,,Female YA Rep,Center Officer,,,Region 7,Sri Sathya Sai Center of Fremont
+Harsha,PPS,M,harshapps1@gmail.com,1234567896,,,Warm Springs,California,48795,USA,SSE (4 - 18),,Member,Member,,,Region 7,Sri Sathya Sai Center of Fremont
+Raja,Potturi,Male,raja.potturi@gmail.com,1234567896,,,Fremont,California,94536,USA,YA (18 - 40),,Service Coordinator,Center Officer,,,Region 7,Sri Sathya Sai Center of Fremont

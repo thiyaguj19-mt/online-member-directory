@@ -79,11 +79,12 @@ def createMemberData(column):
             orole = retrieveFromCache(OrgRole, column[13], "name")
             arole = retrieveFromCache(AppRole, column[14], "name")
             region = retrieveFromCache(Region, column[17], "name")
+            center = retrieveFromCache(Center, column[18], "name")
 
             member_status = 0
-            if len(column[12]) > 0:
-                if column[12] == 'Approved':
-                    member_status = 1
+            #if len(column[12]) > 0:
+            #    if column[12] == 'Approved':
+            #        member_status = 1
 
             start_date = None
             end_date = None
