@@ -234,6 +234,8 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
     logging.debug("type " + type + " user " + str(user))
 
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        regionval = None
+        centerval = None
         if type == "region":
             regionval = column[0]
             centerval = column[1]
@@ -253,6 +255,8 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
             elif centerofficer:
                 uploadMemberData = (membercenter.name == centerval and memberregion.name == regionval)
             elif nationalofficer:
+                uploadMemberData = True
+            elif user.is_superuser:
                 uploadMemberData = True
             if uploadMemberData is True:
                 member_data = createMemberData(column)
