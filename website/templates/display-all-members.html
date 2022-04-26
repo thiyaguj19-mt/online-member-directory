@@ -23,6 +23,7 @@
 				  <!-- <th scope="col">Phone-Num</th> -->
 				  <th scope="col">Org-Role</th>
 				  <th scope="col">App-Role</th>
+				  <th>Verified</th>
 				  <th scope="col">Region</th>
 				  <th scope="col">Center</th>
 				</tr>
@@ -49,7 +50,29 @@
 				   {% endfor %}
 				  </td>
 				  <td>{{ member.approle }}</td>
-
+				  {% if member.member_status == 0 %}
+					<td>
+						<div class="form-check form-switch">
+						{% if approveAccess == True %}
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="setMemberStatus('{{ member.email }}');">
+						{% else %}
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick="setMemberStatus('{{ member.email }}');" disabled>
+						{% endif %}
+						<label class="form-check-label" for="flexSwitchCheckDefault" id="{{ member.email }}_member_status">Pending_Approval</label>
+						</div>
+					</td>
+					{% else %}
+					<td>
+					<div class="form-check form-switch">
+						{% if approveAccess == True %}
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked onclick="setMemberStatus('{{ member.email }}');">
+						{% else %}
+						<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked onclick="setMemberStatus('{{ member.email }}');" disabled>
+						{% endif %}
+						<label class="form-check-label" for="flexSwitchCheckChecked" id="{{ member.email }}_member_status">Approved</label>
+					</div>
+					</td>
+				  {% endif %}
 				  <td>
 					{% if perms.website.is_national_officer or perms.website.is_regional_officer %}
 						<a href="{% url 'region-page' member.region_id %}">

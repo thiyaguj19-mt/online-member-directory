@@ -394,12 +394,27 @@ def getMembersForCenter(request, centerId):
     member_orgroles = getAllOrgRoles()
     # get app_roles
     member_approles = getAllAppRoles()
+
+    #check if the logged in user is center officer
+    #and has president or vice president as org title
+    #in that he will be allowed to approve center members
+    approveAccess = False
+    if request.user.is_superuser:
+        approveAccess = True
+    else:
+        user = User.objects.filter(username=request.user).first()
+        presidentRole = Member.objects.filter(email=user.email, 
+                        orgrole__name__contains='President',
+                        approle__name='Center Officer').count()
+        if presidentRole > 0:
+            approveAccess = True
     return render(
             request, 'display-all-members.html', {
                 'centerId': centerId, 
                 'membersForCenter': membersForCenter,
                 'member_orgroles': member_orgroles,
-                'member_approles' : member_approles
+                'member_approles' : member_approles,
+                'approveAccess' : approveAccess
         })
 
 

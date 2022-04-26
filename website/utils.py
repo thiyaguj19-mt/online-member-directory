@@ -81,6 +81,11 @@ def createMemberData(column):
             region = retrieveFromCache(Region, column[17], "name")
             center = retrieveFromCache(Center, column[18], "name")
 
+            #print('orole', orole)
+            #print('arole', arole)
+            #print('region', region)
+            #print('center', center)
+
             member_status = 0
             #if len(column[12]) > 0:
             #    if column[12] == 'Approved':
@@ -112,7 +117,10 @@ def createMemberData(column):
             created = False
             memobj = None
             member = Member.objects.filter(email=column[3]).first()
+            #print("member--19000", member)
+            #print("center--19000", center)
             if member == None and center is not None:
+                #print("center--19000")
                 memobj, created = Member.objects.update_or_create(
                     first_name=column[0],
                     last_name=column[1],
@@ -133,6 +141,8 @@ def createMemberData(column):
                     region=region,
                     center=center,
                 )
+                #print("memobj--19000", memobj)
+                #print("created--19000", created)
                 if created:
                     memobj.orgrole.add(orole)
                     isnotificationenabled = region.notification
@@ -152,12 +162,12 @@ def createMemberData(column):
                 member.save()
                 # add orgRole
                 member.orgrole.add(orole)
-                logging.debug("column--<>>>>>>-\n " + str({
-                    "first_name": column[0], "last_name": column[1], "gender": column[2],
-                    "email": column[3], "phone": column[4], "city":city,
-                    "state": column[8], "age_group":column[11], "approle" : arole,
-                    "region": region, "center": center, "orole": orole, "status" : "Skipped"
-                }))
+                #logging.debug("column--<>>>>>>-\n " + str({
+                #    "first_name": column[0], "last_name": column[1], "gender": column[2],
+                #    "email": column[3], "phone": column[4], "city":city,
+                #    "state": column[8], "age_group":column[11], "approle" : arole,
+                #    "region": region, "center": center, "orole": orole, "status" : "Skipped"
+                #}))
                 return {
                     "first_name": column[0], "last_name": column[1], "gender": column[2],
                     "email": column[3], "phone": column[4], "city":city,
@@ -246,9 +256,9 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
             else:
                 context.append({"column2": centerval, "column1": regionval, "status": 'Access Denied'})
         elif type == "member":
-            if len(column) > 19:
-                centerval = column[18]
             if len(column) > 18:
+                centerval = column[18]
+            if len(column) > 17:
                 regionval = column[17]
             if regionofficer:
                 uploadMemberData = (memberregion.name == regionval)
@@ -297,23 +307,23 @@ def uploadCSVFile(user, csv_file, type, membercenter, memberregion):
 def retrieveFromCache(obj, columnval, field):
     result = None
     try:
-        logging.debug('columnval: ' + columnval)
-        result = cache.get(columnval)
+        #logging.debug('columnval: ' + columnval)
+        result = cache.get(str(obj)+str(columnval))
         if result:
             logging.debug('result from cache: ' + str(columnval))
         else:
-            logging.debug('field: ' + field)
+            #logging.debug('field: ' + field)
             if field == "name":
-                print("columnval ", columnval)
+                #print("columnval ", columnval)
                 if obj == Center:
                     result = obj.objects.filter(name=columnval, status='Active').first()
                 else:
                     result = obj.objects.filter(name=columnval).first()
             else:
                 result = obj.objects.filter(email=columnval).first()
-                logging.debug('result from database: ' + str(result))
+                #logging.debug('result from database: ' + str(result))
             #print("region---from..db....." , region)
-            cache.set(columnval, result)
+            cache.set(str(obj)+str(columnval), result)
     except Exception as ex:
         print("error from retrieveFromCache - " + str(ex))
     #print("retrieveFromCache-result, " , result)

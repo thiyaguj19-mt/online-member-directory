@@ -76,7 +76,7 @@ const saveChanges = () => {
 const updateMemberStatus = (emailId, val, message, bodymessage) => {
 
 	const status_label = document.getElementById(`${emailId}_member_status`);
-	var url = 'updateMemberStatus/';
+	var url = '/updateMemberStatus/';
 	fetch(url, {
 		method:'POST',
 		headers:{
